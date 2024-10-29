@@ -214,7 +214,7 @@ class OctConv(nn.Module):
             
             lf = self.avg_pool(x)
             lm = self.avg_pool(mask)
-            lf, l_mask = self.convl(in_x=x, in_mask=lm)
+            lf, l_mask = self.convl(in_x=lf, in_mask=lm)
             
             return (hf, lf), (h_mask, l_mask)
         elif self.type == 'last':
@@ -232,8 +232,17 @@ class OctConv(nn.Module):
                 hf, h_mask = self.H2H(in_x=hf, in_mask=hm)
                 lf, l_mask = self.L2L(in_x=lf, in_mask=lm)
             else:
-                hf, h_mask = self.H2H(in_x=hf, in_mask=hm) + self.L2H(self.upsample(lf))
-                lf, l_mask = self.L2L(in_x=lf, in_mask=lm) + self.H2L(self.avg_pool(hf))
+                a = self.H2H(in_x=hf, in_mask=hm)
+                b = self.L2H(in_x = self.upsample(lf), in_mask = self.upsample(lm))
+                
+                c = self.L2L(in_x=lf, in_mask=lm)
+                # print(f"hf shape is {hf.shape}, hm shape is {hm.shape}")
+                # print(f"pool_hf shape is {self.avg_pool(hf).shape}, pool_hm shape is {self.avg_pool(hm).shape}")
+                # print('---------------------------------------------------------------')
+                d = self.H2L(in_x = self.avg_pool(hf), in_mask = self.avg_pool(hm))
+                
+                hf, h_mask = tuple(x + y for x, y in zip(a, b))
+                lf, l_mask = tuple(x + y for x, y in zip(c, d))
             return (hf, lf), (h_mask, l_mask)
         
 
@@ -421,3 +430,35 @@ class AdaConv2d(nn.Module):
         x = F.conv2d(x, w_spatial, groups=self.n_groups)
         x = F.conv2d(x, w_pointwise, groups=self.n_groups, bias=bias)
         return x
+    
+def main():
+    # ---------------------------------------- 测试OctConv, 一共三层, 分别表示初始、中间、最终层 ----------------------------------------
+    x = torch.rand(size=(1,3,128,128)).to(device="cuda:1")
+    # print(x,x.shape)
+    mask = torch.randint(low=0, high=2, size=x.shape).float().to(device="cuda:1")
+    # print(mask.shape, mask)
+    o1 = OctConv(in_channels=3, out_channels=64, kernel_size=3, stride=1, padding=1, groups=1, type='first').to(device="cuda:1")
+   
+    print(f"---------------------------layer e1---------------------------")
+    out, mask = o1(x=x, mask=mask)
+    # print(len(out))
+    # print(len(mask))
+    # hm, lm = mask
+    # print(hm.shape)
+
+    # up_hm = nn.Upsample(scale_factor=2)(hm)
+    # print(up_hm.shape)
+    print(f"---------------------------layer e2---------------------------")
+    o2 = OctConv(in_channels=64, out_channels=3, kernel_size=3, stride=1, padding=1, groups=1, type='normal').to(device="cuda:1")
+    out2, mask2 = o2(x=out, mask=mask)
+    # print(len(out2))
+    # print(len(mask2))
+    
+    print(f"---------------------------layer e3---------------------------")
+    o3 = OctConv(in_channels=3, out_channels=3, kernel_size=3, stride=1, padding=1, groups=1, type='last').to(device="cuda:1")
+    out3, mask3 = o3(x=out2, mask=mask2)
+    # print(len(out2))
+    # print(len(mask2))
+
+if __name__ == '__main__':
+    main()

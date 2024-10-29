@@ -28,7 +28,7 @@ class PartialConnv2d(nn.Module):
             self.kernel_size = (kernel_size, kernel_size)
         else:
             self.kernel_size = kernel_size
-            
+        # print(f"kernel_size is {kernel_size}")
         self.stride = stride
         self.bias: bool = bias
         ####################################################
@@ -52,6 +52,8 @@ class PartialConnv2d(nn.Module):
         nn.init.constant_(self.conv_1.weight, 1)
     ####################################################
     def forward(self, in_x, in_mask):
+        # print(f"origin shape is {in_x.shape}")
+        # print(f"origin mask shape: {in_mask.shape}")
         ##################### 参数引入 #####################
         self.in_x = in_x
         self.in_mask = in_mask
@@ -66,10 +68,19 @@ class PartialConnv2d(nn.Module):
         
         # 3. 计算系数矩阵 sum(I)/sum(M)
         with torch.no_grad():
+            # print(f"self.conv_1 is {self.conv_1}")
+            # print(f"self.conv is {self.conv}")
             self.sum_mask: torch.Tensor = self.conv_1(self.in_mask) # 利用一个其中参数全为1的卷积核与输入掩膜相乘, 算出每个像素的sum(M)
+            
+            # print(f"sum mask shape: {self.sum_mask.shape}")
+            
             self.sum_I: int = self.kernel_size[0] * self.kernel_size[-1] * 1# sum(I)是一个固定值, 从数值上与卷积核的窗口大小相等
             if (self.out.shape == self.sum_mask.shape):
-                self.ratio: torch.Tensor = torch.where(self.sum_mask<=0, torch.tensor(0.0), self.sum_I/self.sum_mask)
+                self.ratio: torch.Tensor = torch.where(
+                    self.sum_mask<=0, 
+                    torch.tensor(0.0, device=self.sum_mask.device), 
+                    self.sum_I/self.sum_mask
+                )
                 # print(f'after:{self.ratio}')
             else:
                 print("error!")
@@ -84,6 +95,9 @@ class PartialConnv2d(nn.Module):
         
         ######################################### 掩膜更新过程 #########################################
         self.updated_mask: torch.Tensor = torch.where((self.sum_mask!=0), torch.tensor(1.0, device=self.sum_mask.device), self.sum_mask).float() # # tensor != 0：生成一个与原张量形状相同的布尔张量，标记出哪些元素不是0。torch.tensor(1)：如果条件为真（即元素不为0），则将其设置为1。tensor：如果条件为假（即元素为0），则保持原样。# 返回值2
+        # print(f"updated mask shape: {self.updated_mask.shape}")
+        # print(f"result shape is {self.out.shape}")
+        # print(f"-------------------------------------------------------------")
         ################################################################################################
         
         return self.out, self.updated_mask

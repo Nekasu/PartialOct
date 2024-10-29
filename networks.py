@@ -43,19 +43,21 @@ class Encoder(nn.Module):
         enc_feat = []
         out, mask = self.conv(in_x=x, in_mask=mask)
         
-        out, mask = self.OctConv1_1(in_x=out, in_mask=mask)
+        out, mask = self.OctConv1_1(x=out, mask=mask)
         out = self.relu(out)
-        out, mask = self.OctConv1_2(in_x=out, in_mask=mask)
+        print(f"after relu, output shape is {out[0].shape}and {out[1].shape}")
+        print(f"after relu, mask shape is {mask[0].shape}and {mask[1].shape}")
+        out, mask = self.OctConv1_2(x=out, mask=mask)
         out = self.relu(out)
-        out, mask = self.OctConv1_3(in_x=out, in_mask=mask)
+        out, mask = self.OctConv1_3(x=out, mask=mask)
         out = self.relu(out)
         enc_feat.append(out)
         
-        out, mask = self.OctConv2_1(in_x=out, in_mask=mask)
+        out, mask = self.OctConv2_1(x=out, mask=mask)
         out = self.relu(out)
-        out, mask = self.OctConv2_2(in_x=out, in_mask=mask)
+        out, mask = self.OctConv2_2(x=out, mask=mask)
         out = self.relu(out)
-        out, mask = self.OctConv2_3(in_x=out, in_mask=mask)
+        out, mask = self.OctConv2_3(x=out, mask=mask)
         out = self.relu(out)
         enc_feat.append(out)
         
@@ -67,20 +69,20 @@ class Encoder(nn.Module):
         return out, out_sty, enc_feat
     
     def forward_test(self, x, cond):
-        out, mask = self.conv(in_x=x, in_mask=mask)
+        out, mask = self.conv(x=x, mask=mask)
         
-        out, mask = self.OctConv1_1(in_x=out, in_mask=mask)
+        out, mask = self.OctConv1_1(x=out, mask=mask)
         out = self.relu(out)
-        out, mask = self.OctConv1_2(in_x=out, in_mask=mask)
+        out, mask = self.OctConv1_2(x=out, mask=mask)
         out = self.relu(out)
-        out, mask = self.OctConv1_3(in_x=out, in_mask=mask)
+        out, mask = self.OctConv1_3(x=out, mask=mask)
         out = self.relu(out)
         
-        out, mask = self.OctConv2_1(in_x=out, in_mask=mask)
+        out, mask = self.OctConv2_1(x=out, mask=mask)
         out = self.relu(out)
-        out, mask = self.OctConv2_2(in_x=out, in_mask=mask)
+        out, mask = self.OctConv2_2(x=out, mask=mask)
         out = self.relu(out)
-        out, mask = self.OctConv2_3(in_x=out, in_mask=mask)
+        out, mask = self.OctConv2_3(x=out, mask=mask)
         out = self.relu(out)
         if cond == 'style':
             out_high, out_low = out
@@ -220,3 +222,16 @@ class EFDM_loss(nn.Module):
             loss += poss_loss / neg_loss
 
         return loss
+    
+def main():
+    x = torch.rand(size=(1,3,128,128)).to(device="cuda:1")
+    # print(x,x.shape)
+    mask = torch.randint(low=0, high=2, size=x.shape).float().to(device="cuda:1")
+    # print(mask.shape, mask)
+    
+    e = Encoder(in_dim=3, nf=64, style_kernel=[3,3], alpha_in=0.5, alpha_out=0.5).to(device="cuda:1")
+    out = e(x=x, mask=mask)
+    print(len(out))
+
+if __name__ == '__main__':
+    main()
