@@ -208,25 +208,33 @@ class OctConv(nn.Module):
                 # )
             # 使用自己写的 PartConv代替传统卷积
             
-    def forward(self, x):
+    def forward(self, x, mask):
         if self.type == 'first':
-            hf = self.convh(x)
+            hf, h_mask = self.convh(in_x=x, in_mask=mask)
+            
             lf = self.avg_pool(x)
-            lf = self.convl(lf)
-            return hf, lf
+            lm = self.avg_pool(mask)
+            lf, l_mask = self.convl(in_x=x, in_mask=lm)
+            
+            return (hf, lf), (h_mask, l_mask)
         elif self.type == 'last':
             hf, lf = x
-            out_h = self.convh(hf)
-            out_l = self.convl(self.upsample(lf))
+            hm, lm = mask
+            out_h, out_h_mask = self.convh(in_x=hf, in_mask=hm)
+            
+            out_l, out_l_mask = self.convl(in_x=self.upsample(lf), in_mask=self.upsample(lm))
             output = out_h * self.freq_ratio[0] + out_l * self.freq_ratio[1]
-            return output, out_h, out_l
+            return (output), (out_h, out_l)
         else:
             hf, lf = x
+            hm, lm = mask
             if self.is_dw:
-                hf, lf = self.H2H(hf), self.L2L(lf)
+                hf, h_mask = self.H2H(in_x=hf, in_mask=hm)
+                lf, l_mask = self.L2L(in_x=lf, in_mask=lm)
             else:
-                hf, lf = self.H2H(hf) + self.L2H(self.upsample(lf)), self.L2L(lf) + self.H2L(self.avg_pool(hf))
-            return hf, lf
+                hf, h_mask = self.H2H(in_x=hf, in_mask=hm) + self.L2H(self.upsample(lf))
+                lf, l_mask = self.L2L(in_x=lf, in_mask=lm) + self.H2L(self.avg_pool(hf))
+            return (hf, lf), (h_mask, l_mask)
         
 
 ############## Decoder ##############
