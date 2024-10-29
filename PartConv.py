@@ -12,7 +12,7 @@ class PartialConnv2d(nn.Module):
         self,
         in_channels: int = 1,
         out_channels: int = 1,
-        kernel_size: Tuple[int, int] = 1,
+        kernel_size: Tuple[int, int] = (3,3),
         stride: Union[int, Tuple[int, int]] = 1,
         padding: Union[int, Tuple[int, int]] = 1,
         dilation: Union[int, Tuple[int, int]] = 1,
@@ -24,7 +24,11 @@ class PartialConnv2d(nn.Module):
     ):
         super(PartialConnv2d, self).__init__()
         ##################### 参数引入 #####################
-        self.kernel_size = kernel_size
+        if kernel_size is not Tuple:
+            self.kernel_size = (kernel_size, kernel_size)
+        else:
+            self.kernel_size = kernel_size
+            
         self.stride = stride
         self.bias: bool = bias
         ####################################################
