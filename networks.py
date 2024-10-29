@@ -39,23 +39,23 @@ class Encoder(nn.Module):
         
         self.relu = Oct_conv_lreLU()
 
-    def forward(self, x):   
+    def forward(self, x, mask):   
         enc_feat = []
-        out = self.conv(x)   
+        out, mask = self.conv(in_x=x, in_mask=mask)
         
-        out = self.OctConv1_1(out)
+        out, mask = self.OctConv1_1(in_x=out, in_mask=mask)
         out = self.relu(out)
-        out = self.OctConv1_2(out)
+        out, mask = self.OctConv1_2(in_x=out, in_mask=mask)
         out = self.relu(out)
-        out = self.OctConv1_3(out)
+        out, mask = self.OctConv1_3(in_x=out, in_mask=mask)
         out = self.relu(out)
         enc_feat.append(out)
         
-        out = self.OctConv2_1(out)   
+        out, mask = self.OctConv2_1(in_x=out, in_mask=mask)
         out = self.relu(out)
-        out = self.OctConv2_2(out)
+        out, mask = self.OctConv2_2(in_x=out, in_mask=mask)
         out = self.relu(out)
-        out = self.OctConv2_3(out)
+        out, mask = self.OctConv2_3(in_x=out, in_mask=mask)
         out = self.relu(out)
         enc_feat.append(out)
         
@@ -67,22 +67,21 @@ class Encoder(nn.Module):
         return out, out_sty, enc_feat
     
     def forward_test(self, x, cond):
-        out = self.conv(x)   
+        out, mask = self.conv(in_x=x, in_mask=mask)
         
-        out = self.OctConv1_1(out)
+        out, mask = self.OctConv1_1(in_x=out, in_mask=mask)
         out = self.relu(out)
-        out = self.OctConv1_2(out)
+        out, mask = self.OctConv1_2(in_x=out, in_mask=mask)
         out = self.relu(out)
-        out = self.OctConv1_3(out)
-        out = self.relu(out)
-        
-        out = self.OctConv2_1(out)   
-        out = self.relu(out)
-        out = self.OctConv2_2(out)
-        out = self.relu(out)
-        out = self.OctConv2_3(out)
+        out, mask = self.OctConv1_3(in_x=out, in_mask=mask)
         out = self.relu(out)
         
+        out, mask = self.OctConv2_1(in_x=out, in_mask=mask)
+        out = self.relu(out)
+        out, mask = self.OctConv2_2(in_x=out, in_mask=mask)
+        out = self.relu(out)
+        out, mask = self.OctConv2_3(in_x=out, in_mask=mask)
+        out = self.relu(out)
         if cond == 'style':
             out_high, out_low = out
             out_sty_h = self.pool_h(out_high)
