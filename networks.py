@@ -3,6 +3,7 @@ from torch import nn
 import torch.nn.functional as F
 
 from blocks import *
+from PartConv import PartialConnv2d
 
 def define_network(net_type, config = None):
     net = None
@@ -20,9 +21,12 @@ class Encoder(nn.Module):
     def __init__(self, in_dim, nf=64, style_kernel=[3, 3], alpha_in=0.5, alpha_out=0.5):
         super(Encoder, self).__init__()
         
-        self.conv = nn.Conv2d(in_channels=in_dim, out_channels=nf, kernel_size=7, stride=1, padding=3)        
+        # 替换为自己写的部分卷积
+        self.conv = PartialConnv2d(in_channels=in_dim, out_channels=nf, kernel_size=7, stride=1, padding=3)        
+        # 注释掉原来的传统卷积
+        # self.conv = nn.Conv2d(in_channels=in_dim, out_channels=nf, kernel_size=7, stride=1, padding=3)        
         
-        self.OctConv1_1 = OctConv(in_channels=nf, out_channels=nf, kernel_size=3, stride=2, padding=1, groups=64, alpha_in=alpha_in, alpha_out=alpha_out, type="first")       
+        self.OctConv1_1 = OctConv(in_channels=nf, out_channels=nf, kernel_size=3, stride=2, padding=1, groups=64, alpha_in=alpha_in, alpha_out=alpha_out, type="first")  
         self.OctConv1_2 = OctConv(in_channels=nf, out_channels=2*nf, kernel_size=1, alpha_in=alpha_in, alpha_out=alpha_out, type="normal")
         self.OctConv1_3 = OctConv(in_channels=2*nf, out_channels=2*nf, kernel_size=3, stride=1, padding=1, alpha_in=alpha_in, alpha_out=alpha_out, type="normal")
         
@@ -105,7 +109,11 @@ class Decoder(nn.Module):
         self.AdaOctConv3_1 = AdaOctConv(in_channels=nf, out_channels=nf, group_div=group_div[2], style_channels=style_channel, kernel_size=style_kernel, stride=1, padding=1, oct_groups=nf, alpha_in=alpha_in, alpha_out=alpha_out, type="normal")
         self.OctConv3_2 = OctConv(in_channels=nf, out_channels=nf//2, kernel_size=1, stride=1, alpha_in=alpha_in, alpha_out=alpha_out, type="last", freq_ratio=freq_ratio)
        
-        self.conv4 = nn.Conv2d(in_channels=nf//2, out_channels=out_dim, kernel_size=1)
+       # 替换为自己写的部分卷积
+        self.conv4 = PartialConnv2d(in_channels=nf//2, out_channels=out_dim, kernel_size=1)       
+       
+       # 注释原来的传统卷积
+        # self.conv4 = nn.Conv2d(in_channels=nf//2, out_channels=out_dim, kernel_size=1)
 
     def forward(self, content, style):        
         out = self.AdaOctConv1_1(content, style)
