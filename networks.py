@@ -13,8 +13,10 @@ def define_network(net_type, config = None):
     alpha_out = config.alpha_out
     sk = config.style_kernel
 
-    if net_type == 'Encoder':
-        net = Encoder(in_dim=config.input_nc, nf=config.nf, style_kernel=[sk, sk], alpha_in=alpha_in, alpha_out=alpha_out)
+    if net_type == 'StyleEncoder':
+        net = StyleEncoder(in_dim=config.input_nc, nf=config.nf, style_kernel=[sk, sk], alpha_in=alpha_in, alpha_out=alpha_out)
+    elif net_type == 'ContentEncoder':
+        net = ContentEncoder(in_dim=config.input_nc, nf=config.nf, style_kernel=[sk, sk], alpha_in=alpha_in, alpha_out=alpha_out)
     elif net_type == 'Generator':
         net = Decoder(nf=config.nf, out_dim=config.output_nc, style_channel=256, style_kernel=[sk, sk, 3], alpha_in=alpha_in, freq_ratio=config.freq_ratio, alpha_out=alpha_out)
     return net
