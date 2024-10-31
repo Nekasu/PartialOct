@@ -401,18 +401,19 @@ class AdaConv2d(nn.Module):
 
         padding = (kernel_size - 1) / 2
         
-        # 使用自己写的 PartConv代替传统卷积
-        self.conv = PartialConv2d(in_channels=in_channels,
-                              out_channels=out_channels,
-                              kernel_size=(kernel_size, kernel_size),
-                              padding=(math.ceil(padding), math.floor(padding)),
-                              padding_mode='reflect')
-        # 将传统卷积注释掉
-        # self.conv = Conv2d(in_channels=in_channels,
+        # Decoder中不需要使用部分卷积
+        # self.conv = PartialConv2d(in_channels=in_channels,
         #                       out_channels=out_channels,
         #                       kernel_size=(kernel_size, kernel_size),
         #                       padding=(math.ceil(padding), math.floor(padding)),
         #                       padding_mode='reflect')
+        
+        # Decoder中依旧使用传统卷积
+        self.conv = nn.Conv2d(in_channels=in_channels,
+                              out_channels=out_channels,
+                              kernel_size=(kernel_size, kernel_size),
+                              padding=(math.ceil(padding), math.floor(padding)),
+                              padding_mode='reflect')
 
     def forward(self, x, w_spatial, w_pointwise, bias):
         assert len(x) == len(w_spatial) == len(w_pointwise) == len(bias)
