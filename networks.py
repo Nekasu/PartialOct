@@ -19,9 +19,20 @@ def define_network(net_type, config = None):
         net = Decoder(nf=config.nf, out_dim=config.output_nc, style_channel=256, style_kernel=[sk, sk, 3], alpha_in=alpha_in, freq_ratio=config.freq_ratio, alpha_out=alpha_out)
     return net
 
-class Encoder(nn.Module):
+class StyleEncoder(nn.Module):
     def __init__(self, in_dim, nf=64, style_kernel=[3, 3], alpha_in=0.5, alpha_out=0.5):
-        super(Encoder, self).__init__()
+        '''
+        在 Encoder 中, 对于内容图像而言, 实际上并不需要分前景与背景, 仅仅区分风格图像的前景与背景即可. 具体来说,
+            1. 假设现有风格图像的前背景分离结果：背景风格信息与前景风格信息
+            2. 利用风格图像的背景风格信息与前景风格信息分别对「整个内容图像」进行风格迁移
+            3. 得到两种不同风格的「完成风格化图像」后, 再根据「原始内容图像」生成掩膜
+            4. 利用内容图像的掩膜对这两种不同的风格图像处理、拼接, 得到最终的结果.
+            5. 为了实现以上想法, 需要有如下步骤
+                1. 为风格图像特别设立一个 Encoder 类, 命名为 StyleEcoder, 其中使用 PartialOctConv 进行卷积
+                    - 即该类
+                2. 将原始的 Encoder 更名为 ContentEncoder, 其中使用普通的 OctConv 进行卷积.
+        '''
+        super(StyleEncoder, self).__init__()
         
         # 替换为自己写的部分卷积
         self.conv = PartialConv2d(in_channels=in_dim, out_channels=nf, kernel_size=7, stride=1, padding=3)        
