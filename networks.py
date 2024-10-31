@@ -320,18 +320,18 @@ class EFDM_loss(nn.Module):
 
         return loss
     
-def main_test_encoder():
+def main_test_styleencoder():
     x = torch.rand(size=(1,3,128,128)).to(device="cuda:1")
     # print(x,x.shape)
     mask = torch.randint(low=0, high=2, size=x.shape).float().to(device="cuda:1")
     # print(mask.shape, mask)
     
-    print("creating Encoder........................")
-    e = Encoder(in_dim=3, nf=64, style_kernel=[3,3], alpha_in=0.5, alpha_out=0.5).to(device="cuda:1")
-    print("Encoder created sucessfully........................")
+    print("creating StyleEncoder........................")
+    e = StyleEncoder(in_dim=3, nf=64, style_kernel=[3,3], alpha_in=0.5, alpha_out=0.5).to(device="cuda:1")
+    print("StyleEncoder created sucessfully........................")
     out = e(x=x, mask=mask)
     print(len(out))
-    print("Encoder works well........................")
+    print("StyleEncoder works well........................")
     
 def main_test_decoder():
     content_1 = torch.rand(size=(1,128,64,64)).to(device="cuda:1")
@@ -353,4 +353,4 @@ def main_test_decoder():
     
 
 if __name__ == '__main__':
-    main_test_decoder()
+    main_test_styleencoder()
