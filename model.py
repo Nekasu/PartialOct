@@ -18,8 +18,8 @@ class AesFA(nn.Module):
         self.lambda_percept = config.lambda_percept
         self.lambda_const_style = config.lambda_const_style
 
-        self.netE = networks.define_network(net_type='Encoder', config = config)    # Content Encoder
-        self.netS = networks.define_network(net_type='Encoder', config = config)    # Style Encoder
+        self.netE = networks.define_network(net_type='ContentEncoder', config = config)    # Content Encoder
+        self.netS = networks.define_network(net_type='StyleEncoder', config = config)    # Style Encoder
         self.netG = networks.define_network(net_type='Generator', config = config)
 
         self.vgg_loss = VGG_loss(config, vgg)
