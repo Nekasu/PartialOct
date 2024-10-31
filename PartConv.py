@@ -7,7 +7,7 @@ import torch.nn.functional as F
 
 from typing import Union, Tuple, Any
 
-class PartialConnv2d(nn.Module):
+class PartialConv2d(nn.Module):
     def __init__(
         self,
         in_channels: int = 1,
@@ -22,7 +22,7 @@ class PartialConnv2d(nn.Module):
         device = None,
         dtype = None
     ):
-        super(PartialConnv2d, self).__init__()
+        super(PartialConv2d, self).__init__()
         ##################### 参数引入 #####################
         if kernel_size is not Tuple:
             self.kernel_size = (kernel_size, kernel_size)
@@ -103,7 +103,7 @@ class PartialConnv2d(nn.Module):
         return self.out, self.updated_mask
         
 if __name__ == '__main__':
-    pc = PartialConnv2d(in_channels=3, out_channels=3, kernel_size=(3,3), stride=1)
+    pc = PartialConv2d(in_channels=3, out_channels=3, kernel_size=(3,3), stride=1)
     in_x = torch.rand(size=(1,3,256,256)).float()
     in_mask = torch.randint(low=0, high=2, size=in_x.shape).float()
     # in_mask = torch.zeros_like(in_x)

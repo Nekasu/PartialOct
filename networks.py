@@ -3,7 +3,7 @@ from torch import nn
 import torch.nn.functional as F
 
 from blocks import *
-from PartConv import PartialConnv2d
+from PartConv import PartialConv2d
 
 def define_network(net_type, config = None):
     net = None
@@ -22,7 +22,7 @@ class Encoder(nn.Module):
         super(Encoder, self).__init__()
         
         # 替换为自己写的部分卷积
-        self.conv = PartialConnv2d(in_channels=in_dim, out_channels=nf, kernel_size=7, stride=1, padding=3)        
+        self.conv = PartialConv2d(in_channels=in_dim, out_channels=nf, kernel_size=7, stride=1, padding=3)        
         # 注释掉原来的传统卷积
         # self.conv = nn.Conv2d(in_channels=in_dim, out_channels=nf, kernel_size=7, stride=1, padding=3)        
         
@@ -111,7 +111,7 @@ class Decoder(nn.Module):
         self.OctConv3_2 = OctConv(in_channels=nf, out_channels=nf//2, kernel_size=1, stride=1, alpha_in=alpha_in, alpha_out=alpha_out, type="last", freq_ratio=freq_ratio)
        
        # 替换为自己写的部分卷积
-        self.conv4 = PartialConnv2d(in_channels=nf//2, out_channels=out_dim, kernel_size=1)       
+        self.conv4 = PartialConv2d(in_channels=nf//2, out_channels=out_dim, kernel_size=1)       
        
        # 注释原来的传统卷积
         # self.conv4 = nn.Conv2d(in_channels=nf//2, out_channels=out_dim, kernel_size=1)

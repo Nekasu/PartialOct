@@ -7,7 +7,7 @@ from torch import nn
 import torch.nn.functional as F
 from torch.optim import lr_scheduler
 from blocks import *
-from PartConv import PartialConnv2d
+from PartConv import PartialConv2d
 
 def model_save(ckpt_dir, model, optim_E, optim_S, optim_G, epoch, itr=None):
     if not os.path.exists(ckpt_dir):
@@ -86,8 +86,8 @@ class Oct_Conv_aftup(nn.Module):
         hf_out = out_channels - lf_out
 
         # 使用自己写的 PartConv代替传统卷积
-        self.conv_h = PartialConnv2d(in_channels=hf_in, out_channels=hf_out, kernel_size=kernel_size, stride=stride, padding=padding, padding_mode=pad_type)
-        self.conv_l = PartialConnv2d(in_channels=lf_in, out_channels=lf_out, kernel_size=kernel_size, stride=stride, padding=padding, padding_mode=pad_type)
+        self.conv_h = PartialConv2d(in_channels=hf_in, out_channels=hf_out, kernel_size=kernel_size, stride=stride, padding=padding, padding_mode=pad_type)
+        self.conv_l = PartialConv2d(in_channels=lf_in, out_channels=lf_out, kernel_size=kernel_size, stride=stride, padding=padding, padding_mode=pad_type)
         
         # 将传统卷积注释掉
         # self.conv_h = nn.Conv2d(in_channels=hf_in, out_channels=hf_out, kernel_size=kernel_size, stride=stride, padding=padding, padding_mode=pad_type)
@@ -145,9 +145,9 @@ class PartialOctConv(nn.Module):
 
         if type == 'first':
             # 使用自己写的 PartConv代替传统卷积
-            self.convh = PartialConnv2d(in_channels, hf_ch_out, kernel_size=kernel_size,
+            self.convh = PartialConv2d(in_channels, hf_ch_out, kernel_size=kernel_size,
                                     stride=stride, padding=padding, padding_mode=pad_type, bias = False)
-            self.convl = PartialConnv2d(in_channels, lf_ch_out,
+            self.convl = PartialConv2d(in_channels, lf_ch_out,
                                    kernel_size=kernel_size, stride=stride, padding=padding, padding_mode=pad_type, bias=False)
             # 将传统卷积注释掉
             # self.convh = nn.Conv2d(in_channels, hf_ch_out, kernel_size=kernel_size,
@@ -156,15 +156,15 @@ class PartialOctConv(nn.Module):
             #                        kernel_size=kernel_size, stride=stride, padding=padding, padding_mode=pad_type, bias=False)
         elif type == 'last':
             # 使用自己写的 PartConv代替传统卷积
-            self.convh = PartialConnv2d(in_channels=hf_ch_in, out_channels=out_channels, kernel_size=kernel_size, stride=stride, padding=padding, padding_mode=pad_type, bias=False)
-            self.convl = PartialConnv2d(in_channels=lf_ch_in, out_channels=out_channels, kernel_size=kernel_size, stride=stride, padding=padding, padding_mode=pad_type, bias=False)
+            self.convh = PartialConv2d(in_channels=hf_ch_in, out_channels=out_channels, kernel_size=kernel_size, stride=stride, padding=padding, padding_mode=pad_type, bias=False)
+            self.convl = PartialConv2d(in_channels=lf_ch_in, out_channels=out_channels, kernel_size=kernel_size, stride=stride, padding=padding, padding_mode=pad_type, bias=False)
             
             # 将传统卷积注释掉
             # self.convh = nn.Conv2d(hf_ch_in, out_channels, kernel_size=kernel_size, stride=stride, padding=padding, padding_mode=pad_type, bias=False)
             # self.convl = nn.Conv2d(lf_ch_in, out_channels, kernel_size=kernel_size, stride=stride, padding=padding, padding_mode=pad_type, bias=False)
         else:
             # 使用自己写的 PartConv代替传统卷积
-            self.L2L = PartialConnv2d(
+            self.L2L = PartialConv2d(
                 in_channels=lf_ch_in, out_channels=lf_ch_out,
                 kernel_size=kernel_size, stride=stride, padding=padding, groups=math.ceil(alpha_in * groups), padding_mode=pad_type, bias=False
             )
@@ -175,7 +175,7 @@ class PartialOctConv(nn.Module):
             # )
             
             # 使用自己写的 PartConv代替传统卷积
-            self.H2H = PartialConnv2d(
+            self.H2H = PartialConv2d(
                 in_channels=hf_ch_in, out_channels=hf_ch_out,
                 kernel_size=kernel_size, stride=stride, padding=padding, groups=math.ceil(groups - alpha_in * groups), padding_mode=pad_type, bias=False
             )
@@ -189,11 +189,11 @@ class PartialOctConv(nn.Module):
                 self.H2L = None
             else:
                 # 使用自己写的 PartConv代替传统卷积
-                self.L2H = PartialConnv2d(
+                self.L2H = PartialConv2d(
                     in_channels=lf_ch_in, out_channels=hf_ch_out,
                     kernel_size=kernel_size, stride=stride, padding=padding, groups=groups, padding_mode=pad_type, bias=False
                 )
-                self.H2L = PartialConnv2d(
+                self.H2L = PartialConv2d(
                     in_channels=hf_ch_in, out_channels=lf_ch_out,
                     kernel_size=kernel_size, stride=stride, padding=padding, groups=groups, padding_mode=pad_type, bias=False
                 )
@@ -330,7 +330,7 @@ class KernelPredictor(nn.Module):
 
         # 使用自己写的 PartConv代替传统卷积
         padding = (kernel_size - 1) / 2
-        self.spatial = PartialConnv2d(
+        self.spatial = PartialConv2d(
             in_channels=style_channels,
             out_channels= in_channels * out_channels // n_groups,
             kernel_size= kernel_size,
@@ -339,13 +339,13 @@ class KernelPredictor(nn.Module):
         )
         self.pointwise = nn.Sequential(
             nn.AdaptiveAvgPool2d((1, 1)),
-            PartialConnv2d(in_channels= style_channels,
+            PartialConv2d(in_channels= style_channels,
                       put_channels= out_channels * out_channels // n_groups,
                       kernel_size=1)
         )
         self.bias = nn.Sequential(
             nn.AdaptiveAvgPool2d((1, 1)),
-            PartialConnv2d(in_channels= style_channels,
+            PartialConv2d(in_channels= style_channels,
                       put_channels= out_channels,
                       kernel_size= 1)
         )
@@ -402,7 +402,7 @@ class AdaConv2d(nn.Module):
         padding = (kernel_size - 1) / 2
         
         # 使用自己写的 PartConv代替传统卷积
-        self.conv = PartialConnv2d(in_channels=in_channels,
+        self.conv = PartialConv2d(in_channels=in_channels,
                               out_channels=out_channels,
                               kernel_size=(kernel_size, kernel_size),
                               padding=(math.ceil(padding), math.floor(padding)),
