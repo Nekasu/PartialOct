@@ -437,6 +437,78 @@ class AdaConv2d(nn.Module):
         x = F.conv2d(x, w_pointwise, groups=self.n_groups, bias=bias)
         return x
     
+class OctConv(nn.Module):
+    def __init__(self, in_channels, out_channels, kernel_size, stride=1, 
+                 padding=0, groups=1, pad_type='reflect', alpha_in=0.5, alpha_out=0.5, type='normal', freq_ratio = [1, 1]):
+        super(OctConv, self).__init__()
+        self.kernel_size = kernel_size
+        self.stride = stride
+        self.type = type
+        self.alpha_in = alpha_in
+        self.alpha_out = alpha_out
+        self.freq_ratio = freq_ratio
+
+        hf_ch_in = int(in_channels * (1 - self.alpha_in))
+        hf_ch_out = int(out_channels * (1 -self. alpha_out))
+        lf_ch_in = in_channels - hf_ch_in
+        lf_ch_out = out_channels - hf_ch_out
+
+        self.avg_pool = nn.AvgPool2d(kernel_size=2, stride=2)
+        self.upsample = nn.Upsample(scale_factor=2)
+
+        self.is_dw = groups == in_channels
+
+        if type == 'first':
+            self.convh = nn.Conv2d(in_channels, hf_ch_out, kernel_size=kernel_size,
+                                    stride=stride, padding=padding, padding_mode=pad_type, bias = False)
+            self.convl = nn.Conv2d(in_channels, lf_ch_out,
+                                   kernel_size=kernel_size, stride=stride, padding=padding, padding_mode=pad_type, bias=False)
+        elif type == 'last':
+            self.convh = nn.Conv2d(hf_ch_in, out_channels, kernel_size=kernel_size, stride=stride, padding=padding, padding_mode=pad_type, bias=False)
+            self.convl = nn.Conv2d(lf_ch_in, out_channels, kernel_size=kernel_size, stride=stride, padding=padding, padding_mode=pad_type, bias=False)
+        else:
+            self.L2L = nn.Conv2d(
+                lf_ch_in, lf_ch_out,
+                kernel_size=kernel_size, stride=stride, padding=padding, groups=math.ceil(alpha_in * groups), padding_mode=pad_type, bias=False
+            )
+            if self.is_dw:
+                self.L2H = None
+                self.H2L = None
+            else:
+                self.L2H = nn.Conv2d(
+                    lf_ch_in, hf_ch_out,
+                    kernel_size=kernel_size, stride=stride, padding=padding, groups=groups, padding_mode=pad_type, bias=False
+                )
+                self.H2L = nn.Conv2d(
+                    hf_ch_in, lf_ch_out,
+                    kernel_size=kernel_size, stride=stride, padding=padding, groups=groups, padding_mode=pad_type, bias=False
+                )
+            self.H2H = nn.Conv2d(
+                hf_ch_in, hf_ch_out,
+                kernel_size=kernel_size, stride=stride, padding=padding, groups=math.ceil(groups - alpha_in * groups), padding_mode=pad_type, bias=False
+            )
+            
+    def forward(self, x):
+        if self.type == 'first':
+            hf = self.convh(x)
+            lf = self.avg_pool(x)
+            lf = self.convl(lf)
+            return hf, lf
+        elif self.type == 'last':
+            hf, lf = x
+            out_h = self.convh(hf)
+            out_l = self.convl(self.upsample(lf))
+            output = out_h * self.freq_ratio[0] + out_l * self.freq_ratio[1]
+            return output, out_h, out_l
+        else:
+            hf, lf = x
+            if self.is_dw:
+                hf, lf = self.H2H(hf), self.L2L(lf)
+            else:
+                hf, lf = self.H2H(hf) + self.L2H(self.upsample(lf)), self.L2L(lf) + self.H2L(self.avg_pool(hf))
+            return hf, lf
+    
+    
 def main():
     # ---------------------------------------- 测试OctConv, 一共三层, 分别表示初始、中间、最终层 ----------------------------------------
     x = torch.rand(size=(1,3,128,128)).to(device="cuda:1")
