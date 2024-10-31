@@ -110,11 +110,11 @@ class Decoder(nn.Module):
         self.AdaOctConv3_1 = AdaOctConv(in_channels=nf, out_channels=nf, group_div=group_div[2], style_channels=style_channel, kernel_size=style_kernel, stride=1, padding=1, oct_groups=nf, alpha_in=alpha_in, alpha_out=alpha_out, type="normal")
         self.OctConv3_2 = OctConv(in_channels=nf, out_channels=nf//2, kernel_size=1, stride=1, alpha_in=alpha_in, alpha_out=alpha_out, type="last", freq_ratio=freq_ratio)
        
-       # 替换为自己写的部分卷积
-        self.conv4 = PartialConv2d(in_channels=nf//2, out_channels=out_dim, kernel_size=1)       
+       # Decoder中不需要部分卷积
+        # self.conv4 = PartialConv2d(in_channels=nf//2, out_channels=out_dim, kernel_size=1)
        
-       # 注释原来的传统卷积
-        # self.conv4 = nn.Conv2d(in_channels=nf//2, out_channels=out_dim, kernel_size=1)
+        # 使用传统的卷积核 
+        self.conv4 = nn.Conv2d(in_channels=nf//2, out_channels=out_dim, kernel_size=1)
 
     def forward(self, content, style):        
         out = self.AdaOctConv1_1(content, style)
