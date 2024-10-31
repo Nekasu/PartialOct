@@ -37,9 +37,10 @@ class AesFA(nn.Module):
     def forward(self, data):
         self.real_A = data['content_img'].to(self.device)
         self.real_B = data['style_img'].to(self.device)
+        self.real_C = data['style_mask'].to(self.device)
        
-        self.content_A, _, _ = self.netE(self.real_A)
-        _, self.style_B, self.content_B_feat = self.netS(self.real_B)
+        self.content_A, _, _ = self.netE(x = self.real_A)
+        _, self.style_B, self.content_B_feat = self.netS(x = self.real_B, mask = self.real_C)
         self.style_B_feat = self.content_B_feat.copy()
         self.style_B_feat.append(self.style_B)
         

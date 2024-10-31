@@ -40,14 +40,20 @@ def main():
     config = Config()
     mkoutput_dir(config)
 
-    config.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    config.device = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
     print('cuda:', config.device)
     print('Version:', config.file_n)
     
     ########## Data Loader ##########
     train_data = DataSplit(config=config, phase='train')
     train_sampler = RandomSampler(train_data)
-    data_loader_train = torch.utils.data.DataLoader(train_data, batch_size=config.batch_size,  num_workers=config.num_workers, pin_memory=False, sampler=train_sampler)
+    data_loader_train = torch.utils.data.DataLoader(
+        train_data,
+        batch_size=config.batch_size,
+        num_workers=config.num_workers,
+        pin_memory=False,
+        sampler=train_sampler
+    )
     print("Train: ", train_data.__len__(), "images: ", len(data_loader_train), "x", config.batch_size,"(batch size) =", train_data.__len__())
 
     ########## load model ##########
