@@ -105,6 +105,88 @@ class StyleEncoder(nn.Module):
         else:
             return out
 
+class ContentEncoder(nn.Module):
+    def __init__(self, in_dim, nf=64, style_kernel=[3, 3], alpha_in=0.5, alpha_out=0.5):
+        '''
+        在 Encoder 中, 对于内容图像而言, 实际上并不需要分前景与背景, 仅仅区分风格图像的前景与背景即可. 具体来说,
+            1. 假设现有风格图像的前背景分离结果：背景风格信息与前景风格信息
+            2. 利用风格图像的背景风格信息与前景风格信息分别对「整个内容图像」进行风格迁移
+            3. 得到两种不同风格的「完成风格化图像」后, 再根据「原始内容图像」生成掩膜
+            4. 利用内容图像的掩膜对这两种不同的风格图像处理、拼接, 得到最终的结果.
+            5. 为了实现以上想法, 需要有如下步骤
+                1. 为风格图像特别设立一个 Encoder 类, 命名为 StyleEcoder, 其中使用 PartialOctConv 进行卷积
+                2. 将原始的 Encoder 更名为 ContentEncoder, 其中使用普通的 OctConv 进行卷积.
+                    - 即该类
+        '''
+        super(ContentEncoder, self).__init__()
+        
+        self.conv = nn.Conv2d(in_channels=in_dim, out_channels=nf, kernel_size=7, stride=1, padding=3)        
+        
+        self.OctConv1_1 = OctConv(in_channels=nf, out_channels=nf, kernel_size=3, stride=2, padding=1, groups=64, alpha_in=alpha_in, alpha_out=alpha_out, type="first")       
+        self.OctConv1_2 = OctConv(in_channels=nf, out_channels=2*nf, kernel_size=1, alpha_in=alpha_in, alpha_out=alpha_out, type="normal")
+        self.OctConv1_3 = OctConv(in_channels=2*nf, out_channels=2*nf, kernel_size=3, stride=1, padding=1, alpha_in=alpha_in, alpha_out=alpha_out, type="normal")
+        
+        self.OctConv2_1 = OctConv(in_channels=2*nf, out_channels=2*nf, kernel_size=3, stride=2, padding=1, groups=128, alpha_in=alpha_in, alpha_out=alpha_out, type="normal")
+        self.OctConv2_2 = OctConv(in_channels=2*nf, out_channels=4*nf, kernel_size=1, alpha_in=alpha_in, alpha_out=alpha_out, type="normal")
+        self.OctConv2_3 = OctConv(in_channels=4*nf, out_channels=4*nf, kernel_size=3, stride=1, padding=1, alpha_in=alpha_in, alpha_out=alpha_out, type="normal")
+
+        self.pool_h = nn.AdaptiveAvgPool2d((style_kernel[0], style_kernel[0]))
+        self.pool_l = nn.AdaptiveAvgPool2d((style_kernel[1], style_kernel[1]))
+        
+        self.relu = Oct_conv_lreLU()
+
+    def forward(self, x):   
+        enc_feat = []
+        out = self.conv(x)   
+        
+        out = self.OctConv1_1(out)
+        out = self.relu(out)
+        out = self.OctConv1_2(out)
+        out = self.relu(out)
+        out = self.OctConv1_3(out)
+        out = self.relu(out)
+        enc_feat.append(out)
+        
+        out = self.OctConv2_1(out)   
+        out = self.relu(out)
+        out = self.OctConv2_2(out)
+        out = self.relu(out)
+        out = self.OctConv2_3(out)
+        out = self.relu(out)
+        enc_feat.append(out)
+        
+        out_high, out_low = out
+        out_sty_h = self.pool_h(out_high)
+        out_sty_l = self.pool_l(out_low)
+        out_sty = out_sty_h, out_sty_l
+
+        return out, out_sty, enc_feat
+    
+    def forward_test(self, x, cond):
+        out = self.conv(x)   
+        
+        out = self.OctConv1_1(out)
+        out = self.relu(out)
+        out = self.OctConv1_2(out)
+        out = self.relu(out)
+        out = self.OctConv1_3(out)
+        out = self.relu(out)
+        
+        out = self.OctConv2_1(out)   
+        out = self.relu(out)
+        out = self.OctConv2_2(out)
+        out = self.relu(out)
+        out = self.OctConv2_3(out)
+        out = self.relu(out)
+        
+        if cond == 'style':
+            out_high, out_low = out
+            out_sty_h = self.pool_h(out_high)
+            out_sty_l = self.pool_l(out_low)
+            return out_sty_h, out_sty_l
+        else:
+            return out
+
 class Decoder(nn.Module):
     def __init__(self, nf=64, out_dim=3, style_channel=512, style_kernel=[3, 3, 3], alpha_in=0.5, alpha_out=0.5, freq_ratio=[1,1], pad_type='reflect'):
         super(Decoder, self).__init__()
