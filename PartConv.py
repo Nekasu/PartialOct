@@ -24,9 +24,6 @@ class PartialConv2d(nn.Module):
     ):
         super(PartialConv2d, self).__init__()
         ##################### 参数引入 #####################
-        if kernel_size is not Tuple:
-            self.kernel_size = (kernel_size, kernel_size)
-        else:
         self.kernel_size = kernel_size
         # print(f"kernel_size is {kernel_size}")
         self.stride = stride
