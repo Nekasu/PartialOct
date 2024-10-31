@@ -7,10 +7,11 @@ import torch.nn as nn
 from PIL import Image
 from torchvision.transforms import ToTensor, Compose, Resize, Normalize, RandomCrop
 import random
+from torch.utils.data import Dataset
 
 Image.MAX_IMAGE_PIXELS = 1000000000
 
-class DataSplit(nn.Module):
+class DataSplit(Dataset):
     def __init__(self, config, phase='train'):
         super(DataSplit, self).__init__()
 
