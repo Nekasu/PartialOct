@@ -122,10 +122,10 @@ class Oct_conv_up(nn.Upsample): # 不涉及卷积操作, 不用修改
 
 
 ############## Encoder ##############
-class OctConv(nn.Module):
+class PartialOctConv(nn.Module):
     def __init__(self, in_channels, out_channels, kernel_size, stride=1, 
                  padding=0, groups=1, pad_type='reflect', alpha_in=0.5, alpha_out=0.5, type='normal', freq_ratio = [1, 1]):
-        super(OctConv, self).__init__()
+        super(PartialOctConv, self).__init__()
         self.kernel_size = kernel_size
         self.stride = stride
         self.type = type
