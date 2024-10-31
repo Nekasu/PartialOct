@@ -45,9 +45,9 @@ class Encoder(nn.Module):
         
         out, mask = self.OctConv1_1(x=out, mask=mask)
         out = self.relu(out)
-        print(f"after relu, output shape is {out[0].shape}and {out[1].shape}")
-        print(f"after relu, mask shape is {mask[0].shape}and {mask[1].shape}")
-        out, mask = self.OctConv1_2(x=out, mask=mask)
+        # print(f"after relu, output shape is {out[0].shape}and {out[1].shape}")
+        # print(f"after relu, mask shape is {mask[0].shape}and {mask[1].shape}")
+        out, mask = self.PartialOctConv1_2(x=out, mask=mask)
         out = self.relu(out)
         out, mask = self.OctConv1_3(x=out, mask=mask)
         out = self.relu(out)
@@ -223,7 +223,7 @@ class EFDM_loss(nn.Module):
 
         return loss
     
-def main_test_Encoder():
+def main_test_encoder():
     x = torch.rand(size=(1,3,128,128)).to(device="cuda:1")
     # print(x,x.shape)
     mask = torch.randint(low=0, high=2, size=x.shape).float().to(device="cuda:1")
@@ -231,8 +231,20 @@ def main_test_Encoder():
     
     print("creating Encoder........................")
     e = Encoder(in_dim=3, nf=64, style_kernel=[3,3], alpha_in=0.5, alpha_out=0.5).to(device="cuda:1")
+    print("Encoder created sucessfully........................")
     out = e(x=x, mask=mask)
     print(len(out))
+    
+def main_test_Decoder():
+    x = torch.rand(size=(1,3,128,128)).to(device="cuda:1")
+    # print(x,x.shape)
+    mask = torch.randint(low=0, high=2, size=x.shape).float().to(device="cuda:1")
+    # print(mask.shape, mask)
+    
+    config = Config.Config()
+    print("creating Generator........................")
+    g = define_network(net_type='Generator', config=config)
+    
 
 if __name__ == '__main__':
-    main()
+    main_test_encoder()
