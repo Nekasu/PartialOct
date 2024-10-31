@@ -5,6 +5,8 @@ import torch.nn.functional as F
 from blocks import *
 from PartConv import PartialConv2d
 
+from Config import Config
+
 def define_network(net_type, config = None):
     net = None
     alpha_in = config.alpha_in
@@ -34,8 +36,8 @@ class Encoder(nn.Module):
         self.PartialOctConv2_2 = PartialOctConv(in_channels=2*nf, out_channels=4*nf, kernel_size=1, alpha_in=alpha_in, alpha_out=alpha_out, type="normal")
         self.PartialOctConv2_3 = PartialOctConv(in_channels=4*nf, out_channels=4*nf, kernel_size=3, stride=1, padding=1, alpha_in=alpha_in, alpha_out=alpha_out, type="normal")
 
-        self.pool_h = nn.AdaptiveAvgPool2d((style_kernel[0], style_kernel[0]))
-        self.pool_l = nn.AdaptiveAvgPool2d((style_kernel[1], style_kernel[1]))
+        self.pool_h = nn.AdaptiveAvgPool2d(output_size=(style_kernel[0], style_kernel[0]))
+        self.pool_l = nn.AdaptiveAvgPool2d(output_size=(style_kernel[1], style_kernel[1]))
         
         self.relu = Oct_conv_lreLU()
 
@@ -234,17 +236,26 @@ def main_test_encoder():
     print("Encoder created sucessfully........................")
     out = e(x=x, mask=mask)
     print(len(out))
+    print("Encoder works well........................")
     
-def main_test_Decoder():
-    x = torch.rand(size=(1,3,128,128)).to(device="cuda:1")
+def main_test_decoder():
+    content_1 = torch.rand(size=(1,128,64,64)).to(device="cuda:1")
+    content_2 = torch.rand(size=(1,128,32,32)).to(device="cuda:1")
+    content = (content_1, content_2)
     # print(x,x.shape)
-    mask = torch.randint(low=0, high=2, size=x.shape).float().to(device="cuda:1")
+    style_1 = nn.AdaptiveAvgPool2d(output_size=(3,3))(content_1).to(device="cuda:1")
+    style_2 = nn.AdaptiveAvgPool2d(output_size=(3,3))(content_2).to(device="cuda:1")
+    style = (style_1, style_2)
     # print(mask.shape, mask)
     
-    config = Config.Config()
+    config = Config()
     print("creating Generator........................")
-    g = define_network(net_type='Generator', config=config)
+    g = define_network(net_type='Generator', config=config).to(device="cuda:1")
+    print("Decoder created sucessfully........................")
+    out_g = g(content, style)
+    print(len(out_g))
+    print("Decoder works well........................")
     
 
 if __name__ == '__main__':
-    main_test_encoder()
+    main_test_decoder()
