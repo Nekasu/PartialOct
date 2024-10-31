@@ -85,13 +85,13 @@ class Oct_Conv_aftup(nn.Module):
         hf_in = in_channels - lf_in
         hf_out = out_channels - lf_out
 
-        # 使用自己写的 PartConv代替传统卷积
-        self.conv_h = PartialConv2d(in_channels=hf_in, out_channels=hf_out, kernel_size=kernel_size, stride=stride, padding=padding, padding_mode=pad_type)
-        self.conv_l = PartialConv2d(in_channels=lf_in, out_channels=lf_out, kernel_size=kernel_size, stride=stride, padding=padding, padding_mode=pad_type)
+        # 将自己写的 PartConv 注释掉
+        # self.conv_h = PartialConv2d(in_channels=hf_in, out_channels=hf_out, kernel_size=kernel_size, stride=stride, padding=padding, padding_mode=pad_type)
+        # self.conv_l = PartialConv2d(in_channels=lf_in, out_channels=lf_out, kernel_size=kernel_size, stride=stride, padding=padding, padding_mode=pad_type)
         
-        # 将传统卷积注释掉
-        # self.conv_h = nn.Conv2d(in_channels=hf_in, out_channels=hf_out, kernel_size=kernel_size, stride=stride, padding=padding, padding_mode=pad_type)
-        # self.conv_l = nn.Conv2d(in_channels=lf_in, out_channels=lf_out, kernel_size=kernel_size, stride=stride, padding=padding, padding_mode=pad_type)
+        # 使用传统卷积
+        self.conv_h = nn.Conv2d(in_channels=hf_in, out_channels=hf_out, kernel_size=kernel_size, stride=stride, padding=padding, padding_mode=pad_type)
+        self.conv_l = nn.Conv2d(in_channels=lf_in, out_channels=lf_out, kernel_size=kernel_size, stride=stride, padding=padding, padding_mode=pad_type)
     
     def forward(self, x):
         hf, lf = x
@@ -328,47 +328,47 @@ class KernelPredictor(nn.Module):
         self.w_channels = style_channels
         self.kernel_size = kernel_size
 
-        # 使用自己写的 PartConv代替传统卷积
-        padding = (kernel_size - 1) / 2
-        self.spatial = PartialConv2d(
-            in_channels=style_channels,
-            out_channels= in_channels * out_channels // n_groups,
-            kernel_size= kernel_size,
-            padding= (math.ceil(padding), math.ceil(padding)),
-            padding_mode= 'reflect'
-        )
-        self.pointwise = nn.Sequential(
-            nn.AdaptiveAvgPool2d((1, 1)),
-            PartialConv2d(in_channels= style_channels,
-                      put_channels= out_channels * out_channels // n_groups,
-                      kernel_size=1)
-        )
-        self.bias = nn.Sequential(
-            nn.AdaptiveAvgPool2d((1, 1)),
-            PartialConv2d(in_channels= style_channels,
-                      put_channels= out_channels,
-                      kernel_size= 1)
-        )
-        
-        # 将传统卷积注释掉
+        # # Decoder中不需要使用部分卷积
         # padding = (kernel_size - 1) / 2
-        # self.spatial = nn.Conv2d(style_channels,
-        #                          in_channels * out_channels // n_groups,
-        #                          kernel_size=kernel_size,
-        #                          padding=(math.ceil(padding), math.ceil(padding)),
-        #                          padding_mode='reflect')
+        # self.spatial = PartialConv2d(
+        #     in_channels=style_channels,
+        #     out_channels= in_channels * out_channels // n_groups,
+        #     kernel_size= kernel_size,
+        #     padding= (math.ceil(padding), math.ceil(padding)),
+        #     padding_mode= 'reflect'
+        # )
         # self.pointwise = nn.Sequential(
         #     nn.AdaptiveAvgPool2d((1, 1)),
-        #     nn.Conv2d(style_channels,
-        #               out_channels * out_channels // n_groups,
+        #     PartialConv2d(in_channels= style_channels,
+        #               put_channels= out_channels * out_channels // n_groups,
         #               kernel_size=1)
         # )
         # self.bias = nn.Sequential(
         #     nn.AdaptiveAvgPool2d((1, 1)),
-        #     nn.Conv2d(style_channels,
-        #               out_channels,
-        #               kernel_size=1)
+        #     PartialConv2d(in_channels= style_channels,
+        #               put_channels= out_channels,
+        #               kernel_size= 1)
         # )
+        
+        # Decoder中依旧使用传统卷积
+        padding = (kernel_size - 1) / 2
+        self.spatial = nn.Conv2d(style_channels,
+                                 in_channels * out_channels // n_groups,
+                                 kernel_size=kernel_size,
+                                 padding=(math.ceil(padding), math.ceil(padding)),
+                                 padding_mode='reflect')
+        self.pointwise = nn.Sequential(
+            nn.AdaptiveAvgPool2d((1, 1)),
+            nn.Conv2d(style_channels,
+                      out_channels * out_channels // n_groups,
+                      kernel_size=1)
+        )
+        self.bias = nn.Sequential(
+            nn.AdaptiveAvgPool2d((1, 1)),
+            nn.Conv2d(style_channels,
+                      out_channels,
+                      kernel_size=1)
+        )
 
     def forward(self, w):
         # print("--------------------------------------1 w_spatial working--------------------------------------")
