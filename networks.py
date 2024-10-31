@@ -333,6 +333,17 @@ def main_test_styleencoder():
     print(len(out))
     print("StyleEncoder works well........................")
     
+def main_test_contentencoder():
+    x = torch.rand(size=(1,3,128,128)).to(device="cuda:1")
+    # print(x,x.shape)
+    
+    print("creating ContentEncoder........................")
+    e = ContentEncoder(in_dim=3, nf=64, style_kernel=[3,3], alpha_in=0.5, alpha_out=0.5).to(device="cuda:1")
+    print("ContentEncoder created sucessfully........................")
+    out = e(x=x)
+    print(len(out))
+    print("ContentEncoder works well........................")
+    
 def main_test_decoder():
     content_1 = torch.rand(size=(1,128,64,64)).to(device="cuda:1")
     content_2 = torch.rand(size=(1,128,32,32)).to(device="cuda:1")
@@ -353,4 +364,4 @@ def main_test_decoder():
     
 
 if __name__ == '__main__':
-    main_test_styleencoder()
+    main_test_contentencoder()
