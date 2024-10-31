@@ -223,12 +223,13 @@ class EFDM_loss(nn.Module):
 
         return loss
     
-def main():
+def main_test_Encoder():
     x = torch.rand(size=(1,3,128,128)).to(device="cuda:1")
     # print(x,x.shape)
     mask = torch.randint(low=0, high=2, size=x.shape).float().to(device="cuda:1")
     # print(mask.shape, mask)
     
+    print("creating Encoder........................")
     e = Encoder(in_dim=3, nf=64, style_kernel=[3,3], alpha_in=0.5, alpha_out=0.5).to(device="cuda:1")
     out = e(x=x, mask=mask)
     print(len(out))

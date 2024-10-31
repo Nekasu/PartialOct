@@ -339,13 +339,13 @@ class KernelPredictor(nn.Module):
         )
         self.pointwise = nn.Sequential(
             nn.AdaptiveAvgPool2d((1, 1)),
-            nn.PartialConnv2d(in_channels= style_channels,
+            PartialConnv2d(in_channels= style_channels,
                       put_channels= out_channels * out_channels // n_groups,
                       kernel_size=1)
         )
         self.bias = nn.Sequential(
             nn.AdaptiveAvgPool2d((1, 1)),
-            nn.PartialConnv2d(in_channels= style_channels,
+            PartialConnv2d(in_channels= style_channels,
                       put_channels= out_channels,
                       kernel_size= 1)
         )
@@ -371,6 +371,8 @@ class KernelPredictor(nn.Module):
         # )
 
     def forward(self, w):
+        # print("--------------------------------------1 w_spatial working--------------------------------------")
+        # print(self.spatial)
         w_spatial = self.spatial(w)
         w_spatial = w_spatial.reshape(len(w),
                                       self.out_channels,
@@ -382,8 +384,12 @@ class KernelPredictor(nn.Module):
                                           self.out_channels,
                                           self.out_channels // self.n_groups,
                                           1, 1)
+        # print("--------------------------------------2 w_pointwise done--------------------------------------")
+
+        # print("--------------------------------------3 bias working--------------------------------------")
         bias = self.bias(w)
         bias = bias.reshape(len(w), self.out_channels)
+        # print("--------------------------------------3 bias done--------------------------------------")
         return w_spatial, w_pointwise, bias
 
 class AdaConv2d(nn.Module):

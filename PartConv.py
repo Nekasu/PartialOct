@@ -12,7 +12,7 @@ class PartialConnv2d(nn.Module):
         self,
         in_channels: int = 1,
         out_channels: int = 1,
-        kernel_size: Tuple[int, int] = (3,3),
+        kernel_size: int = 3,
         stride: Union[int, Tuple[int, int]] = 1,
         padding: Union[int, Tuple[int, int]] = 1,
         dilation: Union[int, Tuple[int, int]] = 1,
@@ -27,7 +27,7 @@ class PartialConnv2d(nn.Module):
         if kernel_size is not Tuple:
             self.kernel_size = (kernel_size, kernel_size)
         else:
-            self.kernel_size = kernel_size
+        self.kernel_size = kernel_size
         # print(f"kernel_size is {kernel_size}")
         self.stride = stride
         self.bias: bool = bias
@@ -74,7 +74,7 @@ class PartialConnv2d(nn.Module):
             
             # print(f"sum mask shape: {self.sum_mask.shape}")
             
-            self.sum_I: int = self.kernel_size[0] * self.kernel_size[-1] * 1# sum(I)是一个固定值, 从数值上与卷积核的窗口大小相等
+            self.sum_I: int = self.kernel_size * self.kernel_size * 1# sum(I)是一个固定值, 从数值上与卷积核的窗口大小相等
             if (self.out.shape == self.sum_mask.shape):
                 self.ratio: torch.Tensor = torch.where(
                     self.sum_mask<=0, 
