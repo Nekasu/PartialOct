@@ -37,14 +37,24 @@ class DataSplit(Dataset):
             self.mask_images = self.get_data(mask_dir)
             
             assert len(self.style_images) == len(self.mask_images)
+            self.style_and_mask = list(zip(self.style_images, self.mask_images))
             
             if len(self.images) < len(self.style_images):
-                self.style_images = random.sample(self.style_images, len(self.images))
+                self.style_and_mask = random.sample(self.style_and_mask, len(self.images))
+                self.style_images, self.mask_images = zip(*self.style_and_mask)
+                # self.style_images = random.sample(self.style_images, len(self.images))
             elif len(self.images) > len(self.style_images):
                 ratio = len(self.images) // len(self.style_images)
                 bias = len(self.images) - ratio * len(self.style_images)
+                
                 self.style_images = self.style_images * ratio
-                self.style_images += random.sample(self.style_images, bias)
+                self.mask_images = self.mask_images * ratio
+                
+                self.style_and_mask = random.sample(self.style_and_mask, bias)
+                self.style_images_bias, self.mask_images_bias = zip(*self.style_and_mask)
+                
+                self.style_images += self.style_images_bias
+                self.mask_images += self.mask_images_bias
                 
             assert len(self.images) == len(self.style_images)
             
@@ -89,6 +99,70 @@ def test_get_data():
     img = ds.get_data(img_dir=img_dir)
     
     print(img[0:30])
+
+def test_init():
+    ### 类的实例化
+    config = Config()
+    ds = DataSplit(config=config, phase='train')
+    
+    ### 获取content_images数组
+    content_img_dir = '/mnt/sda/Dataset/Detection/COCO/train2017'
+    content_img_dir = Path(content_img_dir)
+    content_images = ds.get_data(img_dir=content_img_dir)
+    
+    ### 获取 style_images数组
+    style_img_dir = '/mnt/sda/Dataset/Detection/WikiArt/wikiart/train'
+    style_img_dir = Path(style_img_dir)
+    style_images = ds.get_data(img_dir=style_img_dir)  
+    
+    ### 打印content_images与sytle_images的长度
+    print(f"len of content images: {len(content_images)}\n, len of origin style images: {len(style_images)}\n")
+    
+    ### 获取mask_images数组
+    # 由于现在还没有mask_images的数据, 所以先创建一个mask_images数组模拟一下
+    mask_images = []
+    for i in range(len(style_images)):
+        name_list = style_images[i].split('.')
+        name = name_list[0:-1]
+        name = ''.join(name)
+        appendix = name_list[-1]
+        # print(name, appendix)
+        mask_images.append(name+'_mask'+'.'+appendix)
+    # print(mask_images[0:30],)
+    ####### 模拟完成 #########
+    
+    ### 测试 __init__函数中的逻辑是否正确
+    assert len(style_images) == len(mask_images)
+    style_and_mask = list(zip(style_images, mask_images))
+    
+    if len(content_images) < len(style_images):
+        style_and_mask = random.sample(style_and_mask, len(content_images))
+        style_images, mask_images = zip(*style_and_mask)
+        # style_images = random.sample(style_images, len(images))
+    elif len(content_images) > len(style_images):
+        ratio = len(content_images) // len(style_images)
+        bias = len(content_images) - ratio * len(style_images)
+        print(ratio, bias)
+        
+        style_images = style_images * ratio
+        print(len(style_images))
+        mask_images = mask_images * ratio
+        
+        style_and_mask = random.sample(style_and_mask, bias)
+        style_images_bias, mask_images_bias = zip(*style_and_mask)
+        
+        style_images += style_images_bias
+        mask_images += mask_images_bias
+    
+    style_10 = '\n'.join(style_images[0:10])
+    mask_10 = '\n'.join(mask_images[0:10])
+    
+    print(f"len of content image is {len(content_images)},\n len of style image is {len(style_images)},\n len of mask image is {len(mask_images)}")
+    # print(f"1~10 image name of style image is {style_10}\n")
+    # print(f"1~10 image name of mask image is {mask_10}")
+        
+    assert len(content_images) == len(style_images)
+    
     
 if __name__ == '__main__':
-    test_get_data()
+    test_init()
