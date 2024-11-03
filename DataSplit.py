@@ -27,9 +27,15 @@ class DataSplit(Dataset):
             if config.data_num < len(self.images):
                 self.images = random.sample(self.images, config.data_num)
 
-            # Style image data
+            # Style image data and Mask data
             sty_dir = Path(config.style_dir+'/train')
             self.style_images = self.get_data(sty_dir)
+            
+            mask_dir = Path(config.mask_dir+'/train')
+            self.mask_images = self.get_data(mask_dir)
+            
+            assert len(self.style_images) == len(self.mask_images)
+            
             if len(self.images) < len(self.style_images):
                 self.style_images = random.sample(self.style_images, len(self.images))
             elif len(self.images) > len(self.style_images):
@@ -37,6 +43,7 @@ class DataSplit(Dataset):
                 bias = len(self.images) - ratio * len(self.style_images)
                 self.style_images = self.style_images * ratio
                 self.style_images += random.sample(self.style_images, bias)
+                
             assert len(self.images) == len(self.style_images)
             
         elif phase == 'test':
