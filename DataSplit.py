@@ -87,8 +87,12 @@ class DataSplit(Dataset):
         sty_img = self.style_images[index]
         sty_img = Image.open(sty_img).convert('RGB')
         sty_img = self.transform(sty_img)
+        
+        msk_img = self.mask_images[index]
+        msk_img = Image.open(msk_img).convert('RGB')
+        msk_img = self.transform(msk_img)
 
-        return {'content_img': cont_img, 'style_img': sty_img}
+        return {'content_img': cont_img, 'style_img': sty_img, 'mask_img': msk_img}
     
 def test_get_data():
     img_dir = '/mnt/sda/Dataset/Detection/WikiArt/wikiart/train'
