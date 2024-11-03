@@ -9,6 +9,8 @@ from torchvision.transforms import ToTensor, Compose, Resize, Normalize, RandomC
 import random
 from torch.utils.data import Dataset
 
+from Config import Config
+
 Image.MAX_IMAGE_PIXELS = 1000000000
 
 class DataSplit(Dataset):
@@ -77,3 +79,16 @@ class DataSplit(Dataset):
         sty_img = self.transform(sty_img)
 
         return {'content_img': cont_img, 'style_img': sty_img}
+    
+def test_get_data():
+    img_dir = '/mnt/sda/Dataset/Detection/WikiArt/wikiart/train'
+    img_dir = Path(img_dir)
+    config = Config()
+    ds = DataSplit(config=config, phase='train')
+    
+    img = ds.get_data(img_dir=img_dir)
+    
+    print(img[0:30])
+    
+if __name__ == '__main__':
+    test_get_data()
