@@ -4,8 +4,9 @@ class Config:
 
     data_num = 60000        # Maximum # of training data
 
-    content_dir = './COCO'
-    style_dir = './WikiArt'
+    content_dir = '/mnt/sda/Dataset/Detection/COCO/train2017'
+    style_dir = '/mnt/sda/Dataset/Detection/WikiArt/wikiart/train'
+    mask_dir = './mask_dir'
     
     file_n = 'main'
     log_dir = './log/' + file_n
