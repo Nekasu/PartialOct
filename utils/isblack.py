@@ -1,6 +1,6 @@
 import torch
-from . import mask_tensor
-from . import use_metric3d
+import mask_tensor
+import use_metric3d
 
 def isblack(depth_tensor: torch.Tensor) -> bool:
     """

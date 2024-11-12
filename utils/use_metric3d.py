@@ -1,4 +1,4 @@
-from . import engine
+import engine
 import torch
 import cv2
 
