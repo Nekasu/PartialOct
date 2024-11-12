@@ -43,17 +43,6 @@ def main():
             l.append(index+1)
     for i, j in enumerate(l):
         print(f"处理第 {j}个图像时出现错误")        
-    
-    
-    
-
-def get_data(img_dir):
-    file_type = ['*.jpg', '*.png', '*.jpeg', '*.tif']
-    imgs = []
-    for ft in file_type:
-        imgs += sorted(img_dir.glob(ft))
-    images = sorted(imgs)
-    return images
 
 def do_crop(random_cropper, image_path, mask_path):
     # 读入风格图像
