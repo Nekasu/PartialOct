@@ -5,10 +5,10 @@ class Config:
     data_num = 60000        # Maximum # of training data
 
     content_dir = '/mnt/sda/Dataset/Detection/COCO/train2017'
-    style_dir = '/mnt/sda/Dataset/Detection/WikiArt/wikiart/train'
-    mask_dir = './mask_dir'
+    style_dir = '/mnt/sda/Dataset/style_image/dunhuang_style/crop_256/origin'
+    mask_dir = '/mnt/sda/Dataset/style_image/dunhuang_style/crop_256/mask'
     
-    file_n = 'main'
+    file_n = 'dunhuang'
     log_dir = './log/' + file_n
     ckpt_dir = './ckpt/' + file_n
     img_dir = './Generated_images/' + file_n
