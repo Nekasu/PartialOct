@@ -24,20 +24,21 @@ class DataSplit(Dataset):
 
         if phase == 'train':
             # Content image data
-            img_dir = Path(config.content_dir+'/train')
+            img_dir = Path(config.content_dir)
             self.images = self.get_data(img_dir)
             if config.data_num < len(self.images):
                 self.images = random.sample(self.images, config.data_num)
 
             # Style image data and Mask data
-            sty_dir = Path(config.style_dir+'/train')
+            sty_dir = Path(config.style_dir)
             self.style_images = self.get_data(sty_dir)
             
-            mask_dir = Path(config.mask_dir+'/train')
+            mask_dir = Path(config.mask_dir)
             self.mask_images = self.get_data(mask_dir)
             
             assert len(self.style_images) == len(self.mask_images)
             self.style_and_mask = list(zip(self.style_images, self.mask_images))
+            # print(self.style_and_mask)
             
             if len(self.images) < len(self.style_images):
                 self.style_and_mask = random.sample(self.style_and_mask, len(self.images))
@@ -46,16 +47,23 @@ class DataSplit(Dataset):
             elif len(self.images) > len(self.style_images):
                 ratio = len(self.images) // len(self.style_images)
                 bias = len(self.images) - ratio * len(self.style_images)
+                # print(f'content image: {len(self.images)}, style image: {len(self.style_images)}') print(f'ratio is {ratio}', bias is {bias})
+                # print("before unzip---------------------------------")
+                # print(self.style_and_mask)
                 
                 self.style_images = self.style_images * ratio
                 self.mask_images = self.mask_images * ratio
-                
-                self.style_and_mask = random.sample(self.style_and_mask, bias)
-                self.style_images_bias, self.mask_images_bias = zip(*self.style_and_mask)
-                
-                self.style_images += self.style_images_bias
-                self.mask_images += self.mask_images_bias
-                
+                # print(f"bias is {bias}")
+                if bias > 0 : # 防止内容图像正好是风格图像的整数倍时, 无法进行unzip操作
+                    self.style_and_mask = random.sample(self.style_and_mask, bias)
+                    # print("after unzip---------------------------------")
+                    # print(self.style_and_mask)
+                    
+                    self.style_images_bias, self.mask_images_bias = zip(*self.style_and_mask)
+                    
+                    self.style_images += self.style_images_bias
+                    self.mask_images += self.mask_images_bias
+
             assert len(self.images) == len(self.style_images)
             
         elif phase == 'test':

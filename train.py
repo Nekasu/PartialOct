@@ -42,10 +42,10 @@ def main(write_file):
 
     config.device = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
     print('cuda:', config.device)
-    write_file.write('cuda:', config.device)
+    write_file.write(f"'cuda:', {config.device}")
 
     print('Version:', config.file_n)
-    write_file.write('Version:', config.file_n)
+    write_file.write(f"'Version:', {config.file_n}")
     
     ########## Data Loader ##########
     train_data = DataSplit(config=config, phase='train')
@@ -58,7 +58,7 @@ def main(write_file):
         sampler=train_sampler
     )
     print("Train: ", train_data.__len__(), "images: ", len(data_loader_train), "x", config.batch_size,"(batch size) =", train_data.__len__())
-    write_file.write("Train: ", train_data.__len__(), "images: ", len(data_loader_train), "x", config.batch_size,"(batch size) =", train_data.__len__())
+    write_file.write(f'"Train: ", {train_data.__len__()}, "images: ", {len(data_loader_train)}, "x", {config.batch_size},"(batch size) =", {train_data.__len__()}')
 
     ########## load model ##########
     model = AesFA(config)
@@ -67,9 +67,9 @@ def main(write_file):
     # # of parameter
     param_num, net_params = get_n_params(model)
     print("# of parameter:", param_num)
-    write_file.write("# of parameter:", param_num)
+    write_file.write(f'"# of parameter:", {param_num}')
     print("parameters of networks:", net_params)
-    write_file.write("parameters of networks:", net_params)
+    write_file.write(f'"parameters of networks:", {net_params}')
 
     ########## load saved model - to continue previous learning ##########
     if config.train_continue == 'on':
@@ -78,7 +78,7 @@ def main(write_file):
                            optim_S=model.optimizer_S,
                            optim_G=model.optimizer_G)
         print(epoch_start, "th epoch ", tot_itr, "th iteration model load")
-        write_file.write(epoch_start, "th epoch ", tot_itr, "th iteration model load")
+        write_file.write(f'{epoch_start}, "th epoch ", {tot_itr}, "th iteration model load"')
     else:
         epoch_start = 0
         tot_itr = 0
@@ -121,7 +121,7 @@ def main(write_file):
             if (tot_itr + 1) % 10000 == 0:
                 model_save(ckpt_dir=config.ckpt_dir, model=model, optim_E=model.optimizer_E, optim_S=model.optimizer_S, optim_G=model.optimizer_G, epoch=epoch, itr=tot_itr)
                 print(tot_itr+1, "th iteration model save")
-                write_file.write(tot_itr+1, "th iteration model save")
+                write_file.write(f'{tot_itr+1}, "th iteration model save"')
 
         update_learning_rate(model.E_scheduler, model.optimizer_E)
         update_learning_rate(model.S_scheduler, model.optimizer_S)
@@ -131,5 +131,6 @@ if __name__ == '__main__':
     config = Config()
     file_path = '/mnt/sda/zxt/3_code_area/code_develop/PartialConv_AesFA/log/' + config.file_n + 'log.txt'
     print(file_path)
-    with open(path=file_path, mod='a') as f:
+    with open(file=file_path, mode='a') as f:
         main(write_file=f)
+        f.write('------------------------------------------------------------------------------')
