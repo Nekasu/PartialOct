@@ -47,13 +47,20 @@ class AesFA(nn.Module):
         self.trs_AtoB, self.trs_AtoB_high, self.trs_AtoB_low = self.netG(self.content_A, self.style_B)
 
         self.trs_AtoB_content, _, self.content_trs_AtoB_feat = self.netE(self.trs_AtoB)
-        _, self.trs_AtoB_style, self.style_trs_AtoB_feat = self.netS(self.trs_AtoB)
+        trs_AtoB_mask = torch.ones_like(self.trs_AtoB)
+        _, self.trs_AtoB_style, self.style_trs_AtoB_feat = self.netS(x=self.trs_AtoB, mask=trs_AtoB_mask)
         self.style_trs_AtoB_feat.append(self.trs_AtoB_style)
 
         
     def calc_G_loss(self):
+        # 感知损失的计算, 问题可能就在这行代码中间
+            # 检查是否是输入数据有误
+        print(f"输入数据1 self.real_A 是否为 nan : {torch.isnan(self.real_A).any()}")
+        print(f"输入数据2 self.real_B 是否为 nan : {torch.isnan(self.real_B).any()}")
+        print(f"输入数据3 self.trs_AtoB 是否为 nan : {torch.isnan(self.trs_AtoB).any()}")
         self.G_percept, self.neg_idx = self.vgg_loss.perceptual_loss(self.real_A, self.real_B, self.trs_AtoB)
         self.G_percept *= self.lambda_percept
+        # 感知损失的计算, 问题可能就在这行代码中间
         
         self.G_contrast = self.efdm_loss(self.content_B_feat, self.style_B_feat, self.content_trs_AtoB_feat, self.style_trs_AtoB_feat, self.neg_idx) * self.lambda_const_style
 

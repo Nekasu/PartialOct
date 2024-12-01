@@ -1,4 +1,4 @@
-'cuda:', cuda:1
+'cuda:', cuda:0
 'Version:', dunhuang
 "Train: ", 60000, "images: ", 7500, "x", 8,"(batch size) =", 60000
 "# of parameter:", 6726511

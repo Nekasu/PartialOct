@@ -40,12 +40,12 @@ def main(write_file):
     config = Config()
     mkoutput_dir(config)
 
-    config.device = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
+    config.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     print('cuda:', config.device)
-    write_file.write(f"'cuda:', {config.device}")
+    write_file.write(f"'cuda:', {config.device}\n")
 
     print('Version:', config.file_n)
-    write_file.write(f"'Version:', {config.file_n}")
+    write_file.write(f"'Version:', {config.file_n}\n")
     
     ########## Data Loader ##########
     train_data = DataSplit(config=config, phase='train')
@@ -58,7 +58,7 @@ def main(write_file):
         sampler=train_sampler
     )
     print("Train: ", train_data.__len__(), "images: ", len(data_loader_train), "x", config.batch_size,"(batch size) =", train_data.__len__())
-    write_file.write(f'"Train: ", {train_data.__len__()}, "images: ", {len(data_loader_train)}, "x", {config.batch_size},"(batch size) =", {train_data.__len__()}')
+    write_file.write(f'"Train: ", {train_data.__len__()}, "images: ", {len(data_loader_train)}, "x", {config.batch_size},"(batch size) =", {train_data.__len__()}\n')
 
     ########## load model ##########
     model = AesFA(config)
@@ -67,9 +67,9 @@ def main(write_file):
     # # of parameter
     param_num, net_params = get_n_params(model)
     print("# of parameter:", param_num)
-    write_file.write(f'"# of parameter:", {param_num}')
+    write_file.write(f'"# of parameter:", {param_num}\n')
     print("parameters of networks:", net_params)
-    write_file.write(f'"parameters of networks:", {net_params}')
+    write_file.write(f'"parameters of networks:", {net_params}\n')
 
     ########## load saved model - to continue previous learning ##########
     if config.train_continue == 'on':
@@ -78,7 +78,7 @@ def main(write_file):
                            optim_S=model.optimizer_S,
                            optim_G=model.optimizer_G)
         print(epoch_start, "th epoch ", tot_itr, "th iteration model load")
-        write_file.write(f'{epoch_start}, "th epoch ", {tot_itr}, "th iteration model load"')
+        write_file.write(f'{epoch_start}, "th epoch ", {tot_itr}, "th iteration model load"\n')
     else:
         epoch_start = 0
         tot_itr = 0
@@ -93,27 +93,50 @@ def main(write_file):
         epoch += 1
         
         for i, data in enumerate(data_loader_train):
+            # data 是一个存放数据的字典, 其中具有三个键值对, 三个键分别为 content_img, style_img, mask_img
+
+            # print(f'cotent_image is nan test: {torch.isnan(data["content_img"]).any()}')
+            # print(f'cotent_image is inf test: {torch.isinf(data["content_img"]).any()}')
+
+            # print(f'style_image is nan test: {torch.isnan(data["style_img"]).any()}')
+            # print(f'style_image is inf test: {torch.isinf(data["style_img"]).any()}')
+
+            # print(f'mask_image is nan test: {torch.isnan(data["mask_img"]).any()}')
+            # print(f'mask_image is inf test: {torch.isinf(data["mask_img"]).any()}')
+            # print(f'掩膜图像：{data["mask_img"]}')
             tot_itr += 1
+            # breakpoint()
             train_dict = model.train_step(data)
+            # breakpoint()
 
             real_A = im_convert(data['content_img'])
             real_B = im_convert(train_dict['style_img'])
             fake_B = im_convert(train_dict['fake_AtoB'])
             trs_high = im_convert(train_dict['fake_AtoB_high'])
             trs_low = im_convert(train_dict['fake_AtoB_low'])
-
+            # ------------------------------问题在这之间 ------------------------------
             ## Tensorboard ##
             # tensorboard - loss
             train_writer.add_scalar('Loss_G', train_dict['G_loss'], tot_itr)
-            train_writer.add_scalar('Loss_G_Percept', train_dict['G_Percept'], tot_itr)
-            train_writer.add_scalar('Loss_G_Contrast', train_dict['G_Contrast'], tot_itr)
+            # print(f"train_dict['G_loss'] is nan test: {torch.isnan(train_dict['G_loss']).any()}")
+            # print(f"train_dict['G_loss'] is inf test: {torch.isinf(train_dict['G_loss']).any()}")
 
+            train_writer.add_scalar('Loss_G_Percept', train_dict['G_Percept'], tot_itr)
+            # print(f"train_dict['G_Percept'] is nan test: {torch.isnan(train_dict['G_Percept']).any()}")
+            # print(f"train_dict['G_Percept'] is inf test: {torch.isinf(train_dict['G_Percept']).any()}")
+            
+            train_writer.add_scalar('Loss_G_Contrast', train_dict['G_Contrast'], tot_itr)
+            # print(f"train_dict['G_Contrast'] is nan test: {torch.isnan(train_dict['G_Contrast']).any()}")
+            # print(f"train_dict['G_Contrast'] is inf test: {torch.isinf(train_dict['G_Contrast']).any()}")
+            # breakpoint()
+            
             # tensorboard - images
             train_writer.add_image('Content_Image_A', real_A, tot_itr, dataformats='NHWC')
             train_writer.add_image('Style_Image_B', real_B, tot_itr, dataformats='NHWC')
             train_writer.add_image('Generated_Image_AtoB', fake_B, tot_itr, dataformats='NHWC')
             train_writer.add_image('Translation_AtoB_high', trs_high, tot_itr, dataformats='NHWC')
             train_writer.add_image('Translation_AtoB_low', trs_low, tot_itr, dataformats='NHWC')
+            # ------------------------------问题在这之间 ------------------------------
 
             print("Tot_itrs: %d/%d | Epoch: %d | itr: %d/%d | Loss_G: %.5f"%(tot_itr+1, config.n_iter, epoch+1, (i+1), len(data_loader_train), train_dict['G_loss']))
             write_file.write("Tot_itrs: %d/%d | Epoch: %d | itr: %d/%d | Loss_G: %.5f"%(tot_itr+1, config.n_iter, epoch+1, (i+1), len(data_loader_train), train_dict['G_loss']))
@@ -129,8 +152,7 @@ def main(write_file):
 
 if __name__ == '__main__':
     config = Config()
-    file_path = '/mnt/sda/zxt/3_code_area/code_develop/PartialConv_AesFA/log/' + config.file_n + 'log.txt'
-    print(file_path)
-    with open(file=file_path, mode='a') as f:
+    print(config.log_file_path)
+    with open(file=config.log_file_path, mode='w') as f:
         main(write_file=f)
         f.write('------------------------------------------------------------------------------')
