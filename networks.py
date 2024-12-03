@@ -49,6 +49,10 @@ class StyleEncoder(nn.Module):
         self.PartialOctConv2_2 = PartialOctConv(in_channels=2*nf, out_channels=4*nf, kernel_size=1, alpha_in=alpha_in, alpha_out=alpha_out, type="normal")
         self.PartialOctConv2_3 = PartialOctConv(in_channels=4*nf, out_channels=4*nf, kernel_size=3, stride=1, padding=1, alpha_in=alpha_in, alpha_out=alpha_out, type="normal")
 
+        self.PartialOctConv3_1 = PartialOctConv(in_channels=4*nf, out_channels=4*nf, kernel_size=3, stride=2, padding=1, groups=128, alpha_in=alpha_in, alpha_out=alpha_out, type="normal")
+        self.PartialOctConv3_2 = PartialOctConv(in_channels=4*nf, out_channels=4*nf, kernel_size=1, alpha_in=alpha_in, alpha_out=alpha_out, type="normal")
+        self.PartialOctConv3_3 = PartialOctConv(in_channels=4*nf, out_channels=4*nf, kernel_size=3, stride=1, padding=1, alpha_in=alpha_in, alpha_out=alpha_out, type="normal")
+
         self.pool_h = nn.AdaptiveAvgPool2d(output_size=(style_kernel[0], style_kernel[0]))
         self.pool_l = nn.AdaptiveAvgPool2d(output_size=(style_kernel[1], style_kernel[1]))
         
@@ -56,32 +60,46 @@ class StyleEncoder(nn.Module):
 
     def forward(self, x, mask):   
         enc_feat = []
-        out, mask = self.conv(in_x=x, in_mask=mask)
+        out, mask = self.conv(in_x=x, in_mask=mask) # o1
         
-        out, mask = self.PartialOctConv1_1(x=out, mask=mask)
-        out = self.relu(out)
+        #################### Encoder中的第一层 ####################
+        out, mask = self.PartialOctConv1_1(x=out, mask=mask) # o2
+        out = self.relu(out) # o3
         # print(f"after relu, output shape is {out[0].shape}and {out[1].shape}")
         # print(f"after relu, mask shape is {mask[0].shape}and {mask[1].shape}")
-        out, mask = self.PartialOctConv1_2(x=out, mask=mask)
-        out = self.relu(out)
-        out, mask = self.PartialOctConv1_3(x=out, mask=mask)
-        out = self.relu(out)
+        out, mask = self.PartialOctConv1_2(x=out, mask=mask) # o4
+        out = self.relu(out) # o5
+        out, mask = self.PartialOctConv1_3(x=out, mask=mask) # o6
+        out = self.relu(out) # o7
+        enc_feat.append(out) 
+        ############################################################
+
+        #################### Encoder中的第二层 ####################
+        out, mask = self.PartialOctConv2_1(x=out, mask=mask) # o8
+        out = self.relu(out) # o9
+        out, mask = self.PartialOctConv2_2(x=out, mask=mask) # o10
+        out = self.relu(out) # o11
+        out, mask = self.PartialOctConv2_3(x=out, mask=mask) # o12
+        out = self.relu(out) # o13
         enc_feat.append(out)
+        ############################################################
         
-        out, mask = self.PartialOctConv2_1(x=out, mask=mask)
-        out = self.relu(out)
-        out, mask = self.PartialOctConv2_2(x=out, mask=mask)
-        out = self.relu(out)
-        out, mask = self.PartialOctConv2_3(x=out, mask=mask)
-        out = self.relu(out)
+        #################### Encoder中的第三层 ####################
+        out, mask = self.PartialOctConv3_1(x=out, mask=mask) # o14
+        out = self.relu(out) # o15
+        out, mask = self.PartialOctConv3_2(x=out, mask=mask) # o16
+        out = self.relu(out) # o17
+        out, mask = self.PartialOctConv3_3(x=out, mask=mask) # o18
+        out = self.relu(out) # o19
         enc_feat.append(out)
-        
+        ############################################################
+
         out_high, out_low = out
         out_sty_h = self.pool_h(out_high)
         out_sty_l = self.pool_l(out_low)
         out_sty = out_sty_h, out_sty_l
 
-        return out, out_sty, enc_feat
+        return out, out_sty, enc_feat   # o19, downsampled o19, [o13,o19]
     
     def forward_test(self, x, cond):
         out, mask = self.conv(x=x, mask=mask)
@@ -132,6 +150,10 @@ class ContentEncoder(nn.Module):
         self.OctConv2_2 = OctConv(in_channels=2*nf, out_channels=4*nf, kernel_size=1, alpha_in=alpha_in, alpha_out=alpha_out, type="normal")
         self.OctConv2_3 = OctConv(in_channels=4*nf, out_channels=4*nf, kernel_size=3, stride=1, padding=1, alpha_in=alpha_in, alpha_out=alpha_out, type="normal")
 
+        self.OctConv3_1 = OctConv(in_channels=4*nf, out_channels=4*nf, kernel_size=3, stride=2, padding=1, groups=128, alpha_in=alpha_in, alpha_out=alpha_out, type="normal")
+        self.OctConv3_2 = OctConv(in_channels=4*nf, out_channels=4*nf, kernel_size=1, alpha_in=alpha_in, alpha_out=alpha_out, type="normal")
+        self.OctConv3_3 = OctConv(in_channels=4*nf, out_channels=4*nf, kernel_size=3, stride=1, padding=1, alpha_in=alpha_in, alpha_out=alpha_out, type="normal")
+
         self.pool_h = nn.AdaptiveAvgPool2d((style_kernel[0], style_kernel[0]))
         self.pool_l = nn.AdaptiveAvgPool2d((style_kernel[1], style_kernel[1]))
         
@@ -146,23 +168,30 @@ class ContentEncoder(nn.Module):
         out = self.OctConv1_2(out)
         out = self.relu(out)
         out = self.OctConv1_3(out)
-        out = self.relu(out)
-        enc_feat.append(out)
+        out = self.relu(out) # o7
         
         out = self.OctConv2_1(out)   
         out = self.relu(out)
         out = self.OctConv2_2(out)
         out = self.relu(out)
         out = self.OctConv2_3(out)
-        out = self.relu(out)
-        enc_feat.append(out)
+        out = self.relu(out)    # o13
+        enc_feat.append(out)    # [o13]
         
+        out = self.OctConv3_1(out)
+        out = self.relu(out)
+        out = self.OctConv3_2(out)
+        out = self.relu(out)
+        out = self.OctConv3_3(out)
+        out = self.relu(out)    # o19
+        enc_feat.append(out)    # [o13, o19]
+
         out_high, out_low = out
         out_sty_h = self.pool_h(out_high)
         out_sty_l = self.pool_l(out_low)
-        out_sty = out_sty_h, out_sty_l
+        out_sty = out_sty_h, out_sty_l # downsampled o19
 
-        return out, out_sty, enc_feat
+        return out, out_sty, enc_feat # o19, downsampled o19, [o13,o19]
     
     def forward_test(self, x, cond):
         out = self.conv(x)   
