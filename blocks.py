@@ -268,7 +268,9 @@ class AdaOctConv(nn.Module):
         kernel_size_h = kernel_size[0]
         kernel_size_l = kernel_size[1]
         kernel_size_A = kernel_size[2]
-
+        
+        # print(f'in channels is {in_channels}')
+        # print(h_in)
         self.kernelPredictor_h = KernelPredictor(in_channels=h_in,
                                               out_channels=h_in,
                                               n_groups=n_groups_h,
@@ -293,6 +295,7 @@ class AdaOctConv(nn.Module):
     def forward(self, content, style, cond='train'):
         c_hf, c_lf = content
         s_hf, s_lf = style
+        # print(f's_hf shape: {s_hf.shape}')
         h_w_spatial, h_w_pointwise, h_bias = self.kernelPredictor_h(s_hf)
         l_w_spatial, l_w_pointwise, l_bias = self.kernelPredictor_l(s_lf)
         

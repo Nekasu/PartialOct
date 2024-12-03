@@ -42,21 +42,23 @@ class AesFA(nn.Module):
        ##################################################################################
        
        ################################### 使用编码器 ###################################
+        # print("内容编码器编码内容图像")
         self.content_A, _, _ = self.netE(x = self.real_A) # use Content Encoder
-        print('测试ContentEncoder的输出是否为nan：')
-        for i, t in enumerate(self.content_A):
-            for tsr in t:
-                print(torch.isnan(tsr).any())
+        # print('测试ContentEncoder的输出是否为nan：')
+        # for i, t in enumerate(self.content_A):
+        #     for tsr in t:
+        #         print(torch.isnan(tsr).any())
+        # print("风格编码器编码风格图像")
         _, self.style_B, self.content_B_feat = self.netS(x = self.real_B, mask = self.real_C)# use Style Encoder
-        print('测试StyleEncoder的输出是否为nan：')
-        print('    1:')
-        for i, t in enumerate(self.style_B):
-            for tsr in t:
-                print(torch.isnan(tsr).any())
-        print('    2:')
-        for i, t in enumerate(self.content_B_feat):
-            for tsr in t:
-                print(torch.isnan(tsr).any())
+        # print('测试StyleEncoder的输出是否为nan：')
+        # print('    1:')
+        # for i, t in enumerate(self.style_B):
+        #     for tsr in t:
+        #         print(torch.isnan(tsr).any())
+        # print('    2:')
+        # for i, t in enumerate(self.content_B_feat):
+        #     for tsr in t:
+        #         print(torch.isnan(tsr).any())
        ##################################################################################
             
         ######################### 损失函数计算准备工作：数据准备1 #########################
@@ -69,8 +71,10 @@ class AesFA(nn.Module):
        ##################################################################################
 
         ######################### 损失函数计算准备工作：数据准备2 #########################
+        # print("内容编码器编码风格化图像")
         self.trs_AtoB_content, _, self.content_trs_AtoB_feat = self.netE(self.trs_AtoB)
         trs_AtoB_mask = torch.ones_like(self.trs_AtoB)
+        # print("风格编码器编码风格化图像")
         _, self.trs_AtoB_style, self.style_trs_AtoB_feat = self.netS(x=self.trs_AtoB, mask=trs_AtoB_mask)
         self.style_trs_AtoB_feat.append(self.trs_AtoB_style)
        ##################################################################################
@@ -97,58 +101,42 @@ class AesFA(nn.Module):
         # print(len(self.content_B_feat)) # 2
         # print(len(self.style_B_feat))# 3
         # print(len(self.content_trs_AtoB_feat))# 2
-        # print(len(self.style_trs_AtoB_feat))# 3
-        # print(type(self.neg_idx))# 3
-        # for i, t in enumerate(self.content_B_feat):
-        #     print(f"输入数据1中第{i}个元组的第1个Tensor self.content_B_feat[{i},0] 是否为 nan : {torch.isnan(t[0]).any()}")
-        #     print(f"输入数据1中第{i}个元组的第2个Tensor self.content_B_feat[{i},1] 是否为 nan : {torch.isnan(t[1]).any()}")
-        # for i, t in enumerate(self.style_B_feat):
-        #     print(f"输入数据2中第{i}个元组的第1个Tensor self.style_B_feat[{i},0] 是否为 nan : {torch.isnan(t[0]).any()}")
-        #     print(f"输入数据2中第{i}个元组的第2个Tensor self.style_B_feat[{i},1] 是否为 nan : {torch.isnan(t[1]).any()}")
-        # for i, t in enumerate(self.content_trs_AtoB_feat):
-        #     print(f"输入数据3中第{i}个元组的第1个Tensor self.content_trs_AtoB_feat[{i},0] 是否为 nan : {torch.isnan(t[0]).any()}")
-        #     print(f"输入数据3中第{i}个元组的第2个Tensor self.content_trs_AtoB_feat[{i},1] 是否为 nan : {torch.isnan(t[1]).any()}")
-        # for i, t in enumerate(self.style_trs_AtoB_feat):
-        #     print(f"输入数据4中第{i}个元组的第1个Tensor self.style_trs_AtoB_feat[{i},0] 是否为 nan : {torch.isnan(t[0]).any()}")
-        #     print(f"输入数据4中第{i}个元组的第2个Tensor self.style_trs_AtoB_feat[{i},1] 是否为 nan : {torch.isnan(t[1]).any()}")
-        # print(f"输入数据1 self.content_B_feat 是否为 nan : {torch.isnan(self.content_B_feat).any()}")
+        # print(type(self.style_trs_AtoB_feat),len(self.style_trs_AtoB_feat))# 3
+        # print(type(self.neg_idx))# 
 
-        # print('input1 start')
-        # for i, t in enumerate(self.content_B_feat):
-        #     for tsr in t:
-        #         print(torch.isnan(tsr).any())    
-        # print('input1 end')
+        print('input1 start')
+        for i, t in enumerate(self.content_B_feat):
+            for tsr in t:
+                print(torch.isnan(tsr).any())    
+        print('input1 end')
 
-        # print('input2 start')
-        # for i, t in enumerate(self.style_B_feat):
-        #     for tsr in t:
-        #         print(torch.isnan(tsr).any())    
-        # print('input2 end')
+        print('input2 start')
+        for i, t in enumerate(self.style_B_feat):
+            for tsr in t:
+                print(torch.isnan(tsr).any())    
+        print('input2 end')
 
-        # print('input3 start')
-        # for i, t in enumerate(self.content_trs_AtoB_feat):
-        #     for tsr in t:
-        #         print(torch.isnan(tsr).any())    
-        # print('input3 end')
+        print('input3 start')
+        for i, t in enumerate(self.content_trs_AtoB_feat):
+            for tsr in t:
+                print(torch.isnan(tsr).any())    
+        print('input3 end')
 
-        # print('input4 start')
-        # for i, t in enumerate(self.style_trs_AtoB_feat):
-        #     for tsr in t:
-        #         print(torch.isnan(tsr).any())    
-        # print('input4 end')
+        print('input4 start')
+        for i, t in enumerate(self.style_trs_AtoB_feat):
+            for tsr in t:
+                print(torch.isnan(tsr).any())    
+        print('input4 end')
 
-        # print('input5 start')
-        # for i, t in enumerate(self.neg_idx):
-        #     print(type(t))
-        #     # for tsr in t:
-        #     #     print(torch.isnan(tsr).any())    
-        # print('input5 end')
-        # print(f"输入数据2 self.style_B_feat 是否为 nan : {torch.isnan(self.style_B_feat).any()}")
-        # print(f"输入数据3 self.content_trs_AtoB_feat 是否为 nan : {torch.isnan(self.content_trs_AtoB_feat).any()}")
-        # print(f"输入数据4 self.style_trs_AtoB_feat 是否为 nan : {torch.isnan(self.style_trs_AtoB_feat).any()}")
-        # print(f"输入数据5 self.neg_idx 是否为 nan : {torch.isnan(self.neg_idx).any()}")
+        print('input5 start')
+        for i, t in enumerate(self.neg_idx):
+            print(type(t))
+            # for tsr in t:
+            #     print(torch.isnan(tsr).any())    
+        print('input5 end')
+
         self.G_contrast = self.efdm_loss(self.content_B_feat, self.style_B_feat, self.content_trs_AtoB_feat, self.style_trs_AtoB_feat, self.neg_idx) * self.lambda_const_style
-        print(f"损失函数G_contrast 是否为nan: {torch.isnan(self.G_contrast).any()}")
+        # print(f"损失函数G_contrast 是否为nan: {torch.isnan(self.G_contrast).any()}")
         ###################### ###################### ###################### ####
 
         self.G_loss = self.G_percept + self.G_contrast

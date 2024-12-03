@@ -134,9 +134,13 @@ class VGG_loss(nn.Module):
         trs_img = trs_img.permute(0, 3, 1, 2).float()
         
         # loss
+        # print(f'content type is {type(content)}, its shape is {content.shape}')
+        # print(f'trs_img type is {type(trs_img)}, its shape is {trs_img.shape}')
         content_feats_vgg = self.encode_vgg_content(content)
         style_feats_vgg = self.encode_with_vgg_intermediate(style)
         trs_feats_vgg = self.encode_with_vgg_intermediate(trs_img)
+        # print(f'content_feats_vgg type is {type(content_feats_vgg)}, its shape is {content_feats_vgg.shape}')
+        # print(f'trs_feats_vgg[-2] type is {type(trs_feats_vgg[-2])}, its shape is {trs_feats_vgg[-2].shape}')
 
         loss_c = self.calc_content_loss(trs_feats_vgg[-2], content_feats_vgg)
         loss_s = self.efdm_single(trs_feats_vgg[0], style_feats_vgg[0])
