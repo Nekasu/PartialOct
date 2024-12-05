@@ -67,9 +67,11 @@ class StyleEncoder(nn.Module):
         self.relu = Oct_conv_lreLU()
 
     def forward(self, x, mask):   
-        print('-------------------------- in styleencoder forward-------------------------- ')
+        # print('-------------------------- in styleencoder forward-------------------------- ')
         enc_feat = []
+        # print(f'In StyleEncoder 的输入数据中,  数据最大、最小值为{x[0].max(), x[0].min()}')
         out, mask = self.conv(in_x=x, in_mask=mask) # o1
+        # print(f'In StyleEncoder中, 经过conv处理后,  数据最大、最小值为{out[0].max(), out[0].min()}')
         
         #################### Encoder中的第一层 ####################
         out, mask = self.PartialOctConv1_1(x=out, mask=mask) # o2
@@ -78,6 +80,7 @@ class StyleEncoder(nn.Module):
         out = self.relu(out) # o5
         out, mask = self.PartialOctConv1_3(x=out, mask=mask) # o6
         out = self.relu(out) # o7
+        # print(f'In StyleEncoder 第一层,  数据最大、最小值为{out[0].max(), out[0].min()}')
         # print(f'out7[0] shape: {out[0].shape}, out7[1] shape: {out[1].shape}')
         ############################################################
 
@@ -90,6 +93,7 @@ class StyleEncoder(nn.Module):
         out = self.relu(out) # o13
         # print(f'测试风格编码器的o13是否为nan:{torch.isnan(out[0]).any()},{torch.isnan(out[1]).any()}')
         enc_feat.append(out)
+        # print(f'In StyleEncoder 第二层,  数据最大、最小值为{out[0].max(), out[0].min()}')
         # print(f'out13[0] shape: {out[0].shape}, out13[1] shape: {out[1].shape}')
         ############################################################
         
@@ -100,6 +104,7 @@ class StyleEncoder(nn.Module):
         out = self.relu(out) # o17
         out, mask = self.PartialOctConv3_3(x=out, mask=mask) # o18
         out = self.relu(out) # o19
+        # print(f'In StyleEncoder 第三层,  数据最大、最小值为{out[0].max(), out[0].min()}')
         # print(f'测试风格编码器的o19是否为nan:{torch.isnan(out[0]).any()},{torch.isnan(out[1]).any()}')
         # print(f'out19[0] shape: {out[0].shape}, out19[1] shape: {out[1].shape}')
         enc_feat.append(out)
@@ -109,7 +114,7 @@ class StyleEncoder(nn.Module):
         out_sty_h = self.pool_h(out_high)
         out_sty_l = self.pool_l(out_low)
         out_sty = out_sty_h, out_sty_l
-        print('----------------------------------------------------------------------- ')
+        # print('----------------------------------------------------------------------- ')
 
         return out, out_sty, enc_feat   # o19, downsampled o19, [o13,o19]
     
@@ -180,11 +185,11 @@ class ContentEncoder(nn.Module):
         self.relu = Oct_conv_lreLU()
 
     def forward(self, x):   
-        print('-------------------------- in contentencoder forward-------------------------- ')
+        # print('-------------------------- in contentencoder forward-------------------------- ')
         enc_feat = []
-        print(f'测试ContentEncoder的输入是否为nan: {torch.isnan(x).any()}')
+        # print(f'测试ContentEncoder的输入是否为nan: {torch.isnan(x).any()}')
         out = self.conv(x)  #o1
-        print(f'测试ContentEncoder，o1：{type(out)}')
+        # print(f'测试ContentEncoder，o1：{type(out)}')
         
         out = self.OctConv1_1(out) #o2
         out = self.relu(out)
@@ -201,6 +206,7 @@ class ContentEncoder(nn.Module):
         out = self.OctConv2_3(out)
         out = self.relu(out)    # o13
         enc_feat.append(out)    # [o13]
+        # print(f'In ContentEncoder 第二层,  数据最大、最小值为{out[0].max(), out[0].min()}')
         # print(f'测试内容编码器的o13是否为nan:{torch.isnan(out[0]).any()},{torch.isnan(out[1]).any()}')
         # print(f'out13[0] shape: {out[0].shape}, out13[1] shape: {out[1].shape}')
         
@@ -212,6 +218,7 @@ class ContentEncoder(nn.Module):
         # print(f'out17[0] shape: {out[0].shape}, out19[1] shape: {out[1].shape}')
         out = self.OctConv3_3(out)
         out = self.relu(out)    # o19
+        # print(f'In ContentEncoder 第三层,  数据最大、最小值为{out[0].max(), out[0].min()}')
         # print(f'测试内容编码器的o19是否为nan:{torch.isnan(out[0]).any()},{torch.isnan(out[1]).any()}')
         # print(f'out19[0] shape: {out[0].shape}, out19[1] shape: {out[1].shape}')
         enc_feat.append(out)    # [o13, o19]
@@ -220,7 +227,7 @@ class ContentEncoder(nn.Module):
         out_sty_h = self.pool_h(out_high)
         out_sty_l = self.pool_l(out_low)
         out_sty = out_sty_h, out_sty_l # downsampled o19
-        print('----------------------------------------------------------------------- ')
+        # print('----------------------------------------------------------------------- ')
 
         return out, out_sty, enc_feat # o19, downsampled o19, [o13,o19]
     
@@ -279,7 +286,7 @@ class Decoder(nn.Module):
         self.conv5 = nn.Conv2d(in_channels=nf//2, out_channels=out_dim, kernel_size=1)
 
     def forward(self, content, style):        
-        print('-------------------------- in decoder forward-------------------------- ')
+        # print('-------------------------- in decoder forward-------------------------- ')
         # print(f'input nan test, content[0]: {torch.isnan(content[0]).any()}')
         # print(f'input nan test, content[1]: {torch.isnan(content[1]).any()}')
         # print(f'input nan test, style[0]: {torch.isnan(style[0]).any()}')
@@ -288,8 +295,9 @@ class Decoder(nn.Module):
         # print(content[1].shape)
         # print(style[0].shape)
         # print(style[1].shape)
-        print(f'-------------------AdaOctConv1_1')
+        # print(f'-------------------AdaOctConv1_1')
         out = self.AdaOctConv1_1(content, style) #o1, tuple
+        # print(f'In Decoder, 经过AdaOctConv1_1后, 数据最大、最小值为{out[0].max(), out[0].min()}')
         # print('o1 start')
         # for i,t in enumerate(out):
         #     print(f'out1 nan test, out1[{i}]: {torch.isnan(out[i]).any()} ')
@@ -298,22 +306,25 @@ class Decoder(nn.Module):
         out = self.up_oct(out) #o3, tuple
         out = self.oct_conv_aftup_1(out) #o4, tuple
 
-        print(f'-------------------AdaOctConv2_1')
+        # print(f'-------------------AdaOctConv2_1')
         out = self.AdaOctConv2_1(out, style) #o5, tuple
         # print(f'在decoder类中, AdaOctConv2_1 的输出是否为nan？{torch.isnan(out[0]).any()}, {torch.isnan(out[1]).any()}')
+        # print(f'In Decoder, 经过AdaOctConv2_1后, 数据最大、最小值为{out[0].max(), out[0].min()}')
         out = self.OctConv2_2(out) #o6, tuple
         out = self.up_oct(out) #o7, tuple
         out = self.oct_conv_aftup_2(out) #o8, tuple
-        print(f'在decoder类中, oct_conv_aftup_2的输出是否为nan？{torch.isnan(out[0]).any()}, {torch.isnan(out[1]).any()}')
+        # print(f'在decoder类中, oct_conv_aftup_2的输出是否为nan？{torch.isnan(out[0]).any()}, {torch.isnan(out[1]).any()}')
 
-        print(f'-------------------AdaOctConv3_1')
+        # print(f'-------------------AdaOctConv3_1')
         out = self.AdaOctConv3_1(out, style) #o9, tuple
+        # print(f'In Decoder, 经过AdaOctConv3_1后, 数据最大、最小值为{out[0].max(), out[0].min()}')
         out = self.OctConv3_2(out) #o10, tuple
         out = self.up_oct(out) #o11, tuple
         out = self.oct_conv_aftup_3(out) #o12, tuple
 
-        print(f'-------------------AdaOctConv4_1')
+        # print(f'-------------------AdaOctConv4_1')
         out = self.AdaOctConv4_1(out, style) #o13, tuple
+        # print(f'In Decoder, 经过AdaOctConv4_1后, 数据最大、最小值为{out[0].max(), out[0].min()}')
         out = self.OctConv4_2(out) #o14, tuple
         # print('o14 start')
         # for i,t in enumerate(out):
@@ -325,8 +336,8 @@ class Decoder(nn.Module):
         out_high = self.conv5(out_high) #o17, tensor
         out_low = self.conv5(out_low) #o18, tensor
         
-        print(f'output of Decoder, is type_high a nan? {torch.isnan(out_high).any()}, is type_low a nan? {torch.isnan(out_low).any()}')
-        print('----------------------------------------------------------------------- ')
+        # print(f'output of Decoder, is type_high a nan? {torch.isnan(out_high).any()}, is type_low a nan? {torch.isnan(out_low).any()}')
+        # print('----------------------------------------------------------------------- ')
 
         return out, out_high, out_low
     

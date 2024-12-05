@@ -95,11 +95,11 @@ class Oct_Conv_aftup(nn.Module):
     
     def forward(self, x):
         hf, lf = x
-        print(f"in Oct_Conv_aftup, input nan test: hf {torch.isnan(hf).any()}, lf {torch.isnan(lf).any()}" )
-        print(f'{hf.max()}, {hf.min()}')
+        # print(f"in Oct_Conv_aftup, input nan test: hf {torch.isnan(hf).any()}, lf {torch.isnan(lf).any()}" )
+        # print(f'{hf.max()}, {hf.min()}')
         hf = self.conv_h(hf)
         lf = self.conv_l(lf)
-        print(f"in Oct_Conv_aftup,  卷积后的nan test: hf {torch.isnan(hf).any()}, lf {torch.isnan(lf).any()}" )
+        # print(f"in Oct_Conv_aftup,  卷积后的nan test: hf {torch.isnan(hf).any()}, lf {torch.isnan(lf).any()}" )
         return hf, lf
 
 class Oct_conv_reLU(nn.ReLU):# 不涉及卷积操作, 不用修改
@@ -298,24 +298,24 @@ class AdaOctConv(nn.Module):
     def forward(self, content, style, cond='train'):
         c_hf, c_lf = content
         s_hf, s_lf = style
-        print(f'测试AdaoctConv的输入是否为nan, c_hf: {torch.isnan(content[0]).any()}')
-        print(f'测试AdaoctConv的输入是否为nan, c_lf: {torch.isnan(content[1]).any()}')
-        print(f'测试AdaoctConv的输入是否为nan, s_hf: {torch.isnan(style[0]).any()}')
-        print(f'测试AdaoctConv的输入是否为nan, s_lf: {torch.isnan(style[1]).any()}')
+        # print(f'测试AdaoctConv的输入是否为nan, c_hf: {torch.isnan(content[0]).any()}')
+        # print(f'测试AdaoctConv的输入是否为nan, c_lf: {torch.isnan(content[1]).any()}')
+        # print(f'测试AdaoctConv的输入是否为nan, s_hf: {torch.isnan(style[0]).any()}')
+        # print(f'测试AdaoctConv的输入是否为nan, s_lf: {torch.isnan(style[1]).any()}')
         # print(f's_hf shape: {s_hf.shape}')
         h_w_spatial, h_w_pointwise, h_bias = self.kernelPredictor_h(s_hf)
         l_w_spatial, l_w_pointwise, l_bias = self.kernelPredictor_l(s_lf)
         
         if cond == 'train':
             output_h = self.AdaConv_h(c_hf, h_w_spatial, h_w_pointwise, h_bias)
-            print(f'AdaConv 的计算中, output_h是否为nan？{torch.isnan(output_h).any()}')
+            # print(f'AdaConv 的计算中, output_h是否为nan？{torch.isnan(output_h).any()}')
             output_l = self.AdaConv_l(c_lf, l_w_spatial, l_w_pointwise, l_bias)
-            print(f'AdaConv 的计算中, output_l是否为nan？{torch.isnan(output_l).any()}')
+            # print(f'AdaConv 的计算中, output_l是否为nan？{torch.isnan(output_l).any()}')
             output = output_h, output_l
 
             output = self.relu(output)
-            print(f'relu(output)[0] nan test in AdaOctConv: {torch.isnan(output[0]).any()}')
-            print(f'relu(output)[1] nan test in AdaOctConv: {torch.isnan(output[1]).any()}')
+            # print(f'relu(output)[0] nan test in AdaOctConv: {torch.isnan(output[0]).any()}')
+            # print(f'relu(output)[1] nan test in AdaOctConv: {torch.isnan(output[1]).any()}')
 
             output = self.OctConv(output)
             # for i,tsr in enumerate(output):
@@ -506,33 +506,33 @@ class OctConv(nn.Module):
             )
             
     def forward(self, x):
-        print('---------------------------in OctConv---------------------------')
+        # print('---------------------------in OctConv---------------------------')
         if self.type == 'first':
             hf = self.convh(x)
-            print(f"在第一个OctConv中, hf nan test: {torch.isnan(hf).any()}")
+            # print(f"在第一个OctConv中, hf nan test: {torch.isnan(hf).any()}")
             lf = self.avg_pool(x)
             lf = self.convl(lf)
-            print(f"在第一个OctConv中, lf nan test: {torch.isnan(lf).any()}")
-            print('---------------------------in OctConv---------------------------')
+            # print(f"在第一个OctConv中, lf nan test: {torch.isnan(lf).any()}")
+            # print('---------------------------in OctConv---------------------------')
             return hf, lf
         elif self.type == 'last':
             hf, lf = x
             out_h = self.convh(hf)
             out_l = self.convl(self.upsample(lf))
             output = out_h * self.freq_ratio[0] + out_l * self.freq_ratio[1]
-            print('---------------------------in OctConv---------------------------')
+            # print('---------------------------in OctConv---------------------------')
             return output, out_h, out_l
         else:
             hf, lf = x
-            print(f'input nan test. hf is nan? {torch.isnan(hf).any()}. lf is nan? {torch.isnan(lf).any()}')
-            print(f'is_dw : {self.is_dw}')
+            # print(f'input nan test. hf is nan? {torch.isnan(hf).any()}. lf is nan? {torch.isnan(lf).any()}')
+            # print(f'is_dw : {self.is_dw}')
             if self.is_dw:
                 hf, lf = self.H2H(hf), self.L2L(lf)
-                print(f'is_dw == True, nan test. hf is nan? {torch.isnan(hf).any()}. lf is nan? {torch.isnan(lf).any()}')
+                # print(f'is_dw == True, nan test. hf is nan? {torch.isnan(hf).any()}. lf is nan? {torch.isnan(lf).any()}')
             else:
                 hf, lf = self.H2H(hf) + self.L2H(self.upsample(lf)), self.L2L(lf) + self.H2L(self.avg_pool(hf))
-                print(f'is_dw == False, nan test. hf is nan? {torch.isnan(hf).any()}. lf is nan? {torch.isnan(lf).any()}')
-            print('---------------------------in OctConv---------------------------')
+                # print(f'is_dw == False, nan test. hf is nan? {torch.isnan(hf).any()}. lf is nan? {torch.isnan(lf).any()}')
+            # print('---------------------------in OctConv---------------------------')
             return hf, lf
     
     
@@ -544,7 +544,7 @@ def main():
     # print(mask.shape, mask)
     o1 = OctConv(in_channels=3, out_channels=64, kernel_size=3, stride=1, padding=1, groups=1, type='first').to(device="cuda:1")
    
-    print(f"---------------------------layer e1---------------------------")
+    # print(f"---------------------------layer e1---------------------------")
     out, mask = o1(x=x, mask=mask)
     # print(len(out))
     # print(len(mask))
@@ -553,13 +553,13 @@ def main():
 
     # up_hm = nn.Upsample(scale_factor=2)(hm)
     # print(up_hm.shape)
-    print(f"---------------------------layer e2---------------------------")
+    # print(f"---------------------------layer e2---------------------------")
     o2 = OctConv(in_channels=64, out_channels=3, kernel_size=3, stride=1, padding=1, groups=1, type='normal').to(device="cuda:1")
     out2, mask2 = o2(x=out, mask=mask)
     # print(len(out2))
     # print(len(mask2))
     
-    print(f"---------------------------layer e3---------------------------")
+    # print(f"---------------------------layer e3---------------------------")
     o3 = OctConv(in_channels=3, out_channels=3, kernel_size=3, stride=1, padding=1, groups=1, type='last').to(device="cuda:1")
     out3, mask3 = o3(x=out2, mask=mask2)
     # print(len(out2))

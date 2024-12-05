@@ -77,7 +77,7 @@ def main():
         epoch_start = 0
         tot_itr = 0
 
-    model = model.double()
+    # model = model.double()
     train_writer = tensorboardX.SummaryWriter(config.log_dir)
 
     ########## Training ##########
@@ -87,8 +87,8 @@ def main():
     while tot_itr < config.n_iter:
         epoch += 1
         for i, data in enumerate(data_loader_train):
-            for k,v in data.items():
-                data[k] = data[k].double()
+            # for k,v in data.items():
+            #     data[k] = data[k].double()
             #     print(data[k].max(), data[k].min())
                 # v_m = v.mean()
                 # v_std = v.std()
@@ -101,7 +101,7 @@ def main():
                     write_file.write(f'"# of parameter:", {param_num}\n')
                     write_file.write(f'"parameters of networks:", {net_params}\n')
                     write_file.write(f'{epoch_start}, "th epoch ", {tot_itr}, "th iteration model load"\n')
-                print(f"---------------------------在第 {epoch} 个epoch中的第 {i} 个循环中---------------------------")
+                print(f"++++++++++++++++++++++++++++++++++++++++++++++++++++在第 {epoch} 个epoch中的第 {i} 个循环中++++++++++++++++++++++++++++++++++++++++++++++++++++++")
                 # data 是一个存放数据的字典, 其中具有三个键值对, 三个键分别为 content_img, style_img, mask_img
 
                 # print(f'cotent_image is nan test: {torch.isnan(data["content_img"]).any()}')
@@ -155,7 +155,7 @@ def main():
                     print(tot_itr+1, "th iteration model save")
                     write_file.write(f'{tot_itr+1}, "th iteration model save"')
 
-                print(f'------------------------------------------------------------------------------')
+                print(f'++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
                 write_file.write('------------------------------------------------------------------------------')
 
         update_learning_rate(model.E_scheduler, model.optimizer_E)
