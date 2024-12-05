@@ -104,36 +104,36 @@ class AesFA(nn.Module):
         # print(type(self.style_trs_AtoB_feat),len(self.style_trs_AtoB_feat))# 3
         # print(type(self.neg_idx))# 
 
-        print('input1 start')
-        for i, t in enumerate(self.content_B_feat):
-            for tsr in t:
-                print(torch.isnan(tsr).any())    
-        print('input1 end')
+        # print('input1 start')
+        # for i, t in enumerate(self.content_B_feat):
+        #     for tsr in t:
+        #         print(torch.isnan(tsr).any())    
+        # print('input1 end')
 
-        print('input2 start')
-        for i, t in enumerate(self.style_B_feat):
-            for tsr in t:
-                print(torch.isnan(tsr).any())    
-        print('input2 end')
+        # print('input2 start')
+        # for i, t in enumerate(self.style_B_feat):
+        #     for tsr in t:
+        #         print(torch.isnan(tsr).any())    
+        # print('input2 end')
 
-        print('input3 start')
-        for i, t in enumerate(self.content_trs_AtoB_feat):
-            for tsr in t:
-                print(torch.isnan(tsr).any())    
-        print('input3 end')
+        # print('input3 start')
+        # for i, t in enumerate(self.content_trs_AtoB_feat):
+        #     for tsr in t:
+        #         print(torch.isnan(tsr).any())    
+        # print('input3 end')
 
-        print('input4 start')
-        for i, t in enumerate(self.style_trs_AtoB_feat):
-            for tsr in t:
-                print(torch.isnan(tsr).any())    
-        print('input4 end')
+        # print('input4 start')
+        # for i, t in enumerate(self.style_trs_AtoB_feat):
+        #     for tsr in t:
+        #         print(torch.isnan(tsr).any())    
+        # print('input4 end')
 
-        print('input5 start')
-        for i, t in enumerate(self.neg_idx):
-            print(type(t))
-            # for tsr in t:
-            #     print(torch.isnan(tsr).any())    
-        print('input5 end')
+        # print('input5 start')
+        # for i, t in enumerate(self.neg_idx):
+        #     print(type(t))
+        #     # for tsr in t:
+        #     #     print(torch.isnan(tsr).any())    
+        # print('input5 end')
 
         self.G_contrast = self.efdm_loss(self.content_B_feat, self.style_B_feat, self.content_trs_AtoB_feat, self.style_trs_AtoB_feat, self.neg_idx) * self.lambda_const_style
         # print(f"损失函数G_contrast 是否为nan: {torch.isnan(self.G_contrast).any()}")

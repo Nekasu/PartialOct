@@ -67,6 +67,7 @@ class StyleEncoder(nn.Module):
         self.relu = Oct_conv_lreLU()
 
     def forward(self, x, mask):   
+        print('-------------------------- in styleencoder forward-------------------------- ')
         enc_feat = []
         out, mask = self.conv(in_x=x, in_mask=mask) # o1
         
@@ -108,6 +109,7 @@ class StyleEncoder(nn.Module):
         out_sty_h = self.pool_h(out_high)
         out_sty_l = self.pool_l(out_low)
         out_sty = out_sty_h, out_sty_l
+        print('----------------------------------------------------------------------- ')
 
         return out, out_sty, enc_feat   # o19, downsampled o19, [o13,o19]
     
@@ -178,8 +180,11 @@ class ContentEncoder(nn.Module):
         self.relu = Oct_conv_lreLU()
 
     def forward(self, x):   
+        print('-------------------------- in contentencoder forward-------------------------- ')
         enc_feat = []
-        out = self.conv(x)  #o1  
+        print(f'测试ContentEncoder的输入是否为nan: {torch.isnan(x).any()}')
+        out = self.conv(x)  #o1
+        print(f'测试ContentEncoder，o1：{type(out)}')
         
         out = self.OctConv1_1(out) #o2
         out = self.relu(out)
@@ -215,6 +220,7 @@ class ContentEncoder(nn.Module):
         out_sty_h = self.pool_h(out_high)
         out_sty_l = self.pool_l(out_low)
         out_sty = out_sty_h, out_sty_l # downsampled o19
+        print('----------------------------------------------------------------------- ')
 
         return out, out_sty, enc_feat # o19, downsampled o19, [o13,o19]
     
@@ -273,34 +279,54 @@ class Decoder(nn.Module):
         self.conv5 = nn.Conv2d(in_channels=nf//2, out_channels=out_dim, kernel_size=1)
 
     def forward(self, content, style):        
+        print('-------------------------- in decoder forward-------------------------- ')
+        # print(f'input nan test, content[0]: {torch.isnan(content[0]).any()}')
+        # print(f'input nan test, content[1]: {torch.isnan(content[1]).any()}')
+        # print(f'input nan test, style[0]: {torch.isnan(style[0]).any()}')
+        # print(f'input nan test, style[1]: {torch.isnan(style[1]).any()}')
         # print(content[0].shape)
         # print(content[1].shape)
         # print(style[0].shape)
         # print(style[1].shape)
-        out = self.AdaOctConv1_1(content, style)
-        out = self.OctConv1_2(out)
-        out = self.up_oct(out)
-        out = self.oct_conv_aftup_1(out)
+        print(f'-------------------AdaOctConv1_1')
+        out = self.AdaOctConv1_1(content, style) #o1, tuple
+        # print('o1 start')
+        # for i,t in enumerate(out):
+        #     print(f'out1 nan test, out1[{i}]: {torch.isnan(out[i]).any()} ')
+        # print('o1 end')
+        out = self.OctConv1_2(out) #o2, tuple
+        out = self.up_oct(out) #o3, tuple
+        out = self.oct_conv_aftup_1(out) #o4, tuple
 
-        out = self.AdaOctConv2_1(out, style)
-        out = self.OctConv2_2(out)
-        out = self.up_oct(out)
-        out = self.oct_conv_aftup_2(out)
+        print(f'-------------------AdaOctConv2_1')
+        out = self.AdaOctConv2_1(out, style) #o5, tuple
+        # print(f'在decoder类中, AdaOctConv2_1 的输出是否为nan？{torch.isnan(out[0]).any()}, {torch.isnan(out[1]).any()}')
+        out = self.OctConv2_2(out) #o6, tuple
+        out = self.up_oct(out) #o7, tuple
+        out = self.oct_conv_aftup_2(out) #o8, tuple
+        print(f'在decoder类中, oct_conv_aftup_2的输出是否为nan？{torch.isnan(out[0]).any()}, {torch.isnan(out[1]).any()}')
 
-        out = self.AdaOctConv3_1(out, style)
-        out = self.OctConv3_2(out)
-        out = self.up_oct(out)
-        out = self.oct_conv_aftup_3(out)
+        print(f'-------------------AdaOctConv3_1')
+        out = self.AdaOctConv3_1(out, style) #o9, tuple
+        out = self.OctConv3_2(out) #o10, tuple
+        out = self.up_oct(out) #o11, tuple
+        out = self.oct_conv_aftup_3(out) #o12, tuple
 
-        out = self.AdaOctConv4_1(out, style)
-        out = self.OctConv4_2(out)
-        out, out_high, out_low = out
+        print(f'-------------------AdaOctConv4_1')
+        out = self.AdaOctConv4_1(out, style) #o13, tuple
+        out = self.OctConv4_2(out) #o14, tuple
+        # print('o14 start')
+        # for i,t in enumerate(out):
+        #     print(f'out14 nan test, out1[{i}]: {torch.isnan(out[i]).any()} ')
+        # print('o14 end')
+        out, out_high, out_low = out #o15, tuple
 
-        out = self.conv5(out)
-        out_high = self.conv5(out_high)
-        out_low = self.conv5(out_low)
+        out = self.conv5(out) #o16, tensor
+        out_high = self.conv5(out_high) #o17, tensor
+        out_low = self.conv5(out_low) #o18, tensor
         
         print(f'output of Decoder, is type_high a nan? {torch.isnan(out_high).any()}, is type_low a nan? {torch.isnan(out_low).any()}')
+        print('----------------------------------------------------------------------- ')
 
         return out, out_high, out_low
     

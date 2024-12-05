@@ -1,0 +1,6 @@
+'cuda:', cuda:1
+'Version:', dunhuang
+"Train: ", 60000, "images: ", 7500, "x", 8,"(batch size) =", 60000
+"# of parameter:", 15825007
+"parameters of networks:", {'netE': 3323008, 'netS': 3322944, 'netG': 5673315, 'vgg_loss': 3505740}
+0, "th epoch ", -1, "th iteration model load"

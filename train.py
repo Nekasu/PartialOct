@@ -77,6 +77,7 @@ def main():
         epoch_start = 0
         tot_itr = 0
 
+    model = model.double()
     train_writer = tensorboardX.SummaryWriter(config.log_dir)
 
     ########## Training ##########
@@ -86,6 +87,12 @@ def main():
     while tot_itr < config.n_iter:
         epoch += 1
         for i, data in enumerate(data_loader_train):
+            for k,v in data.items():
+                data[k] = data[k].double()
+            #     print(data[k].max(), data[k].min())
+                # v_m = v.mean()
+                # v_std = v.std()
+                # data[k] = (v - v_m) / (v_std + 1e-7)
             with open(file=config.log_file_path, mode='w') as write_file:
                 if i==0:
                     write_file.write(f"'cuda:', {config.device}\n")
