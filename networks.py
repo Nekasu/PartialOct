@@ -70,14 +70,22 @@ class StyleEncoder(nn.Module):
         # print('-------------------------- in styleencoder forward-------------------------- ')
         enc_feat = []
         # print(f'In StyleEncoder 的输入数据中,  数据最大、最小值为{x[0].max(), x[0].min()}')
+        # print(f'conv')
         out, mask = self.conv(in_x=x, in_mask=mask) # o1
         # print(f'In StyleEncoder中, 经过conv处理后,  数据最大、最小值为{out[0].max(), out[0].min()}')
         
         #################### Encoder中的第一层 ####################
+        # print(f'PartialOctConv1_1')
         out, mask = self.PartialOctConv1_1(x=out, mask=mask) # o2
         out = self.relu(out) # o3
+        # print(f'PartialOctConv1_2')
         out, mask = self.PartialOctConv1_2(x=out, mask=mask) # o4
+        # print(mask[0].max(),mask[0].min())
+        # print(mask[1].max(),mask[1].min())
         out = self.relu(out) # o5
+        # print(f'PartialOctConv1_3')
+        # print(mask[0].max(),mask[0].min())
+        # print(mask[1].max(),mask[1].min())
         out, mask = self.PartialOctConv1_3(x=out, mask=mask) # o6
         out = self.relu(out) # o7
         # print(f'In StyleEncoder 第一层,  数据最大、最小值为{out[0].max(), out[0].min()}')
@@ -85,10 +93,13 @@ class StyleEncoder(nn.Module):
         ############################################################
 
         #################### Encoder中的第二层 ####################
+        # print(f'PartialOctConv2_1')
         out, mask = self.PartialOctConv2_1(x=out, mask=mask) # o8
         out = self.relu(out) # o9
+        # print(f'PartialOctConv2_2')
         out, mask = self.PartialOctConv2_2(x=out, mask=mask) # o10
         out = self.relu(out) # o11
+        # print(f'PartialOctConv2_3')
         out, mask = self.PartialOctConv2_3(x=out, mask=mask) # o12
         out = self.relu(out) # o13
         # print(f'测试风格编码器的o13是否为nan:{torch.isnan(out[0]).any()},{torch.isnan(out[1]).any()}')
@@ -98,10 +109,13 @@ class StyleEncoder(nn.Module):
         ############################################################
         
         #################### Encoder中的第三层 ####################
+        # print(f'PartialOctConv3_1')
         out, mask = self.PartialOctConv3_1(x=out, mask=mask) # o14
         out = self.relu(out) # o15
+        # print(f'PartialOctConv3_2')
         out, mask = self.PartialOctConv3_2(x=out, mask=mask) # o16
         out = self.relu(out) # o17
+        # print(f'PartialOctConv3_3')
         out, mask = self.PartialOctConv3_3(x=out, mask=mask) # o18
         out = self.relu(out) # o19
         # print(f'In StyleEncoder 第三层,  数据最大、最小值为{out[0].max(), out[0].min()}')

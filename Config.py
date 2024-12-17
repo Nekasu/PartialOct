@@ -8,7 +8,7 @@ class Config:
     style_dir = '/mnt/sda/Dataset/style_image/dunhuang_style/crop_256/origin'
     mask_dir = '/mnt/sda/Dataset/style_image/dunhuang_style/crop_256/mask'
     
-    file_n = 'dunhuang'
+    file_n = 'dunhuang_real'
     log_file_path = '/mnt/sda/zxt/3_code_area/code_develop/PartialConv_AesFA/log/' + file_n + 'log.txt'
     log_dir = './log/' + file_n
     ckpt_dir = './ckpt/' + file_n
@@ -36,7 +36,7 @@ class Config:
     ## basic parameters
     n_iter = 160000
     batch_size = 8
-    lr = 0.00000001
+    lr = 0.0001
     lr_policy = 'step'
     lr_decay_iters = 50
     beta1 = 0.0

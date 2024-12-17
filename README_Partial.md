@@ -1,3 +1,8 @@
+训练代码如下：
+```bash
+echo "Start Time: $(date)" > output2.txt && python ./train.py | tee -a output2.txt
+```
+
 # 对于PartConv代码的说明
 
 在[Partial Convolution原始论文](https://link.springer.com/10.1007/978-3-030-01252-6_6)中, 有计算过程如下：

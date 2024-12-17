@@ -1,6 +1,6 @@
 from path import Path
 import glob
-# import torch
+import torch
 import torch.nn as nn
 # import pandas as pd
 # import numpy as np
@@ -17,10 +17,11 @@ class DataSplit(Dataset):
     def __init__(self, config, phase='train'):
         super(DataSplit, self).__init__()
 
-        self.transform = Compose([Resize(size=[config.load_size, config.load_size]),
+        self.base_transform = Compose([Resize(size=[config.load_size, config.load_size]),
                                 RandomCrop(size=(config.crop_size, config.crop_size)),
                                 ToTensor(),
-                                Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225))])
+                                ])
+        self.normalize_transform = Compose([Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225))])
 
         if phase == 'train':
             # Content image data
@@ -90,15 +91,18 @@ class DataSplit(Dataset):
     def __getitem__(self, index):
         cont_img = self.images[index]
         cont_img = Image.open(cont_img).convert('RGB')
-        cont_img = self.transform(cont_img)
+        cont_img = self.base_transform(cont_img)
+        cont_img = self.normalize_transform(cont_img)
 
         sty_img = self.style_images[index]
         sty_img = Image.open(sty_img).convert('RGB')
-        sty_img = self.transform(sty_img)
+        sty_img = self.base_transform(sty_img)
+        sty_img = self.normalize_transform(sty_img)
         
         msk_img = self.mask_images[index]
         msk_img = Image.open(msk_img).convert('RGB')
-        msk_img = self.transform(msk_img)
+        msk_img = self.base_transform(msk_img)
+        # mask不许要归一化操作, 所以没有 normalize_transform操作
 
         return {'content_img': cont_img, 'style_img': sty_img, 'mask_img': msk_img}
     

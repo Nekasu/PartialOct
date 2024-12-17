@@ -93,70 +93,59 @@ def main():
                 # v_m = v.mean()
                 # v_std = v.std()
                 # data[k] = (v - v_m) / (v_std + 1e-7)
-            with open(file=config.log_file_path, mode='w') as write_file:
-                if i==0:
-                    write_file.write(f"'cuda:', {config.device}\n")
-                    write_file.write(f"'Version:', {config.file_n}\n")
-                    write_file.write(f'"Train: ", {train_data.__len__()}, "images: ", {len(data_loader_train)}, "x", {config.batch_size},"(batch size) =", {train_data.__len__()}\n')
-                    write_file.write(f'"# of parameter:", {param_num}\n')
-                    write_file.write(f'"parameters of networks:", {net_params}\n')
-                    write_file.write(f'{epoch_start}, "th epoch ", {tot_itr}, "th iteration model load"\n')
-                print(f"++++++++++++++++++++++++++++++++++++++++++++++++++++在第 {epoch} 个epoch中的第 {i} 个循环中++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-                # data 是一个存放数据的字典, 其中具有三个键值对, 三个键分别为 content_img, style_img, mask_img
+            # print(f"+++++++++++++++++++++++++++++在第 {epoch} 个epoch中的第 {i} 个循环中++++++++++++++++++++++++++++++++")
+            # data 是一个存放数据的字典, 其中具有三个键值对, 三个键分别为 content_img, style_img, mask_img
 
-                # print(f'cotent_image is nan test: {torch.isnan(data["content_img"]).any()}')
-                # print(f'cotent_image is inf test: {torch.isinf(data["content_img"]).any()}')
+            # print(f'cotent_image is nan test: {torch.isnan(data["content_img"]).any()}')
+            # print(f'cotent_image is inf test: {torch.isinf(data["content_img"]).any()}')
 
-                # print(f'style_image is nan test: {torch.isnan(data["style_img"]).any()}')
-                # print(f'style_image is inf test: {torch.isinf(data["style_img"]).any()}')
+            # print(f'style_image is nan test: {torch.isnan(data["style_img"]).any()}')
+            # print(f'style_image is inf test: {torch.isinf(data["style_img"]).any()}')
 
-                # print(f'mask_image is nan test: {torch.isnan(data["mask_img"]).any()}')
-                # print(f'mask_image is inf test: {torch.isinf(data["mask_img"]).any()}')
-                # print(f'掩膜图像：{data["mask_img"]}')
-                tot_itr += 1
-                # breakpoint()
-                train_dict = model.train_step(data)
-                # breakpoint()
+            # print(f'mask_image is nan test: {torch.isnan(data["mask_img"]).any()}')
+            # print(f'mask_image is inf test: {torch.isinf(data["mask_img"]).any()}')
+            # print(f'掩膜图像：{data["mask_img"]}')
+            tot_itr += 1
+            # breakpoint()
+            train_dict = model.train_step(data)
+            # breakpoint()
 
-                real_A = im_convert(data['content_img'])
-                real_B = im_convert(train_dict['style_img'])
-                fake_B = im_convert(train_dict['fake_AtoB'])
-                trs_high = im_convert(train_dict['fake_AtoB_high'])
-                trs_low = im_convert(train_dict['fake_AtoB_low'])
-                # ------------------------------问题在这之间 ------------------------------
-                ## Tensorboard ##
-                # tensorboard - loss
-                train_writer.add_scalar('Loss_G', train_dict['G_loss'], tot_itr)
-                # print(f"train_dict['G_loss'] is nan test: {torch.isnan(train_dict['G_loss']).any()}")
-                # print(f"train_dict['G_loss'] is inf test: {torch.isinf(train_dict['G_loss']).any()}")
+            real_A = im_convert(data['content_img'])
+            real_B = im_convert(train_dict['style_img'])
+            fake_B = im_convert(train_dict['fake_AtoB'])
+            trs_high = im_convert(train_dict['fake_AtoB_high'])
+            trs_low = im_convert(train_dict['fake_AtoB_low'])
+            # ------------------------------问题在这之间 ------------------------------
+            ## Tensorboard ##
+            # tensorboard - loss
+            train_writer.add_scalar('Loss_G', train_dict['G_loss'], tot_itr)
+            # print(f"train_dict['G_loss'] is nan test: {torch.isnan(train_dict['G_loss']).any()}")
+            # print(f"train_dict['G_loss'] is inf test: {torch.isinf(train_dict['G_loss']).any()}")
 
-                train_writer.add_scalar('Loss_G_Percept', train_dict['G_Percept'], tot_itr)
-                # print(f"train_dict['G_Percept'] is nan test: {torch.isnan(train_dict['G_Percept']).any()}")
-                # print(f"train_dict['G_Percept'] is inf test: {torch.isinf(train_dict['G_Percept']).any()}")
-                
-                train_writer.add_scalar('Loss_G_Contrast', train_dict['G_Contrast'], tot_itr)
-                # print(f"train_dict['G_Contrast'] is nan test: {torch.isnan(train_dict['G_Contrast']).any()}")
-                # print(f"train_dict['G_Contrast'] is inf test: {torch.isinf(train_dict['G_Contrast']).any()}")
-                # breakpoint()
-                
-                # tensorboard - images
-                train_writer.add_image('Content_Image_A', real_A, tot_itr, dataformats='NHWC')
-                train_writer.add_image('Style_Image_B', real_B, tot_itr, dataformats='NHWC')
-                train_writer.add_image('Generated_Image_AtoB', fake_B, tot_itr, dataformats='NHWC')
-                train_writer.add_image('Translation_AtoB_high', trs_high, tot_itr, dataformats='NHWC')
-                train_writer.add_image('Translation_AtoB_low', trs_low, tot_itr, dataformats='NHWC')
-                # ------------------------------问题在这之间 ------------------------------
+            train_writer.add_scalar('Loss_G_Percept', train_dict['G_Percept'], tot_itr)
+            # print(f"train_dict['G_Percept'] is nan test: {torch.isnan(train_dict['G_Percept']).any()}")
+            # print(f"train_dict['G_Percept'] is inf test: {torch.isinf(train_dict['G_Percept']).any()}")
+            
+            train_writer.add_scalar('Loss_G_Contrast', train_dict['G_Contrast'], tot_itr)
+            # print(f"train_dict['G_Contrast'] is nan test: {torch.isnan(train_dict['G_Contrast']).any()}")
+            # print(f"train_dict['G_Contrast'] is inf test: {torch.isinf(train_dict['G_Contrast']).any()}")
+            # breakpoint()
+            
+            # tensorboard - images
+            train_writer.add_image('Content_Image_A', real_A, tot_itr, dataformats='NHWC')
+            train_writer.add_image('Style_Image_B', real_B, tot_itr, dataformats='NHWC')
+            train_writer.add_image('Generated_Image_AtoB', fake_B, tot_itr, dataformats='NHWC')
+            train_writer.add_image('Translation_AtoB_high', trs_high, tot_itr, dataformats='NHWC')
+            train_writer.add_image('Translation_AtoB_low', trs_low, tot_itr, dataformats='NHWC')
+            # ------------------------------问题在这之间 ------------------------------
 
-                print("Tot_itrs: %d/%d | Epoch: %d | itr: %d/%d | Loss_G: %.5f"%(tot_itr+1, config.n_iter, epoch+1, (i+1), len(data_loader_train), train_dict['G_loss']))
-                write_file.write("Tot_itrs: %d/%d | Epoch: %d | itr: %d/%d | Loss_G: %.5f"%(tot_itr+1, config.n_iter, epoch+1, (i+1), len(data_loader_train), train_dict['G_loss']))
+            print("Tot_itrs: %d/%d | Epoch: %d | itr: %d/%d | Loss_G: %.5f"%(tot_itr+1, config.n_iter, epoch+1, (i+1), len(data_loader_train), train_dict['G_loss']))
 
-                if (tot_itr + 1) % 10000 == 0:
-                    model_save(ckpt_dir=config.ckpt_dir, model=model, optim_E=model.optimizer_E, optim_S=model.optimizer_S, optim_G=model.optimizer_G, epoch=epoch, itr=tot_itr)
-                    print(tot_itr+1, "th iteration model save")
-                    write_file.write(f'{tot_itr+1}, "th iteration model save"')
+            if (tot_itr + 1) % 10000 == 0:
+                model_save(ckpt_dir=config.ckpt_dir, model=model, optim_E=model.optimizer_E, optim_S=model.optimizer_S, optim_G=model.optimizer_G, epoch=epoch, itr=tot_itr)
+                print(tot_itr+1, "th iteration model save")
 
-                print(f'++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
-                write_file.write('------------------------------------------------------------------------------')
+            # print(f'++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
 
         update_learning_rate(model.E_scheduler, model.optimizer_E)
         update_learning_rate(model.S_scheduler, model.optimizer_S)

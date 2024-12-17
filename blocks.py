@@ -234,6 +234,9 @@ class PartialOctConv(nn.Module):
             if self.is_dw:
                 hf, h_mask = self.H2H(in_x=hf, in_mask=hm)
                 lf, l_mask = self.L2L(in_x=lf, in_mask=lm)
+                # print(self.is_dw)
+                # print(f'h_mask: {h_mask.max()}, {h_mask.max()}')
+                # print(f'h_mask: {l_mask.max()}, {l_mask.max()}')
             else:
                 a = self.H2H(in_x=hf, in_mask=hm)
                 b = self.L2H(in_x = self.upsample(lf), in_mask = self.upsample(lm))
@@ -244,8 +247,13 @@ class PartialOctConv(nn.Module):
                 # print('---------------------------------------------------------------')
                 d = self.H2L(in_x = self.avg_pool(hf), in_mask = self.avg_pool(hm))
                 
-                hf, h_mask = tuple(x + y for x, y in zip(a, b))
-                lf, l_mask = tuple(x + y for x, y in zip(c, d))
+                hf, _ = tuple(x + y for x, y in zip(a, b))
+                lf, _ = tuple(x + y for x, y in zip(c, d))
+                h_mask = a[1]
+                l_mask = c[1]
+                # print(self.is_dw)
+                # print(f'h_mask: {h_mask.max()}, {h_mask.max()}')
+                # print(f'h_mask: {l_mask.max()}, {l_mask.max()}')
             return (hf, lf), (h_mask, l_mask)
         
 
