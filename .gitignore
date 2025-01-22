@@ -1,0 +1,13 @@
+/log/*
+/log/
+/__pycache__
+/ckpt/dunhuang/*.pth
+/ckpt/dunhuang_real/*.pth
+/ckpt/dunhuang_white_main/*.pth
+/ckpt/re-dh-white-main/*.pth
+/ckpt/re-dh-white-main2/*.pth
+/output/
+/imgs/
+
+*.pyc
+*.pth

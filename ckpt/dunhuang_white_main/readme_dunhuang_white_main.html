@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://raw.githack.com/Nekasu/ObsidianVault/main/Template/styles.css">
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+    <div class="container">
+        dunhuang_white_main 是一个使用敦煌图像进行训练的 Partial_AesFA 成果. 该成果是修改了 dunhuang_real项目 中的部分训练数据后再训练的, 具体修改情况如下：
+
+        <h1>训练原因</h1>
+        &ensp;&ensp;dunhuang_real项目 的训练结果很差, 生成的风格化图像不具有什么纹理, 甚至无法看出主体. 发现 dunhuang_real项目 中使用的掩膜图像主体部分为黑色(值0), 而背景部分为白色(值1), 这可能是导致效果不佳的主要原因. <br>
+        &ensp;&ensp;仔细思考部分卷积的代码, 发现是丢弃掩膜中数值为0(即黑色)的部分, 保留其中数值为1(即白色)的部分. <br>
+        &ensp;&ensp;所以我认为, dunhuang_real项目 是使用了风格背景作为训练信息进行训练的, 故而此次使用了 ./utils/inverse.py 代码生成了与 dunhuang_real项目中 掩膜数据相反(原本黑色的部分变成白色)的新掩膜数据, 并以该掩膜作为输入重新进行训练, 以确认自己的推测是否正确.<br>
+        <hr>
+
+        <h1>训练信息</h1>
+        <ul>
+            <li>训练用数据集信息如下：
+                <ul>
+                    <li>content_dir = '/mnt/sda/Dataset/Detection/COCO/train2017' </li>
+                    <li>style_dir = '/mnt/sda/Dataset/style_image/dunhuang_style/crop_256/main_white/origin' </li>
+                    <li>mask_dir = '/mnt/sda/Dataset/style_image/dunhuang_style/crop_256/main_white/mask' </li>
+                 </ul>
+            </li>
+            <li>
+                训练数据记录在<a href="../../log/output_2024-12-21-17:41.txt">这个txt文件</a>中.
+            </li>
+        </ul>
+        <hr>
+            
+        <h1>生成结果</h1>
+        <p>本次训练结果为 ./ckpt/dunhuang_white_main/model_iter_160000_epoch_22.pth, 现将该 .pth 文件复制并重命名为 main.pth, 以符合测试文件的要求.</p>
+        &ensp;&ensp;使用本次训练成果生成的 <span class="color-huohuo-green">主体图像</span> 存储于 ./output/dunhuang_white_main 中, 可点击<a href="/output/dunhuang_white_main/256/main/result_img_table_main.html">该html文件</a>查看结果<br>
+        &ensp;&ensp;使用本次训练成果生成的 <span class="color-huohuo-green">背景图像</span> 存储于 ./output/dunhuang_white_main 中, 可点击<a href="/output/dunhuang_white_main/256/main/result_img_table_main.html">该html文件</a>查看结果<br>
+        <hr>
+        <h1>评价</h1>
+        <ol>
+            <li>
+                &ensp;&ensp;首先给予肯定. <span class="color-huohuo-green"> 掩膜确实对训练结果有影响</span>, 对比上述两个 html 结果就可以看出来. 使用相同的风格图像与内容图像, 但使用完全相反的掩膜进行风格迁移, 得到的风格迁移结果具有较大区别: 对比使用主体作为风格输入与使用背景作为风格输入, 可以发现前者具有更强烈的风格特征, 轮廓信息也更加清晰.  <br>
+                &ensp;&ensp;如<a href="/output/dunhuang_white_main/256/main/result_img_table_main.html">风格化主体图</a>的第31号图像, 对比<a href="/output/dunhuang_white_main/256/main/result_img_table_main.html">风格化内容图</a>中相同序号的图像, 可以发现风格化主体图具有明确的轮廓, 且具有更多的结构化信息<br>
+            </li>
+            <li id="compare_settings">
+                &ensp;&ensp;其次需要思考问题. <span class="color-huohuo-green">这次的结果依旧不是很理想, 风格化主体图中依旧不知所云.</span> 我认为数数据量导致了这个问题. <br>
+                &ensp;&ensp;观察<a href="./output_2024-12-21-17:41.txt">训练过程中终端的输出文件</a>, 可以发现在总共 16,5000 轮的迭代中, 损失函数 Loss_G 的值在约 6000 轮左右时就稳定在 3位数了, 在约 6,5000 轮左右时就与最后的 16,5000 轮的损失值类似. 这可能是数据量不足导致的.<br>
+                &ensp;&ensp;此刻的时间为2025-01-08-22:10 周三, 为了判断是否是数据量导致了这个问题, 我决定进行对比实验 -- 使用原始 AesFA网络, 配合本次训练的内容图像与风格图像(也即, 内容图像为MSCOCO train2017, 风格图像为相同的敦煌crop256图像). 使用相同的数据, 不同的网络, 可以排除数据对生成结果的影响. 反过来说, 如果生成结果类似, 则说明网络结构不是导致效果差的决定性因素. 故而主要有以下几个观察内容：
+                <ol>
+                    <li>普通AesFA使用与本次训练相同数据集训练时的<span class="color-hutao-red">损失函数下降速度</span></li>
+                    <li>普通AesFA使用与本次训练相同数据集训练时, <span class="color-hutao-red">在多少轮会接近收敛</span></li>
+                    <li>普通AesFA使用与本次训练相同数据集训练后, <span class="color-hutao-red">使用最好的.pth文件的风格迁移效果</span>. 如果结果普通AesFA效果更好, 则说明我的代码有问题, 或该思路行不通. 如果普通AesFA的结果与本次训练的结果差不多, 则说明是训练数据的问题.</li>
+                </ol>
+                <span class="color-hutao-red">该对比结果将记录在下面的 <a href="#compare"><span class="color-nahida-green">对比实验</span></a> 中.</span>
+            </li>
+        </ol>
+        <hr>
+        <h1 id="compare">对比实验</h1>
+        该部分用于记录 <a href="#compare_settings">上述设计的对比实验</a> 的结果与分析结果. 此部分中所有的 "AesFA_origin" 项目指 10.15.114.228服务器 上 路径为 "/mnt/sda/zxt/3_code_area/code_papers/AesFA_origin" 的项目
+        <ol>
+            <li>第一次对比记录, 此次对比实验的名称为"Dunhuang_comparasion"
+                <ul>
+                    <li>进行该实验的原因: 见上述 "评价" 一节</li>
+                    <li><span style="font-weight: 900;">基本信息</span>: 于2025-01-10-15:15查看的第一次的实验结果. 本次实验结果的 .pth 文件 在 AesFA_origin项目 中下的 "/ckpt/Dunhuang_comparasion" 中. 使用该 .pth 进行推理的结果存储在 AesFA_origin 项目下的 "/Generated_images/Dunhuang_comparasion" 中.</li>
+                    <li><span style="font-weight:900;">结果记录</span>: 结果很差. 相比于我自己提出的 Partial_AesFA 而言, 具有更差的效果. 但这可能是只训练了 16000轮导致的(相比于本项目训练的 160000 次).</li>
+                    <li><span style="font-weight: 900;">结果分析</span>：可能是训练轮数过少导致的, 本次 Dunhuang_comparasion 对比实验仅仅进行了 16000 次训练, 而本项目进行了 160000 次训练. 为了公平, 现准备重新训练对比实验, 实验轮次与本项目一致, 均为 160000 轮. <span class="color-kachina-yellow">这次新的对比实验记作 Dunhuang_comparasion_160000</span>.</li>
+                </ul>
+            </li>
+            <li>第二次对比记录, 此次对比实验的名称为 "Dunhuang_comparasion_160000"
+                <ul>
+                    <li>进行该实验的原因：见上面第一次对比实验的结果分析.</li>
+                    <li><span style="font-weight: 9000;">基本信息</span>: 于"替换"查看的第一次的实验结果. 本次实验结果的 .pth 文件 在 AesFA_origin项目 中下的 "/ckpt/Dunhuang_comparasion_160000" 中. 使用该 .pth 进行推理的结果存储在 AesFA_origin 项目下的 "/Generated_images/Dunhuang_comparasion_160000" 中.</li>
+                    <li>2025-01-10-16:09. 训练正在训练过程中, iteration==10608, 距离最终的 160000 还有较大差距. 尽管如此, 损失函数已经趋与稳定, 所以已经可以进行一定程度上的对比分析. <span class="color-hutao-red"> 该对比分析遵循上述 <a href="#compare_settings">对比实验设计</a>, 对比分析如下(对比分析中, 项目dunhuang_white_main 被称做 本项目, 对比实验 Dunhuang_comparasion_160000 被称作 对比实验)</span><br>
+                        <ul>
+                            <li><span class="color-huohuo-green">损失函数下降速度对比:</span> <br>
+                                &ensp; &ensp;本项目: iteration \(\in [1,4800]\)中时, 损失函数大多为五位及以上的数, 即万以上的数. 在 \([4800, 5500]\) 中, 大多为四或五位数. 在 \([5500, 6660]\)左右, 损失函数大多为三或四位数. 随后在 \([6600,14733]\)中, 损失函数从 900 左右降低到 200左右；在最后的 \([150000,165000]\) 左右之间, 在 1000 或80、90之间徘徊. <br>
+                                &ensp; &ensp;对比试验：损失函数最大值不超过四位数. iteration \(\in [1,106]\)中, 损失值从 最高800 降低到 200左右. 随后在 第1004次 iteration 时出现第一个两位数. iteration \(\in [1004,2093]\)时, 在100多或两位数之间徘徊. 随后, iteration \(\in [2093,22859]\)中, 损失函数从90多降低到 40、30左右, 并稳定在 40~70之间. <br>
+                            </li>
+                            <li><span class="color-huohuo-green">收敛速度对比</span><br>
+                                &ensp; &ensp;本项目：收敛速度较慢, 可能是损失函数的计算有问题. 实际上, 在编写代码时留下了一个隐患, 即在使用部分卷积时, 得到结果会在一定程度上变大, 但我一直没有修复这个问题.<br>
+                                &ensp; &ensp;对比实验：损失函数收敛较快, 且数值一直较小. 造成这种现象的原因可能是上述提到的“代码问题”.<br>
+                            </li>
+                            <li><span class="color-huohuo-green">结果对比: 见下面的详述</span></li>
+                        </ul>
+                    </li>
+                    <li>2025-01-14-10:08 周二：对比训练完成, 开始测试结果. 训练过程中, 每10000轮会记录一次 .pth 文件, 一共有 16个 .pth 文件. 结合训练日志中损失函数的变化, 拟使用10000轮、80000轮、160000轮的 3 个 .pth 文件进行推理. 以下对比实验将被称作 AesFA_origin, 路径为 10.15.114.228 服务器上的 /mnt/sda/zxt/3_code_area/code_papers/AesFA_origin
+                        <ul>
+                            <li>使用 10000 轮 .pth 文件生成的风格化图像保存在 AesFA_origin项目 下的 Generated_images/Dunhuang_comparasion_160000_use10000 文件夹中. 使用 80000 轮 .pth 文件生成的风格化图像保存在 AesFA_origin项目 下的 Generated_images/Dunhuang_comparasion_160000_use80000 文件夹中. 使用 160000 轮 .pth 文件生成的风格化图像保存在 AesFA_origin项目 下的 Generated_images/Dunhuang_comparasion_160000_use160000 文件夹中.</li>
+                            <li>对比实验的生成结果与本项目的生成结果对比结果如下：<br>
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>对比实验10000轮</th>
+                                            <th>对比实验80000轮</th>
+                                            <th>对比实验160000轮</th>
+                                            <th>本项目</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><img src="/mnt/sda/zxt/3_code_area/code_papers/AesFA_origin/Generated_images/Dunhuang_comparasion_160000_use10000/000000000016_stylized_cropped_image_1_1.jpg" alt="如果看不了图像,则请在服务器上直接打开html文件, 而非使用live server"></td>
+                                            <td><img src="/mnt/sda/zxt/3_code_area/code_papers/AesFA_origin/Generated_images/Dunhuang_comparasion_160000_use80000/000000000016_stylized_cropped_image_1_1.jpg" alt="如果看不了图像,则请在服务器上直接打开html文件, 而非使用live server"></td>
+                                            <td><img src="/mnt/sda/zxt/3_code_area/code_papers/AesFA_origin/Generated_images/Dunhuang_comparasion_160000_use160000/000000000016_stylized_cropped_image_1_1.jpg" alt="如果看不了图像,则请在服务器上直接打开html文件, 而非使用live server"></td>
+                                            <td><img src="../../output/dunhuang_white_main/256/main/000000000016_stylized_cropped_image_1_1.jpg" alt="../../output/dunhuang_white_main/256/main/000000000016_stylized_cropped_image_1_1.jpg"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </li>
+                            <li>对比使用三个不同训练阶段的 .pth 进行训练的结果, 可以发现使用 10000 轮 .pth 生成的结果整体风格较为明显, 但风格信息侵入到内容图像中, 有较为明显的风格入侵现象, 如人物的裤子上具有明显的“敦煌绿色色彩”. 使用 80000 轮 .pth 文件生成的风格化图像中, 风格入侵现象没有那么明显, 但依旧存在. 160000轮的结果最好, 主体与背景的风格区分较好.  </li>
+                            <li>将本项目与对比实验的结果放在一起做比较, 可以发现数据量确实对结果有影响, 但影响有限. 而本项目的结果中, 风格信息过为明显, 与对比实验差距较大.</li>
+                            <li>可以发现, 在对比实验中, 随着训练轮数的增加, 风格信息与内容信息的区分越明显. 基于这个想法, 本项目具有较差效果的原因可能有以下三个:
+                                <ol>
+                                    <li><span style="font-weight: 900;">原因1: </span>可能是本项目训练轮数不够, 导致了最终结果风格信息过为明显, 而内容信息有所缺失. <span class="color-huohuo-green">逻辑：</span>对比实验的三个不同轮次的结果表示, 随着训练轮次的增加, 内容信息能够更好的保留, 而风格信息则有所衰弱, 所以可以认为是训练轮数不够导致的结果.</li>
+                                    <li><span style="font-weight: 900;">原因2: </span>可能是本项目的代码存在问题导致了与对比实验的巨大差距. <span class="color-huohuo-green">逻辑</span>: 与对比实验的 <a href="/mnt/sda/zxt/3_code_area/code_papers/AesFA_origin/ckpt/Dunhuang_comparasion_160000/log.txt">训练日志</a> 相比, 本项目日志的损失函数具有较大的数值--从20位数下降到3位数, 所以可能是我编写的部分卷积代码有问题, 需要排查后重新训练.</li>
+                                    <li><span style="font-weight: 900;">原因3: </span>本项目的训练陷入的局部最优. <span class="color-huohuo-green">逻辑:</span>对比实验1 与 对比实验2 中, 均使用了训练 10000 轮后得到的 .pth 进行推理. 但使用 对比实验1的10000轮的.pth文件生成的结果相较于对比实验2的10000轮 .pth 文件效果差得多, 所以可能是陷入局部最优导致的</li>
+                                </ol>
+                            </li>
+                            <li>
+                                <span class="color-hutao-red"> 为了检查是以上哪种原因导致了这样的结果, 可以有如下两种实验： </span>
+                                <ol>
+                                    <li>增加训练轮次, 重新开始训练. 该实验可以检查上述 原因1 与 原因3. 为该实验命名为 <span class="color-kachina-yellow">"re-dh-white-main"</span>， 意为“re-dunhuang-white-main”. 其中, re 表示再次训练, dunhuang-white-main 表示该项目的代号. 该实验的训练日志为 <a href="?">待填写</a>, 实验分析为 <a href="?">待填写</a></li>
+                                    <li>改进部分卷积的代码, 检查为何一开始损失函数会很大. 该实验可以检查上述 原因2. 为该实验命名为 <span class="color-kachina-yellow">"repartial-dh-white-main"</span>, 意为“re-paritail-dunhuang-main”. 其中, re-parital表示重新修改了部分卷积代码的再次训练, dunhuang-white-main 表示该项目的代号. 该实验的训练日志为 <a href="?">待填写</a>, 实验分析为 <a href="?">待填写</a></li>
+                                </ol>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ol>
+    </div>
+</body>
+</html>

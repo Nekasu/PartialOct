@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        dunhuang_real 是一个使用敦煌图像进行训练的 Partial_AesFA 成果. 该成果是训练代码能正确运行后的第一次训练. 
+
+        <h1>训练信息</h1>
+        <ul>
+            <li>训练用数据集信息如下：
+                <ul>
+                    <li>content_dir = '/mnt/sda/zxt/3_code_area/code_develop/PartialConv_AesFA/imgs/contents/full' </li>
+                    <li>style_dir = '/mnt/sda/zxt/3_code_area/code_develop/PartialConv_AesFA/imgs/styles/main_black/origin' </li>
+                    <li> mask_dir = '/mnt/sda/Dataset/style_image/dunhuang_style/crop_256/main_black/mask' </li>
+                 </ul>
+            </li>
+        </ul>
+            
+        <h1>生成结果</h1>
+        <p> 使用本次训练成果生成的图像存储于 ./outputs/dunhuang_real 中. </p>
+        <ul>
+            <li>./outputs/dunhuang_real/256 中存储了使用 256 \* 256 的风格图像生成的内容图像, 生成的风格化图像中内容信息保留较少.
+                <ul>
+                    <li>为了推测为何会出现这种问题, 可以考虑使用 敦煌风格数据集 训练一个 AesFA_origin, 选择其中几个不同的 pth文件测试, 看看此处生成的图像与哪个 .pth 生成的图像类似, 以推断是什么问题. </li>
+                </ul>
+            </li>
+            <li>
+                ./outputs/dunhuang_real/512 中存储了使用 512 \* 512 的风格图像生成的内容图像. 尽管生成的风格化图像中内容信息保留较少, 但与 256*256 的生成结果相比, 则具有更好的内容信息. 
+            </li>
+            
+        </ul>
+            
+        <h1>评价</h1>
+        <ul>
+            <li>
+                <p>这次训练具有一些缺陷：</p>
+                <p>训练使用的风格图像数量少：仅有100余张, 且其中大部分背景与前景区分不明显  </p>
+                <p>训练代码可能存在问题：数据经过 PartialOct 后经常被放大, 可能需要归一化处理.</p>
+                <p>也有可能是掩膜弄反了缘故：故而明天直接进行将掩膜反转(原本黑色的地方变为白色、白色的地方变为黑色), 重新训练</p>
+                <p>2024-12-20-20:28：重新训练的结果为 dunhuang_white_main项目</p>
+            </li>
+        </ul>
+    </div>
+</body>
+</html>

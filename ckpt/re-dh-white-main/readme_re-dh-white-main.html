@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>re-dh-white-main实验记录与分析</title>
+    <link rel="stylesheet" href="https://raw.githack.com/Nekasu/ObsidianVault/main/Template/styles.css">
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+    <div class="container">
+        re-dh-white-main 是一个使用 "具有敦煌风格的图像" 进行风格迁移训练的 Partial_AesFA 实验(以下简称"本实验或该实验或该项目"). 该实验修改了 <a href="../dunhuang_white_main/readme_dunhuang_white_main.html">dunhuang_white_main</a> 中的训练总轮次 (从 16,0000 增加到 16,0000 \(\times\) 5), 以验证两个猜想：
+        <ol>
+            <li>猜想1: dunhuang_white_main 实验中训练轮次太少, 导致了生成的风格化图像效果不佳.</li>
+            <li>猜想2: dunhuang_white_main 实验中陷入的局部最优, 导致了生成的风格化图像效果不佳.</li>
+        </ol>
+        这两个猜想分别对应<a href="../dunhuang_white_main/readme_dunhuang_white_main.html">dunhuang_white_main 实验记录</a> 中最终提及的 "导致 Partial_AesFA 实验结果不佳" 的 原因1 与原因3.
+        <h1>训练信息</h1>
+        <ul>
+            <li>该实验与其父实验<a href="../dunhuang_white_main/readme_dunhuang_white_main.html">dunhuang_white_main </a>使用相同的训练集. 训练用数据集信息如下：
+                <ul>
+                    <li>content_dir = '/mnt/sda/Dataset/Detection/COCO/train2017' </li>
+                    <li>style_dir = '/mnt/sda/Dataset/style_image/dunhuang_style/crop_256/main_white/origin' </li>
+                    <li>mask_dir = '/mnt/sda/Dataset/style_image/dunhuang_style/crop_256/main_white/mask' </li>
+                 </ul>
+            </li>
+            <li>
+                训练数据记录在<a href="./log.txt">这个txt文件</a>中.
+            </li>
+        </ul>
+        <hr>
+        <h1>生成结果</h1>
+        <hr>
+        <h1>评价</h1>
+        <hr>
+        <h1>对比实验</h1>
+    </div>
+</body>
+</html>
