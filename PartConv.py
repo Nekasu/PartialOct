@@ -70,7 +70,10 @@ class PartialConv2d(nn.Module):
         # print(f'-------------in PartialConv2d-------------')
         # print(f'in_x 的最大最小值: {in_x.max()}, {in_x.min()}')
         # print(f"origin shape is {in_x.shape}")
-        # print(f"origin mask shape: {in_mask.shape}")
+        # print(f"origin mask shape: {in_mask.shape}")self.sum_mask
+        print(f"conv_1的大小为f{self.conv_1.weight.shape}")
+        print(f"conv的大小为f{self.conv.weight.shape}")
+        print(f"in_mask 的大小为f{in_mask.shape}")
         ##################### 参数引入 #####################
         self.in_x = in_x
         # print(f'显示输入数据in_x的最大最小值：{self.in_x.max()}, {self.in_x.min()}')
@@ -103,9 +106,11 @@ class PartialConv2d(nn.Module):
             # print(f'in_mask shape is {self.in_mask.shape}')
             
             self.sum_I: int = self.kernel_size * self.kernel_size * 1# sum(I)是一个固定值, 从数值上与卷积核的窗口大小相等
-            # print(f'sum_I 的值: {self.sum_I}')
+            print(f'sum_I 的值: {self.sum_I}')
+            print(f'in_mask 的值:f{self.in_mask}')
             # print(f'self.in_mask.shape[1] is {self.in_mask.shape[1] } ')
             self.sum_mask: torch.Tensor = torch.ceil(self.conv_1(self.in_mask)/self.in_mask.shape[1]) # 利用一个其中参数全为1的卷积核与输入掩膜相乘, 算出每个像素的sum(M)
+            print(f"sum_mask is f{self.sum_mask}")
             pos_sum_mask = self.sum_mask[self.sum_mask > 0.0]
             # print(f'sum_mask 的最大最小值: {self.sum_mask.max()}, {self.sum_mask.min()}')
             # print(f'sum_mask 的最大、大于0的最小值: {pos_sum_mask.max()}, {pos_sum_mask.min()}')
@@ -153,7 +158,8 @@ if __name__ == '__main__':
     pc = PartialConv2d(in_channels=3, out_channels=3, kernel_size=3, stride=1)
     pc2 = PartialConv2d(in_channels=3, out_channels=3, kernel_size=3, stride=1)
     pc3 = PartialConv2d(in_channels=3, out_channels=3, kernel_size=3, stride=1)
-    in_x = torch.rand(size=(1,3,256,256)).float()
+    pc4 = PartialConv2d(in_channels=3, out_channels=3, kernel_size=3, stride=1)
+    in_x = torch.randint(low=0,high=256, size=(1,3,3,3)).float()
     in_mask = torch.randint(low=0, high=2, size=in_x.shape).float()
     # in_mask = torch.zeros_like(in_x)
     # print(in_mask)
@@ -164,5 +170,9 @@ if __name__ == '__main__':
     out_x, out_mask = pc2(out_x, out_mask)
     print(f'-------------------------pc3------------------------')
     out_x, out_mask = pc3(out_x, out_mask)
+    print(f'-------------------------pc4------------------------')
+    out_x, out_mask = pc4(out_x, out_mask)
     # print(f'mask is {out_mask}')
+    print(f'in_x is {in_x}')
+    print(f'out_x is {out_x}')
     print((out_mask==1).any())

@@ -1,5 +1,5 @@
 class Config:
-    phase = 'train'         # You must change the phase into train/test/style_blending
+    phase = 'test'         # You must change the phase into train/test/style_blending
     train_continue = 'off'  # on / off
 
     data_num = 60000        # Maximum # of training data
@@ -19,14 +19,14 @@ class Config:
         test_content_size = 256
         test_style_size = 256
 
-        mod = 'back' # main 表示迁移风格图像, back表示迁移背景图像, 该值主要用于创建保存图像的文件名, 对实际功能没有影响
+        mod = 'main' # main 表示迁移风格图像, back表示迁移背景图像, 当该值为main时, 将使用主体图像进行风格迁移；当该值为 back 时, 将使用背景图像进行风格迁移. 同时, 该值还用于创建保存图像的文件名.
         content_dir = '/mnt/sda/zxt/3_code_area/code_develop/PartialConv_AesFA/imgs/contents/full'
         style_dir = '/mnt/sda/zxt/3_code_area/code_develop/PartialConv_AesFA/imgs/styles'
         mask_dir = '/mnt/sda/zxt/3_code_area/code_develop/PartialConv_AesFA/imgs/masks' + '/' + mod
         # style_dir = '/mnt/sda/zxt/3_code_area/code_develop/PartialConv_AesFA/imgs/styles/origin'
         # mask_dir = '/mnt/sda/zxt/3_code_area/code_develop/PartialConv_AesFA/imgs/styles/mask'
 
-        img_dir = './output/'+file_n + '/' + str(test_content_size) + '/' + mod 
+        img_dir = './output/'+file_n + '/' + str(test_content_size)+  '/' + mod 
 
     elif phase == 'style_blending':
         blend_load_size = 256
