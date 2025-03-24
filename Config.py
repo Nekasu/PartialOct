@@ -1,5 +1,6 @@
 class Config:
-    phase = 'test'         # You must change the phase into train/test/style_blending
+    phase = 'train'         # You must change the phase into train/test/style_blending
+    # phase = 'train'         # You must change the phase into train/test/style_blending
     train_continue = 'off'  # on / off
 
     data_num = 60000        # Maximum # of training data
@@ -7,8 +8,9 @@ class Config:
     content_dir = '/mnt/sda/Dataset/Detection/COCO/train2017'
     style_dir = '/mnt/sda/Dataset/style_image/dunhuang_style/crop_256/main_white/origin'
     mask_dir = '/mnt/sda/Dataset/style_image/dunhuang_style/crop_256/main_white/mask'
+    cuda_device = 'cuda:1'
     
-    file_n = 're-dh-white-main' # 新训练时, 此处需要修改.
+    file_n = 'test' # 新训练时, 此处需要修改. 测试时, 也需要修改此处
     log_file_path = '/mnt/sda/zxt/3_code_area/code_develop/PartialConv_AesFA/log/' + file_n + 'log.txt'
     log_dir = './log/' + file_n
     ckpt_dir = './ckpt/' + file_n

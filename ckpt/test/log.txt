@@ -1,0 +1,1484 @@
+/mnt/sda/zxt/3_code_area/code_develop/PartialConv_AesFA/log/testlog.txt
+cuda: cuda:1
+Version: test
+train mode
+content dir: /mnt/sda/Dataset/Detection/COCO/train2017
+style dir: /mnt/sda/Dataset/style_image/dunhuang_style/crop_256/main_white/origin
+mask dir: /mnt/sda/Dataset/style_image/dunhuang_style/crop_256/main_white/mask
+Train:  60000 images:  7500 x 8 (batch size) = 60000
+# of parameter: 19147951
+parameters of networks: {'netE': 3323008, 'netS': 6645888, 'netG': 5673315, 'vgg_loss': 3505740}
+conv_1的大小为ftorch.Size([64, 3, 7, 7])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 3, 7, 7])
+in_mask 的大小为ftorch.Size([8, 3, 256, 256])
+sum_I 的值: 147
+sum_mask 的最大最小值: 147.0, 0.0
+conv_1的大小为ftorch.Size([32, 64, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([32, 64, 3, 3])
+in_mask 的大小为ftorch.Size([8, 64, 256, 256])
+sum_I 的值: 576
+sum_mask 的最大最小值: 576.0, 0.0
+conv_1的大小为ftorch.Size([32, 64, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([32, 64, 3, 3])
+in_mask 的大小为ftorch.Size([8, 64, 128, 128])
+sum_I 的值: 576
+sum_mask 的最大最小值: 576.0, 0.0
+conv_1的大小为ftorch.Size([64, 32, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 32, 1, 1])
+in_mask 的大小为ftorch.Size([8, 32, 128, 128])
+sum_I 的值: 32
+sum_mask 的最大最小值: 32.0, 0.0
+conv_1的大小为ftorch.Size([64, 32, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 32, 1, 1])
+in_mask 的大小为ftorch.Size([8, 32, 128, 128])
+sum_I 的值: 32
+sum_mask 的最大最小值: 32.0, 0.0
+conv_1的大小为ftorch.Size([64, 32, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 32, 1, 1])
+in_mask 的大小为ftorch.Size([8, 32, 64, 64])
+sum_I 的值: 32
+sum_mask 的最大最小值: 32.0, 0.0
+conv_1的大小为ftorch.Size([64, 32, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 32, 1, 1])
+in_mask 的大小为ftorch.Size([8, 32, 64, 64])
+sum_I 的值: 32
+sum_mask 的最大最小值: 32.0, 0.0
+conv_1的大小为ftorch.Size([64, 64, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 64, 3, 3])
+in_mask 的大小为ftorch.Size([8, 64, 128, 128])
+sum_I 的值: 576
+sum_mask 的最大最小值: 576.0, 0.0
+conv_1的大小为ftorch.Size([64, 64, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 64, 3, 3])
+in_mask 的大小为ftorch.Size([8, 64, 128, 128])
+sum_I 的值: 576
+sum_mask 的最大最小值: 576.0, 0.0
+conv_1的大小为ftorch.Size([64, 64, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 64, 3, 3])
+in_mask 的大小为ftorch.Size([8, 64, 64, 64])
+sum_I 的值: 576
+sum_mask 的最大最小值: 576.0, 0.0
+conv_1的大小为ftorch.Size([64, 64, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 64, 3, 3])
+in_mask 的大小为ftorch.Size([8, 64, 64, 64])
+sum_I 的值: 576
+sum_mask 的最大最小值: 576.0, 0.0
+conv_1的大小为ftorch.Size([64, 1, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 1, 3, 3])
+in_mask 的大小为ftorch.Size([8, 64, 128, 128])
+sum_I 的值: 576
+sum_mask 的最大最小值: 9.0, 0.0
+conv_1的大小为ftorch.Size([64, 1, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 1, 3, 3])
+in_mask 的大小为ftorch.Size([8, 64, 64, 64])
+sum_I 的值: 576
+sum_mask 的最大最小值: 9.0, 0.0
+conv_1的大小为ftorch.Size([128, 64, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 64, 1, 1])
+in_mask 的大小为ftorch.Size([8, 64, 64, 64])
+sum_I 的值: 64
+sum_mask 的最大最小值: 64.0, 0.0
+conv_1的大小为ftorch.Size([128, 64, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 64, 1, 1])
+in_mask 的大小为ftorch.Size([8, 64, 64, 64])
+sum_I 的值: 64
+sum_mask 的最大最小值: 64.0, 0.0
+conv_1的大小为ftorch.Size([128, 64, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 64, 1, 1])
+in_mask 的大小为ftorch.Size([8, 64, 32, 32])
+sum_I 的值: 64
+sum_mask 的最大最小值: 64.0, 0.0
+conv_1的大小为ftorch.Size([128, 64, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 64, 1, 1])
+in_mask 的大小为ftorch.Size([8, 64, 32, 32])
+sum_I 的值: 64
+sum_mask 的最大最小值: 64.0, 0.0
+conv_1的大小为ftorch.Size([128, 128, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 128, 3, 3])
+in_mask 的大小为ftorch.Size([8, 128, 64, 64])
+sum_I 的值: 1152
+sum_mask 的最大最小值: 1152.0, 0.0
+conv_1的大小为ftorch.Size([128, 128, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 128, 3, 3])
+in_mask 的大小为ftorch.Size([8, 128, 64, 64])
+sum_I 的值: 1152
+sum_mask 的最大最小值: 1152.0, 0.0
+conv_1的大小为ftorch.Size([128, 128, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 128, 3, 3])
+in_mask 的大小为ftorch.Size([8, 128, 32, 32])
+sum_I 的值: 1152
+sum_mask 的最大最小值: 1152.0, 0.0
+conv_1的大小为ftorch.Size([128, 128, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 128, 3, 3])
+in_mask 的大小为ftorch.Size([8, 128, 32, 32])
+sum_I 的值: 1152
+sum_mask 的最大最小值: 1152.0, 0.0
+conv_1的大小为ftorch.Size([128, 2, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 2, 3, 3])
+in_mask 的大小为ftorch.Size([8, 128, 64, 64])
+sum_I 的值: 1152
+sum_mask 的最大最小值: 18.0, 0.0
+conv_1的大小为ftorch.Size([128, 1, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 1, 3, 3])
+in_mask 的大小为ftorch.Size([8, 128, 64, 64])
+sum_I 的值: 1152
+sum_mask 的最大最小值: 9.0, 0.0
+conv_1的大小为ftorch.Size([128, 2, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 2, 3, 3])
+in_mask 的大小为ftorch.Size([8, 128, 32, 32])
+sum_I 的值: 1152
+sum_mask 的最大最小值: 18.0, 0.0
+conv_1的大小为ftorch.Size([128, 1, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 1, 3, 3])
+in_mask 的大小为ftorch.Size([8, 128, 32, 32])
+sum_I 的值: 1152
+sum_mask 的最大最小值: 9.0, 0.0
+conv_1的大小为ftorch.Size([256, 128, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([256, 128, 1, 1])
+in_mask 的大小为ftorch.Size([8, 128, 64, 64])
+sum_I 的值: 128
+sum_mask 的最大最小值: 128.0, 0.0
+conv_1的大小为ftorch.Size([256, 128, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([256, 128, 1, 1])
+in_mask 的大小为ftorch.Size([8, 128, 64, 64])
+sum_I 的值: 128
+sum_mask 的最大最小值: 128.0, 0.0
+conv_1的大小为ftorch.Size([256, 128, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([256, 128, 1, 1])
+in_mask 的大小为ftorch.Size([8, 128, 32, 32])
+sum_I 的值: 128
+sum_mask 的最大最小值: 128.0, 0.0
+conv_1的大小为ftorch.Size([256, 128, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([256, 128, 1, 1])
+in_mask 的大小为ftorch.Size([8, 128, 32, 32])
+sum_I 的值: 128
+sum_mask 的最大最小值: 128.0, 0.0
+conv_1的大小为ftorch.Size([256, 256, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([256, 256, 3, 3])
+in_mask 的大小为ftorch.Size([8, 256, 64, 64])
+sum_I 的值: 2304
+sum_mask 的最大最小值: 2304.0, 0.0
+conv_1的大小为ftorch.Size([256, 256, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([256, 256, 3, 3])
+in_mask 的大小为ftorch.Size([8, 256, 64, 64])
+sum_I 的值: 2304
+sum_mask 的最大最小值: 2304.0, 0.0
+conv_1的大小为ftorch.Size([256, 256, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([256, 256, 3, 3])
+in_mask 的大小为ftorch.Size([8, 256, 32, 32])
+sum_I 的值: 2304
+sum_mask 的最大最小值: 2304.0, 0.0
+conv_1的大小为ftorch.Size([256, 256, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([256, 256, 3, 3])
+in_mask 的大小为ftorch.Size([8, 256, 32, 32])
+sum_I 的值: 2304
+sum_mask 的最大最小值: 2304.0, 0.0
+conv_1的大小为ftorch.Size([64, 3, 7, 7])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 3, 7, 7])
+in_mask 的大小为ftorch.Size([8, 3, 256, 256])
+sum_I 的值: 147
+sum_mask 的最大最小值: 147.0, 147.0
+conv_1的大小为ftorch.Size([32, 64, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([32, 64, 3, 3])
+in_mask 的大小为ftorch.Size([8, 64, 256, 256])
+sum_I 的值: 576
+sum_mask 的最大最小值: 576.0, 576.0
+conv_1的大小为ftorch.Size([32, 64, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([32, 64, 3, 3])
+in_mask 的大小为ftorch.Size([8, 64, 128, 128])
+sum_I 的值: 576
+sum_mask 的最大最小值: 576.0, 576.0
+conv_1的大小为ftorch.Size([64, 32, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 32, 1, 1])
+in_mask 的大小为ftorch.Size([8, 32, 128, 128])
+sum_I 的值: 32
+sum_mask 的最大最小值: 32.0, 32.0
+conv_1的大小为ftorch.Size([64, 32, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 32, 1, 1])
+in_mask 的大小为ftorch.Size([8, 32, 128, 128])
+sum_I 的值: 32
+sum_mask 的最大最小值: 32.0, 32.0
+conv_1的大小为ftorch.Size([64, 32, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 32, 1, 1])
+in_mask 的大小为ftorch.Size([8, 32, 64, 64])
+sum_I 的值: 32
+sum_mask 的最大最小值: 32.0, 32.0
+conv_1的大小为ftorch.Size([64, 32, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 32, 1, 1])
+in_mask 的大小为ftorch.Size([8, 32, 64, 64])
+sum_I 的值: 32
+sum_mask 的最大最小值: 32.0, 32.0
+conv_1的大小为ftorch.Size([64, 64, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 64, 3, 3])
+in_mask 的大小为ftorch.Size([8, 64, 128, 128])
+sum_I 的值: 576
+sum_mask 的最大最小值: 576.0, 576.0
+conv_1的大小为ftorch.Size([64, 64, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 64, 3, 3])
+in_mask 的大小为ftorch.Size([8, 64, 128, 128])
+sum_I 的值: 576
+sum_mask 的最大最小值: 576.0, 576.0
+conv_1的大小为ftorch.Size([64, 64, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 64, 3, 3])
+in_mask 的大小为ftorch.Size([8, 64, 64, 64])
+sum_I 的值: 576
+sum_mask 的最大最小值: 576.0, 576.0
+conv_1的大小为ftorch.Size([64, 64, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 64, 3, 3])
+in_mask 的大小为ftorch.Size([8, 64, 64, 64])
+sum_I 的值: 576
+sum_mask 的最大最小值: 576.0, 576.0
+conv_1的大小为ftorch.Size([64, 1, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 1, 3, 3])
+in_mask 的大小为ftorch.Size([8, 64, 128, 128])
+sum_I 的值: 576
+sum_mask 的最大最小值: 9.0, 9.0
+conv_1的大小为ftorch.Size([64, 1, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 1, 3, 3])
+in_mask 的大小为ftorch.Size([8, 64, 64, 64])
+sum_I 的值: 576
+sum_mask 的最大最小值: 9.0, 9.0
+conv_1的大小为ftorch.Size([128, 64, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 64, 1, 1])
+in_mask 的大小为ftorch.Size([8, 64, 64, 64])
+sum_I 的值: 64
+sum_mask 的最大最小值: 64.0, 64.0
+conv_1的大小为ftorch.Size([128, 64, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 64, 1, 1])
+in_mask 的大小为ftorch.Size([8, 64, 64, 64])
+sum_I 的值: 64
+sum_mask 的最大最小值: 64.0, 64.0
+conv_1的大小为ftorch.Size([128, 64, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 64, 1, 1])
+in_mask 的大小为ftorch.Size([8, 64, 32, 32])
+sum_I 的值: 64
+sum_mask 的最大最小值: 64.0, 64.0
+conv_1的大小为ftorch.Size([128, 64, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 64, 1, 1])
+in_mask 的大小为ftorch.Size([8, 64, 32, 32])
+sum_I 的值: 64
+sum_mask 的最大最小值: 64.0, 64.0
+conv_1的大小为ftorch.Size([128, 128, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 128, 3, 3])
+in_mask 的大小为ftorch.Size([8, 128, 64, 64])
+sum_I 的值: 1152
+sum_mask 的最大最小值: 1152.0, 1152.0
+conv_1的大小为ftorch.Size([128, 128, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 128, 3, 3])
+in_mask 的大小为ftorch.Size([8, 128, 64, 64])
+sum_I 的值: 1152
+sum_mask 的最大最小值: 1152.0, 1152.0
+conv_1的大小为ftorch.Size([128, 128, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 128, 3, 3])
+in_mask 的大小为ftorch.Size([8, 128, 32, 32])
+sum_I 的值: 1152
+sum_mask 的最大最小值: 1152.0, 1152.0
+conv_1的大小为ftorch.Size([128, 128, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 128, 3, 3])
+in_mask 的大小为ftorch.Size([8, 128, 32, 32])
+sum_I 的值: 1152
+sum_mask 的最大最小值: 1152.0, 1152.0
+conv_1的大小为ftorch.Size([128, 2, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 2, 3, 3])
+in_mask 的大小为ftorch.Size([8, 128, 64, 64])
+sum_I 的值: 1152
+sum_mask 的最大最小值: 18.0, 18.0
+conv_1的大小为ftorch.Size([128, 1, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 1, 3, 3])
+in_mask 的大小为ftorch.Size([8, 128, 64, 64])
+sum_I 的值: 1152
+sum_mask 的最大最小值: 9.0, 9.0
+conv_1的大小为ftorch.Size([128, 2, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 2, 3, 3])
+in_mask 的大小为ftorch.Size([8, 128, 32, 32])
+sum_I 的值: 1152
+sum_mask 的最大最小值: 18.0, 18.0
+conv_1的大小为ftorch.Size([128, 1, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 1, 3, 3])
+in_mask 的大小为ftorch.Size([8, 128, 32, 32])
+sum_I 的值: 1152
+sum_mask 的最大最小值: 9.0, 9.0
+conv_1的大小为ftorch.Size([256, 128, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([256, 128, 1, 1])
+in_mask 的大小为ftorch.Size([8, 128, 64, 64])
+sum_I 的值: 128
+sum_mask 的最大最小值: 128.0, 128.0
+conv_1的大小为ftorch.Size([256, 128, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([256, 128, 1, 1])
+in_mask 的大小为ftorch.Size([8, 128, 64, 64])
+sum_I 的值: 128
+sum_mask 的最大最小值: 128.0, 128.0
+conv_1的大小为ftorch.Size([256, 128, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([256, 128, 1, 1])
+in_mask 的大小为ftorch.Size([8, 128, 32, 32])
+sum_I 的值: 128
+sum_mask 的最大最小值: 128.0, 128.0
+conv_1的大小为ftorch.Size([256, 128, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([256, 128, 1, 1])
+in_mask 的大小为ftorch.Size([8, 128, 32, 32])
+sum_I 的值: 128
+sum_mask 的最大最小值: 128.0, 128.0
+conv_1的大小为ftorch.Size([256, 256, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([256, 256, 3, 3])
+in_mask 的大小为ftorch.Size([8, 256, 64, 64])
+sum_I 的值: 2304
+sum_mask 的最大最小值: 2304.0, 2304.0
+conv_1的大小为ftorch.Size([256, 256, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([256, 256, 3, 3])
+in_mask 的大小为ftorch.Size([8, 256, 64, 64])
+sum_I 的值: 2304
+sum_mask 的最大最小值: 2304.0, 2304.0
+conv_1的大小为ftorch.Size([256, 256, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([256, 256, 3, 3])
+in_mask 的大小为ftorch.Size([8, 256, 32, 32])
+sum_I 的值: 2304
+sum_mask 的最大最小值: 2304.0, 2304.0
+conv_1的大小为ftorch.Size([256, 256, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([256, 256, 3, 3])
+in_mask 的大小为ftorch.Size([8, 256, 32, 32])
+sum_I 的值: 2304
+sum_mask 的最大最小值: 2304.0, 2304.0
+Tot_itrs: 1/800000 | Epoch: 1 | itr: 1/7500 | Loss_G: 8056875520.00000
+conv_1的大小为ftorch.Size([64, 3, 7, 7])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 3, 7, 7])
+in_mask 的大小为ftorch.Size([8, 3, 256, 256])
+sum_I 的值: 147
+sum_mask 的最大最小值: 147.0, 0.0
+conv_1的大小为ftorch.Size([32, 64, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([32, 64, 3, 3])
+in_mask 的大小为ftorch.Size([8, 64, 256, 256])
+sum_I 的值: 576
+sum_mask 的最大最小值: 576.0, 0.0
+conv_1的大小为ftorch.Size([32, 64, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([32, 64, 3, 3])
+in_mask 的大小为ftorch.Size([8, 64, 128, 128])
+sum_I 的值: 576
+sum_mask 的最大最小值: 576.0, 0.0
+conv_1的大小为ftorch.Size([64, 32, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 32, 1, 1])
+in_mask 的大小为ftorch.Size([8, 32, 128, 128])
+sum_I 的值: 32
+sum_mask 的最大最小值: 32.0, 0.0
+conv_1的大小为ftorch.Size([64, 32, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 32, 1, 1])
+in_mask 的大小为ftorch.Size([8, 32, 128, 128])
+sum_I 的值: 32
+sum_mask 的最大最小值: 32.0, 0.0
+conv_1的大小为ftorch.Size([64, 32, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 32, 1, 1])
+in_mask 的大小为ftorch.Size([8, 32, 64, 64])
+sum_I 的值: 32
+sum_mask 的最大最小值: 32.0, 0.0
+conv_1的大小为ftorch.Size([64, 32, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 32, 1, 1])
+in_mask 的大小为ftorch.Size([8, 32, 64, 64])
+sum_I 的值: 32
+sum_mask 的最大最小值: 32.0, 0.0
+conv_1的大小为ftorch.Size([64, 64, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 64, 3, 3])
+in_mask 的大小为ftorch.Size([8, 64, 128, 128])
+sum_I 的值: 576
+sum_mask 的最大最小值: 576.0, 0.0
+conv_1的大小为ftorch.Size([64, 64, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 64, 3, 3])
+in_mask 的大小为ftorch.Size([8, 64, 128, 128])
+sum_I 的值: 576
+sum_mask 的最大最小值: 576.0, 0.0
+conv_1的大小为ftorch.Size([64, 64, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 64, 3, 3])
+in_mask 的大小为ftorch.Size([8, 64, 64, 64])
+sum_I 的值: 576
+sum_mask 的最大最小值: 576.0, 0.0
+conv_1的大小为ftorch.Size([64, 64, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 64, 3, 3])
+in_mask 的大小为ftorch.Size([8, 64, 64, 64])
+sum_I 的值: 576
+sum_mask 的最大最小值: 576.0, 0.0
+conv_1的大小为ftorch.Size([64, 1, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 1, 3, 3])
+in_mask 的大小为ftorch.Size([8, 64, 128, 128])
+sum_I 的值: 576
+sum_mask 的最大最小值: 9.0, 0.0
+conv_1的大小为ftorch.Size([64, 1, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 1, 3, 3])
+in_mask 的大小为ftorch.Size([8, 64, 64, 64])
+sum_I 的值: 576
+sum_mask 的最大最小值: 9.0, 0.0
+conv_1的大小为ftorch.Size([128, 64, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 64, 1, 1])
+in_mask 的大小为ftorch.Size([8, 64, 64, 64])
+sum_I 的值: 64
+sum_mask 的最大最小值: 64.0, 0.0
+conv_1的大小为ftorch.Size([128, 64, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 64, 1, 1])
+in_mask 的大小为ftorch.Size([8, 64, 64, 64])
+sum_I 的值: 64
+sum_mask 的最大最小值: 64.0, 0.0
+conv_1的大小为ftorch.Size([128, 64, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 64, 1, 1])
+in_mask 的大小为ftorch.Size([8, 64, 32, 32])
+sum_I 的值: 64
+sum_mask 的最大最小值: 64.0, 0.0
+conv_1的大小为ftorch.Size([128, 64, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 64, 1, 1])
+in_mask 的大小为ftorch.Size([8, 64, 32, 32])
+sum_I 的值: 64
+sum_mask 的最大最小值: 64.0, 0.0
+conv_1的大小为ftorch.Size([128, 128, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 128, 3, 3])
+in_mask 的大小为ftorch.Size([8, 128, 64, 64])
+sum_I 的值: 1152
+sum_mask 的最大最小值: 1152.0, 0.0
+conv_1的大小为ftorch.Size([128, 128, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 128, 3, 3])
+in_mask 的大小为ftorch.Size([8, 128, 64, 64])
+sum_I 的值: 1152
+sum_mask 的最大最小值: 1152.0, 0.0
+conv_1的大小为ftorch.Size([128, 128, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 128, 3, 3])
+in_mask 的大小为ftorch.Size([8, 128, 32, 32])
+sum_I 的值: 1152
+sum_mask 的最大最小值: 1152.0, 0.0
+conv_1的大小为ftorch.Size([128, 128, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 128, 3, 3])
+in_mask 的大小为ftorch.Size([8, 128, 32, 32])
+sum_I 的值: 1152
+sum_mask 的最大最小值: 1152.0, 0.0
+conv_1的大小为ftorch.Size([128, 2, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 2, 3, 3])
+in_mask 的大小为ftorch.Size([8, 128, 64, 64])
+sum_I 的值: 1152
+sum_mask 的最大最小值: 18.0, 0.0
+conv_1的大小为ftorch.Size([128, 1, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 1, 3, 3])
+in_mask 的大小为ftorch.Size([8, 128, 64, 64])
+sum_I 的值: 1152
+sum_mask 的最大最小值: 9.0, 0.0
+conv_1的大小为ftorch.Size([128, 2, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 2, 3, 3])
+in_mask 的大小为ftorch.Size([8, 128, 32, 32])
+sum_I 的值: 1152
+sum_mask 的最大最小值: 18.0, 0.0
+conv_1的大小为ftorch.Size([128, 1, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 1, 3, 3])
+in_mask 的大小为ftorch.Size([8, 128, 32, 32])
+sum_I 的值: 1152
+sum_mask 的最大最小值: 9.0, 0.0
+conv_1的大小为ftorch.Size([256, 128, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([256, 128, 1, 1])
+in_mask 的大小为ftorch.Size([8, 128, 64, 64])
+sum_I 的值: 128
+sum_mask 的最大最小值: 128.0, 0.0
+conv_1的大小为ftorch.Size([256, 128, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([256, 128, 1, 1])
+in_mask 的大小为ftorch.Size([8, 128, 64, 64])
+sum_I 的值: 128
+sum_mask 的最大最小值: 128.0, 0.0
+conv_1的大小为ftorch.Size([256, 128, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([256, 128, 1, 1])
+in_mask 的大小为ftorch.Size([8, 128, 32, 32])
+sum_I 的值: 128
+sum_mask 的最大最小值: 128.0, 0.0
+conv_1的大小为ftorch.Size([256, 128, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([256, 128, 1, 1])
+in_mask 的大小为ftorch.Size([8, 128, 32, 32])
+sum_I 的值: 128
+sum_mask 的最大最小值: 128.0, 0.0
+conv_1的大小为ftorch.Size([256, 256, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([256, 256, 3, 3])
+in_mask 的大小为ftorch.Size([8, 256, 64, 64])
+sum_I 的值: 2304
+sum_mask 的最大最小值: 2304.0, 0.0
+conv_1的大小为ftorch.Size([256, 256, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([256, 256, 3, 3])
+in_mask 的大小为ftorch.Size([8, 256, 64, 64])
+sum_I 的值: 2304
+sum_mask 的最大最小值: 2304.0, 0.0
+conv_1的大小为ftorch.Size([256, 256, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([256, 256, 3, 3])
+in_mask 的大小为ftorch.Size([8, 256, 32, 32])
+sum_I 的值: 2304
+sum_mask 的最大最小值: 2304.0, 0.0
+conv_1的大小为ftorch.Size([256, 256, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([256, 256, 3, 3])
+in_mask 的大小为ftorch.Size([8, 256, 32, 32])
+sum_I 的值: 2304
+sum_mask 的最大最小值: 2304.0, 0.0
+conv_1的大小为ftorch.Size([64, 3, 7, 7])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 3, 7, 7])
+in_mask 的大小为ftorch.Size([8, 3, 256, 256])
+sum_I 的值: 147
+sum_mask 的最大最小值: 147.0, 147.0
+conv_1的大小为ftorch.Size([32, 64, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([32, 64, 3, 3])
+in_mask 的大小为ftorch.Size([8, 64, 256, 256])
+sum_I 的值: 576
+sum_mask 的最大最小值: 576.0, 576.0
+conv_1的大小为ftorch.Size([32, 64, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([32, 64, 3, 3])
+in_mask 的大小为ftorch.Size([8, 64, 128, 128])
+sum_I 的值: 576
+sum_mask 的最大最小值: 576.0, 576.0
+conv_1的大小为ftorch.Size([64, 32, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 32, 1, 1])
+in_mask 的大小为ftorch.Size([8, 32, 128, 128])
+sum_I 的值: 32
+sum_mask 的最大最小值: 32.0, 32.0
+conv_1的大小为ftorch.Size([64, 32, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 32, 1, 1])
+in_mask 的大小为ftorch.Size([8, 32, 128, 128])
+sum_I 的值: 32
+sum_mask 的最大最小值: 32.0, 32.0
+conv_1的大小为ftorch.Size([64, 32, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 32, 1, 1])
+in_mask 的大小为ftorch.Size([8, 32, 64, 64])
+sum_I 的值: 32
+sum_mask 的最大最小值: 32.0, 32.0
+conv_1的大小为ftorch.Size([64, 32, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 32, 1, 1])
+in_mask 的大小为ftorch.Size([8, 32, 64, 64])
+sum_I 的值: 32
+sum_mask 的最大最小值: 32.0, 32.0
+conv_1的大小为ftorch.Size([64, 64, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 64, 3, 3])
+in_mask 的大小为ftorch.Size([8, 64, 128, 128])
+sum_I 的值: 576
+sum_mask 的最大最小值: 576.0, 576.0
+conv_1的大小为ftorch.Size([64, 64, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 64, 3, 3])
+in_mask 的大小为ftorch.Size([8, 64, 128, 128])
+sum_I 的值: 576
+sum_mask 的最大最小值: 576.0, 576.0
+conv_1的大小为ftorch.Size([64, 64, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 64, 3, 3])
+in_mask 的大小为ftorch.Size([8, 64, 64, 64])
+sum_I 的值: 576
+sum_mask 的最大最小值: 576.0, 576.0
+conv_1的大小为ftorch.Size([64, 64, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 64, 3, 3])
+in_mask 的大小为ftorch.Size([8, 64, 64, 64])
+sum_I 的值: 576
+sum_mask 的最大最小值: 576.0, 576.0
+conv_1的大小为ftorch.Size([64, 1, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 1, 3, 3])
+in_mask 的大小为ftorch.Size([8, 64, 128, 128])
+sum_I 的值: 576
+sum_mask 的最大最小值: 9.0, 9.0
+conv_1的大小为ftorch.Size([64, 1, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 1, 3, 3])
+in_mask 的大小为ftorch.Size([8, 64, 64, 64])
+sum_I 的值: 576
+sum_mask 的最大最小值: 9.0, 9.0
+conv_1的大小为ftorch.Size([128, 64, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 64, 1, 1])
+in_mask 的大小为ftorch.Size([8, 64, 64, 64])
+sum_I 的值: 64
+sum_mask 的最大最小值: 64.0, 64.0
+conv_1的大小为ftorch.Size([128, 64, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 64, 1, 1])
+in_mask 的大小为ftorch.Size([8, 64, 64, 64])
+sum_I 的值: 64
+sum_mask 的最大最小值: 64.0, 64.0
+conv_1的大小为ftorch.Size([128, 64, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 64, 1, 1])
+in_mask 的大小为ftorch.Size([8, 64, 32, 32])
+sum_I 的值: 64
+sum_mask 的最大最小值: 64.0, 64.0
+conv_1的大小为ftorch.Size([128, 64, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 64, 1, 1])
+in_mask 的大小为ftorch.Size([8, 64, 32, 32])
+sum_I 的值: 64
+sum_mask 的最大最小值: 64.0, 64.0
+conv_1的大小为ftorch.Size([128, 128, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 128, 3, 3])
+in_mask 的大小为ftorch.Size([8, 128, 64, 64])
+sum_I 的值: 1152
+sum_mask 的最大最小值: 1152.0, 1152.0
+conv_1的大小为ftorch.Size([128, 128, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 128, 3, 3])
+in_mask 的大小为ftorch.Size([8, 128, 64, 64])
+sum_I 的值: 1152
+sum_mask 的最大最小值: 1152.0, 1152.0
+conv_1的大小为ftorch.Size([128, 128, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 128, 3, 3])
+in_mask 的大小为ftorch.Size([8, 128, 32, 32])
+sum_I 的值: 1152
+sum_mask 的最大最小值: 1152.0, 1152.0
+conv_1的大小为ftorch.Size([128, 128, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 128, 3, 3])
+in_mask 的大小为ftorch.Size([8, 128, 32, 32])
+sum_I 的值: 1152
+sum_mask 的最大最小值: 1152.0, 1152.0
+conv_1的大小为ftorch.Size([128, 2, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 2, 3, 3])
+in_mask 的大小为ftorch.Size([8, 128, 64, 64])
+sum_I 的值: 1152
+sum_mask 的最大最小值: 18.0, 18.0
+conv_1的大小为ftorch.Size([128, 1, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 1, 3, 3])
+in_mask 的大小为ftorch.Size([8, 128, 64, 64])
+sum_I 的值: 1152
+sum_mask 的最大最小值: 9.0, 9.0
+conv_1的大小为ftorch.Size([128, 2, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 2, 3, 3])
+in_mask 的大小为ftorch.Size([8, 128, 32, 32])
+sum_I 的值: 1152
+sum_mask 的最大最小值: 18.0, 18.0
+conv_1的大小为ftorch.Size([128, 1, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 1, 3, 3])
+in_mask 的大小为ftorch.Size([8, 128, 32, 32])
+sum_I 的值: 1152
+sum_mask 的最大最小值: 9.0, 9.0
+conv_1的大小为ftorch.Size([256, 128, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([256, 128, 1, 1])
+in_mask 的大小为ftorch.Size([8, 128, 64, 64])
+sum_I 的值: 128
+sum_mask 的最大最小值: 128.0, 128.0
+conv_1的大小为ftorch.Size([256, 128, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([256, 128, 1, 1])
+in_mask 的大小为ftorch.Size([8, 128, 64, 64])
+sum_I 的值: 128
+sum_mask 的最大最小值: 128.0, 128.0
+conv_1的大小为ftorch.Size([256, 128, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([256, 128, 1, 1])
+in_mask 的大小为ftorch.Size([8, 128, 32, 32])
+sum_I 的值: 128
+sum_mask 的最大最小值: 128.0, 128.0
+conv_1的大小为ftorch.Size([256, 128, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([256, 128, 1, 1])
+in_mask 的大小为ftorch.Size([8, 128, 32, 32])
+sum_I 的值: 128
+sum_mask 的最大最小值: 128.0, 128.0
+conv_1的大小为ftorch.Size([256, 256, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([256, 256, 3, 3])
+in_mask 的大小为ftorch.Size([8, 256, 64, 64])
+sum_I 的值: 2304
+sum_mask 的最大最小值: 2304.0, 2304.0
+conv_1的大小为ftorch.Size([256, 256, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([256, 256, 3, 3])
+in_mask 的大小为ftorch.Size([8, 256, 64, 64])
+sum_I 的值: 2304
+sum_mask 的最大最小值: 2304.0, 2304.0
+conv_1的大小为ftorch.Size([256, 256, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([256, 256, 3, 3])
+in_mask 的大小为ftorch.Size([8, 256, 32, 32])
+sum_I 的值: 2304
+sum_mask 的最大最小值: 2304.0, 2304.0
+conv_1的大小为ftorch.Size([256, 256, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([256, 256, 3, 3])
+in_mask 的大小为ftorch.Size([8, 256, 32, 32])
+sum_I 的值: 2304
+sum_mask 的最大最小值: 2304.0, 2304.0
+Tot_itrs: 2/800000 | Epoch: 1 | itr: 2/7500 | Loss_G: 37831368704.00000
+conv_1的大小为ftorch.Size([64, 3, 7, 7])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 3, 7, 7])
+in_mask 的大小为ftorch.Size([8, 3, 256, 256])
+sum_I 的值: 147
+sum_mask 的最大最小值: 147.0, 0.0
+conv_1的大小为ftorch.Size([32, 64, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([32, 64, 3, 3])
+in_mask 的大小为ftorch.Size([8, 64, 256, 256])
+sum_I 的值: 576
+sum_mask 的最大最小值: 576.0, 0.0
+conv_1的大小为ftorch.Size([32, 64, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([32, 64, 3, 3])
+in_mask 的大小为ftorch.Size([8, 64, 128, 128])
+sum_I 的值: 576
+sum_mask 的最大最小值: 576.0, 0.0
+conv_1的大小为ftorch.Size([64, 32, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 32, 1, 1])
+in_mask 的大小为ftorch.Size([8, 32, 128, 128])
+sum_I 的值: 32
+sum_mask 的最大最小值: 32.0, 0.0
+conv_1的大小为ftorch.Size([64, 32, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 32, 1, 1])
+in_mask 的大小为ftorch.Size([8, 32, 128, 128])
+sum_I 的值: 32
+sum_mask 的最大最小值: 32.0, 0.0
+conv_1的大小为ftorch.Size([64, 32, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 32, 1, 1])
+in_mask 的大小为ftorch.Size([8, 32, 64, 64])
+sum_I 的值: 32
+sum_mask 的最大最小值: 32.0, 0.0
+conv_1的大小为ftorch.Size([64, 32, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 32, 1, 1])
+in_mask 的大小为ftorch.Size([8, 32, 64, 64])
+sum_I 的值: 32
+sum_mask 的最大最小值: 32.0, 0.0
+conv_1的大小为ftorch.Size([64, 64, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 64, 3, 3])
+in_mask 的大小为ftorch.Size([8, 64, 128, 128])
+sum_I 的值: 576
+sum_mask 的最大最小值: 576.0, 0.0
+conv_1的大小为ftorch.Size([64, 64, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 64, 3, 3])
+in_mask 的大小为ftorch.Size([8, 64, 128, 128])
+sum_I 的值: 576
+sum_mask 的最大最小值: 576.0, 0.0
+conv_1的大小为ftorch.Size([64, 64, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 64, 3, 3])
+in_mask 的大小为ftorch.Size([8, 64, 64, 64])
+sum_I 的值: 576
+sum_mask 的最大最小值: 576.0, 0.0
+conv_1的大小为ftorch.Size([64, 64, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 64, 3, 3])
+in_mask 的大小为ftorch.Size([8, 64, 64, 64])
+sum_I 的值: 576
+sum_mask 的最大最小值: 576.0, 0.0
+conv_1的大小为ftorch.Size([64, 1, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 1, 3, 3])
+in_mask 的大小为ftorch.Size([8, 64, 128, 128])
+sum_I 的值: 576
+sum_mask 的最大最小值: 9.0, 0.0
+conv_1的大小为ftorch.Size([64, 1, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 1, 3, 3])
+in_mask 的大小为ftorch.Size([8, 64, 64, 64])
+sum_I 的值: 576
+sum_mask 的最大最小值: 9.0, 0.0
+conv_1的大小为ftorch.Size([128, 64, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 64, 1, 1])
+in_mask 的大小为ftorch.Size([8, 64, 64, 64])
+sum_I 的值: 64
+sum_mask 的最大最小值: 64.0, 0.0
+conv_1的大小为ftorch.Size([128, 64, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 64, 1, 1])
+in_mask 的大小为ftorch.Size([8, 64, 64, 64])
+sum_I 的值: 64
+sum_mask 的最大最小值: 64.0, 0.0
+conv_1的大小为ftorch.Size([128, 64, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 64, 1, 1])
+in_mask 的大小为ftorch.Size([8, 64, 32, 32])
+sum_I 的值: 64
+sum_mask 的最大最小值: 64.0, 0.0
+conv_1的大小为ftorch.Size([128, 64, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 64, 1, 1])
+in_mask 的大小为ftorch.Size([8, 64, 32, 32])
+sum_I 的值: 64
+sum_mask 的最大最小值: 64.0, 0.0
+conv_1的大小为ftorch.Size([128, 128, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 128, 3, 3])
+in_mask 的大小为ftorch.Size([8, 128, 64, 64])
+sum_I 的值: 1152
+sum_mask 的最大最小值: 1152.0, 0.0
+conv_1的大小为ftorch.Size([128, 128, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 128, 3, 3])
+in_mask 的大小为ftorch.Size([8, 128, 64, 64])
+sum_I 的值: 1152
+sum_mask 的最大最小值: 1152.0, 0.0
+conv_1的大小为ftorch.Size([128, 128, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 128, 3, 3])
+in_mask 的大小为ftorch.Size([8, 128, 32, 32])
+sum_I 的值: 1152
+sum_mask 的最大最小值: 1152.0, 0.0
+conv_1的大小为ftorch.Size([128, 128, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 128, 3, 3])
+in_mask 的大小为ftorch.Size([8, 128, 32, 32])
+sum_I 的值: 1152
+sum_mask 的最大最小值: 1152.0, 0.0
+conv_1的大小为ftorch.Size([128, 2, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 2, 3, 3])
+in_mask 的大小为ftorch.Size([8, 128, 64, 64])
+sum_I 的值: 1152
+sum_mask 的最大最小值: 18.0, 0.0
+conv_1的大小为ftorch.Size([128, 1, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 1, 3, 3])
+in_mask 的大小为ftorch.Size([8, 128, 64, 64])
+sum_I 的值: 1152
+sum_mask 的最大最小值: 9.0, 0.0
+conv_1的大小为ftorch.Size([128, 2, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 2, 3, 3])
+in_mask 的大小为ftorch.Size([8, 128, 32, 32])
+sum_I 的值: 1152
+sum_mask 的最大最小值: 18.0, 0.0
+conv_1的大小为ftorch.Size([128, 1, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 1, 3, 3])
+in_mask 的大小为ftorch.Size([8, 128, 32, 32])
+sum_I 的值: 1152
+sum_mask 的最大最小值: 9.0, 0.0
+conv_1的大小为ftorch.Size([256, 128, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([256, 128, 1, 1])
+in_mask 的大小为ftorch.Size([8, 128, 64, 64])
+sum_I 的值: 128
+sum_mask 的最大最小值: 128.0, 0.0
+conv_1的大小为ftorch.Size([256, 128, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([256, 128, 1, 1])
+in_mask 的大小为ftorch.Size([8, 128, 64, 64])
+sum_I 的值: 128
+sum_mask 的最大最小值: 128.0, 0.0
+conv_1的大小为ftorch.Size([256, 128, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([256, 128, 1, 1])
+in_mask 的大小为ftorch.Size([8, 128, 32, 32])
+sum_I 的值: 128
+sum_mask 的最大最小值: 128.0, 0.0
+conv_1的大小为ftorch.Size([256, 128, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([256, 128, 1, 1])
+in_mask 的大小为ftorch.Size([8, 128, 32, 32])
+sum_I 的值: 128
+sum_mask 的最大最小值: 128.0, 0.0
+conv_1的大小为ftorch.Size([256, 256, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([256, 256, 3, 3])
+in_mask 的大小为ftorch.Size([8, 256, 64, 64])
+sum_I 的值: 2304
+sum_mask 的最大最小值: 2304.0, 0.0
+conv_1的大小为ftorch.Size([256, 256, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([256, 256, 3, 3])
+in_mask 的大小为ftorch.Size([8, 256, 64, 64])
+sum_I 的值: 2304
+sum_mask 的最大最小值: 2304.0, 0.0
+conv_1的大小为ftorch.Size([256, 256, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([256, 256, 3, 3])
+in_mask 的大小为ftorch.Size([8, 256, 32, 32])
+sum_I 的值: 2304
+sum_mask 的最大最小值: 2304.0, 0.0
+conv_1的大小为ftorch.Size([256, 256, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([256, 256, 3, 3])
+in_mask 的大小为ftorch.Size([8, 256, 32, 32])
+sum_I 的值: 2304
+sum_mask 的最大最小值: 2304.0, 0.0
+conv_1的大小为ftorch.Size([64, 3, 7, 7])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 3, 7, 7])
+in_mask 的大小为ftorch.Size([8, 3, 256, 256])
+sum_I 的值: 147
+sum_mask 的最大最小值: 147.0, 147.0
+conv_1的大小为ftorch.Size([32, 64, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([32, 64, 3, 3])
+in_mask 的大小为ftorch.Size([8, 64, 256, 256])
+sum_I 的值: 576
+sum_mask 的最大最小值: 576.0, 576.0
+conv_1的大小为ftorch.Size([32, 64, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([32, 64, 3, 3])
+in_mask 的大小为ftorch.Size([8, 64, 128, 128])
+sum_I 的值: 576
+sum_mask 的最大最小值: 576.0, 576.0
+conv_1的大小为ftorch.Size([64, 32, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 32, 1, 1])
+in_mask 的大小为ftorch.Size([8, 32, 128, 128])
+sum_I 的值: 32
+sum_mask 的最大最小值: 32.0, 32.0
+conv_1的大小为ftorch.Size([64, 32, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 32, 1, 1])
+in_mask 的大小为ftorch.Size([8, 32, 128, 128])
+sum_I 的值: 32
+sum_mask 的最大最小值: 32.0, 32.0
+conv_1的大小为ftorch.Size([64, 32, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 32, 1, 1])
+in_mask 的大小为ftorch.Size([8, 32, 64, 64])
+sum_I 的值: 32
+sum_mask 的最大最小值: 32.0, 32.0
+conv_1的大小为ftorch.Size([64, 32, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 32, 1, 1])
+in_mask 的大小为ftorch.Size([8, 32, 64, 64])
+sum_I 的值: 32
+sum_mask 的最大最小值: 32.0, 32.0
+conv_1的大小为ftorch.Size([64, 64, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 64, 3, 3])
+in_mask 的大小为ftorch.Size([8, 64, 128, 128])
+sum_I 的值: 576
+sum_mask 的最大最小值: 576.0, 576.0
+conv_1的大小为ftorch.Size([64, 64, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 64, 3, 3])
+in_mask 的大小为ftorch.Size([8, 64, 128, 128])
+sum_I 的值: 576
+sum_mask 的最大最小值: 576.0, 576.0
+conv_1的大小为ftorch.Size([64, 64, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 64, 3, 3])
+in_mask 的大小为ftorch.Size([8, 64, 64, 64])
+sum_I 的值: 576
+sum_mask 的最大最小值: 576.0, 576.0
+conv_1的大小为ftorch.Size([64, 64, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 64, 3, 3])
+in_mask 的大小为ftorch.Size([8, 64, 64, 64])
+sum_I 的值: 576
+sum_mask 的最大最小值: 576.0, 576.0
+conv_1的大小为ftorch.Size([64, 1, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 1, 3, 3])
+in_mask 的大小为ftorch.Size([8, 64, 128, 128])
+sum_I 的值: 576
+sum_mask 的最大最小值: 9.0, 9.0
+conv_1的大小为ftorch.Size([64, 1, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 1, 3, 3])
+in_mask 的大小为ftorch.Size([8, 64, 64, 64])
+sum_I 的值: 576
+sum_mask 的最大最小值: 9.0, 9.0
+conv_1的大小为ftorch.Size([128, 64, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 64, 1, 1])
+in_mask 的大小为ftorch.Size([8, 64, 64, 64])
+sum_I 的值: 64
+sum_mask 的最大最小值: 64.0, 64.0
+conv_1的大小为ftorch.Size([128, 64, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 64, 1, 1])
+in_mask 的大小为ftorch.Size([8, 64, 64, 64])
+sum_I 的值: 64
+sum_mask 的最大最小值: 64.0, 64.0
+conv_1的大小为ftorch.Size([128, 64, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 64, 1, 1])
+in_mask 的大小为ftorch.Size([8, 64, 32, 32])
+sum_I 的值: 64
+sum_mask 的最大最小值: 64.0, 64.0
+conv_1的大小为ftorch.Size([128, 64, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 64, 1, 1])
+in_mask 的大小为ftorch.Size([8, 64, 32, 32])
+sum_I 的值: 64
+sum_mask 的最大最小值: 64.0, 64.0
+conv_1的大小为ftorch.Size([128, 128, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 128, 3, 3])
+in_mask 的大小为ftorch.Size([8, 128, 64, 64])
+sum_I 的值: 1152
+sum_mask 的最大最小值: 1152.0, 1152.0
+conv_1的大小为ftorch.Size([128, 128, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 128, 3, 3])
+in_mask 的大小为ftorch.Size([8, 128, 64, 64])
+sum_I 的值: 1152
+sum_mask 的最大最小值: 1152.0, 1152.0
+conv_1的大小为ftorch.Size([128, 128, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 128, 3, 3])
+in_mask 的大小为ftorch.Size([8, 128, 32, 32])
+sum_I 的值: 1152
+sum_mask 的最大最小值: 1152.0, 1152.0
+conv_1的大小为ftorch.Size([128, 128, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 128, 3, 3])
+in_mask 的大小为ftorch.Size([8, 128, 32, 32])
+sum_I 的值: 1152
+sum_mask 的最大最小值: 1152.0, 1152.0
+conv_1的大小为ftorch.Size([128, 2, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 2, 3, 3])
+in_mask 的大小为ftorch.Size([8, 128, 64, 64])
+sum_I 的值: 1152
+sum_mask 的最大最小值: 18.0, 18.0
+conv_1的大小为ftorch.Size([128, 1, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 1, 3, 3])
+in_mask 的大小为ftorch.Size([8, 128, 64, 64])
+sum_I 的值: 1152
+sum_mask 的最大最小值: 9.0, 9.0
+conv_1的大小为ftorch.Size([128, 2, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 2, 3, 3])
+in_mask 的大小为ftorch.Size([8, 128, 32, 32])
+sum_I 的值: 1152
+sum_mask 的最大最小值: 18.0, 18.0
+conv_1的大小为ftorch.Size([128, 1, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 1, 3, 3])
+in_mask 的大小为ftorch.Size([8, 128, 32, 32])
+sum_I 的值: 1152
+sum_mask 的最大最小值: 9.0, 9.0
+conv_1的大小为ftorch.Size([256, 128, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([256, 128, 1, 1])
+in_mask 的大小为ftorch.Size([8, 128, 64, 64])
+sum_I 的值: 128
+sum_mask 的最大最小值: 128.0, 128.0
+conv_1的大小为ftorch.Size([256, 128, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([256, 128, 1, 1])
+in_mask 的大小为ftorch.Size([8, 128, 64, 64])
+sum_I 的值: 128
+sum_mask 的最大最小值: 128.0, 128.0
+conv_1的大小为ftorch.Size([256, 128, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([256, 128, 1, 1])
+in_mask 的大小为ftorch.Size([8, 128, 32, 32])
+sum_I 的值: 128
+sum_mask 的最大最小值: 128.0, 128.0
+conv_1的大小为ftorch.Size([256, 128, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([256, 128, 1, 1])
+in_mask 的大小为ftorch.Size([8, 128, 32, 32])
+sum_I 的值: 128
+sum_mask 的最大最小值: 128.0, 128.0
+conv_1的大小为ftorch.Size([256, 256, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([256, 256, 3, 3])
+in_mask 的大小为ftorch.Size([8, 256, 64, 64])
+sum_I 的值: 2304
+sum_mask 的最大最小值: 2304.0, 2304.0
+conv_1的大小为ftorch.Size([256, 256, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([256, 256, 3, 3])
+in_mask 的大小为ftorch.Size([8, 256, 64, 64])
+sum_I 的值: 2304
+sum_mask 的最大最小值: 2304.0, 2304.0
+conv_1的大小为ftorch.Size([256, 256, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([256, 256, 3, 3])
+in_mask 的大小为ftorch.Size([8, 256, 32, 32])
+sum_I 的值: 2304
+sum_mask 的最大最小值: 2304.0, 2304.0
+conv_1的大小为ftorch.Size([256, 256, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([256, 256, 3, 3])
+in_mask 的大小为ftorch.Size([8, 256, 32, 32])
+sum_I 的值: 2304
+sum_mask 的最大最小值: 2304.0, 2304.0
+Tot_itrs: 3/800000 | Epoch: 1 | itr: 3/7500 | Loss_G: 785018716160.00000
+conv_1的大小为ftorch.Size([64, 3, 7, 7])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 3, 7, 7])
+in_mask 的大小为ftorch.Size([8, 3, 256, 256])
+sum_I 的值: 147
+sum_mask 的最大最小值: 147.0, 0.0
+conv_1的大小为ftorch.Size([32, 64, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([32, 64, 3, 3])
+in_mask 的大小为ftorch.Size([8, 64, 256, 256])
+sum_I 的值: 576
+sum_mask 的最大最小值: 576.0, 0.0
+conv_1的大小为ftorch.Size([32, 64, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([32, 64, 3, 3])
+in_mask 的大小为ftorch.Size([8, 64, 128, 128])
+sum_I 的值: 576
+sum_mask 的最大最小值: 576.0, 0.0
+conv_1的大小为ftorch.Size([64, 32, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 32, 1, 1])
+in_mask 的大小为ftorch.Size([8, 32, 128, 128])
+sum_I 的值: 32
+sum_mask 的最大最小值: 32.0, 0.0
+conv_1的大小为ftorch.Size([64, 32, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 32, 1, 1])
+in_mask 的大小为ftorch.Size([8, 32, 128, 128])
+sum_I 的值: 32
+sum_mask 的最大最小值: 32.0, 0.0
+conv_1的大小为ftorch.Size([64, 32, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 32, 1, 1])
+in_mask 的大小为ftorch.Size([8, 32, 64, 64])
+sum_I 的值: 32
+sum_mask 的最大最小值: 32.0, 0.0
+conv_1的大小为ftorch.Size([64, 32, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 32, 1, 1])
+in_mask 的大小为ftorch.Size([8, 32, 64, 64])
+sum_I 的值: 32
+sum_mask 的最大最小值: 32.0, 0.0
+conv_1的大小为ftorch.Size([64, 64, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 64, 3, 3])
+in_mask 的大小为ftorch.Size([8, 64, 128, 128])
+sum_I 的值: 576
+sum_mask 的最大最小值: 576.0, 0.0
+conv_1的大小为ftorch.Size([64, 64, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 64, 3, 3])
+in_mask 的大小为ftorch.Size([8, 64, 128, 128])
+sum_I 的值: 576
+sum_mask 的最大最小值: 576.0, 0.0
+conv_1的大小为ftorch.Size([64, 64, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 64, 3, 3])
+in_mask 的大小为ftorch.Size([8, 64, 64, 64])
+sum_I 的值: 576
+sum_mask 的最大最小值: 576.0, 0.0
+conv_1的大小为ftorch.Size([64, 64, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 64, 3, 3])
+in_mask 的大小为ftorch.Size([8, 64, 64, 64])
+sum_I 的值: 576
+sum_mask 的最大最小值: 576.0, 0.0
+conv_1的大小为ftorch.Size([64, 1, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 1, 3, 3])
+in_mask 的大小为ftorch.Size([8, 64, 128, 128])
+sum_I 的值: 576
+sum_mask 的最大最小值: 9.0, 0.0
+conv_1的大小为ftorch.Size([64, 1, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 1, 3, 3])
+in_mask 的大小为ftorch.Size([8, 64, 64, 64])
+sum_I 的值: 576
+sum_mask 的最大最小值: 9.0, 0.0
+conv_1的大小为ftorch.Size([128, 64, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 64, 1, 1])
+in_mask 的大小为ftorch.Size([8, 64, 64, 64])
+sum_I 的值: 64
+sum_mask 的最大最小值: 64.0, 0.0
+conv_1的大小为ftorch.Size([128, 64, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 64, 1, 1])
+in_mask 的大小为ftorch.Size([8, 64, 64, 64])
+sum_I 的值: 64
+sum_mask 的最大最小值: 64.0, 0.0
+conv_1的大小为ftorch.Size([128, 64, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 64, 1, 1])
+in_mask 的大小为ftorch.Size([8, 64, 32, 32])
+sum_I 的值: 64
+sum_mask 的最大最小值: 64.0, 0.0
+conv_1的大小为ftorch.Size([128, 64, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 64, 1, 1])
+in_mask 的大小为ftorch.Size([8, 64, 32, 32])
+sum_I 的值: 64
+sum_mask 的最大最小值: 64.0, 0.0
+conv_1的大小为ftorch.Size([128, 128, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 128, 3, 3])
+in_mask 的大小为ftorch.Size([8, 128, 64, 64])
+sum_I 的值: 1152
+sum_mask 的最大最小值: 1152.0, 0.0
+conv_1的大小为ftorch.Size([128, 128, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 128, 3, 3])
+in_mask 的大小为ftorch.Size([8, 128, 64, 64])
+sum_I 的值: 1152
+sum_mask 的最大最小值: 1152.0, 0.0
+conv_1的大小为ftorch.Size([128, 128, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 128, 3, 3])
+in_mask 的大小为ftorch.Size([8, 128, 32, 32])
+sum_I 的值: 1152
+sum_mask 的最大最小值: 1152.0, 0.0
+conv_1的大小为ftorch.Size([128, 128, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 128, 3, 3])
+in_mask 的大小为ftorch.Size([8, 128, 32, 32])
+sum_I 的值: 1152
+sum_mask 的最大最小值: 1152.0, 0.0
+conv_1的大小为ftorch.Size([128, 2, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 2, 3, 3])
+in_mask 的大小为ftorch.Size([8, 128, 64, 64])
+sum_I 的值: 1152
+sum_mask 的最大最小值: 18.0, 0.0
+conv_1的大小为ftorch.Size([128, 1, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 1, 3, 3])
+in_mask 的大小为ftorch.Size([8, 128, 64, 64])
+sum_I 的值: 1152
+sum_mask 的最大最小值: 9.0, 0.0
+conv_1的大小为ftorch.Size([128, 2, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 2, 3, 3])
+in_mask 的大小为ftorch.Size([8, 128, 32, 32])
+sum_I 的值: 1152
+sum_mask 的最大最小值: 18.0, 0.0
+conv_1的大小为ftorch.Size([128, 1, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 1, 3, 3])
+in_mask 的大小为ftorch.Size([8, 128, 32, 32])
+sum_I 的值: 1152
+sum_mask 的最大最小值: 9.0, 0.0
+conv_1的大小为ftorch.Size([256, 128, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([256, 128, 1, 1])
+in_mask 的大小为ftorch.Size([8, 128, 64, 64])
+sum_I 的值: 128
+sum_mask 的最大最小值: 128.0, 0.0
+conv_1的大小为ftorch.Size([256, 128, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([256, 128, 1, 1])
+in_mask 的大小为ftorch.Size([8, 128, 64, 64])
+sum_I 的值: 128
+sum_mask 的最大最小值: 128.0, 0.0
+conv_1的大小为ftorch.Size([256, 128, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([256, 128, 1, 1])
+in_mask 的大小为ftorch.Size([8, 128, 32, 32])
+sum_I 的值: 128
+sum_mask 的最大最小值: 128.0, 0.0
+conv_1的大小为ftorch.Size([256, 128, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([256, 128, 1, 1])
+in_mask 的大小为ftorch.Size([8, 128, 32, 32])
+sum_I 的值: 128
+sum_mask 的最大最小值: 128.0, 0.0
+conv_1的大小为ftorch.Size([256, 256, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([256, 256, 3, 3])
+in_mask 的大小为ftorch.Size([8, 256, 64, 64])
+sum_I 的值: 2304
+sum_mask 的最大最小值: 2304.0, 0.0
+conv_1的大小为ftorch.Size([256, 256, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([256, 256, 3, 3])
+in_mask 的大小为ftorch.Size([8, 256, 64, 64])
+sum_I 的值: 2304
+sum_mask 的最大最小值: 2304.0, 0.0
+conv_1的大小为ftorch.Size([256, 256, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([256, 256, 3, 3])
+in_mask 的大小为ftorch.Size([8, 256, 32, 32])
+sum_I 的值: 2304
+sum_mask 的最大最小值: 2304.0, 0.0
+conv_1的大小为ftorch.Size([256, 256, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([256, 256, 3, 3])
+in_mask 的大小为ftorch.Size([8, 256, 32, 32])
+sum_I 的值: 2304
+sum_mask 的最大最小值: 2304.0, 0.0
+conv_1的大小为ftorch.Size([64, 3, 7, 7])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 3, 7, 7])
+in_mask 的大小为ftorch.Size([8, 3, 256, 256])
+sum_I 的值: 147
+sum_mask 的最大最小值: 147.0, 147.0
+conv_1的大小为ftorch.Size([32, 64, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([32, 64, 3, 3])
+in_mask 的大小为ftorch.Size([8, 64, 256, 256])
+sum_I 的值: 576
+sum_mask 的最大最小值: 576.0, 576.0
+conv_1的大小为ftorch.Size([32, 64, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([32, 64, 3, 3])
+in_mask 的大小为ftorch.Size([8, 64, 128, 128])
+sum_I 的值: 576
+sum_mask 的最大最小值: 576.0, 576.0
+conv_1的大小为ftorch.Size([64, 32, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 32, 1, 1])
+in_mask 的大小为ftorch.Size([8, 32, 128, 128])
+sum_I 的值: 32
+sum_mask 的最大最小值: 32.0, 32.0
+conv_1的大小为ftorch.Size([64, 32, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 32, 1, 1])
+in_mask 的大小为ftorch.Size([8, 32, 128, 128])
+sum_I 的值: 32
+sum_mask 的最大最小值: 32.0, 32.0
+conv_1的大小为ftorch.Size([64, 32, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 32, 1, 1])
+in_mask 的大小为ftorch.Size([8, 32, 64, 64])
+sum_I 的值: 32
+sum_mask 的最大最小值: 32.0, 32.0
+conv_1的大小为ftorch.Size([64, 32, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 32, 1, 1])
+in_mask 的大小为ftorch.Size([8, 32, 64, 64])
+sum_I 的值: 32
+sum_mask 的最大最小值: 32.0, 32.0
+conv_1的大小为ftorch.Size([64, 64, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 64, 3, 3])
+in_mask 的大小为ftorch.Size([8, 64, 128, 128])
+sum_I 的值: 576
+sum_mask 的最大最小值: 576.0, 576.0
+conv_1的大小为ftorch.Size([64, 64, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 64, 3, 3])
+in_mask 的大小为ftorch.Size([8, 64, 128, 128])
+sum_I 的值: 576
+sum_mask 的最大最小值: 576.0, 576.0
+conv_1的大小为ftorch.Size([64, 64, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 64, 3, 3])
+in_mask 的大小为ftorch.Size([8, 64, 64, 64])
+sum_I 的值: 576
+sum_mask 的最大最小值: 576.0, 576.0
+conv_1的大小为ftorch.Size([64, 64, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 64, 3, 3])
+in_mask 的大小为ftorch.Size([8, 64, 64, 64])
+sum_I 的值: 576
+sum_mask 的最大最小值: 576.0, 576.0
+conv_1的大小为ftorch.Size([64, 1, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 1, 3, 3])
+in_mask 的大小为ftorch.Size([8, 64, 128, 128])
+sum_I 的值: 576
+sum_mask 的最大最小值: 9.0, 9.0
+conv_1的大小为ftorch.Size([64, 1, 3, 3])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([64, 1, 3, 3])
+in_mask 的大小为ftorch.Size([8, 64, 64, 64])
+sum_I 的值: 576
+sum_mask 的最大最小值: 9.0, 9.0
+conv_1的大小为ftorch.Size([128, 64, 1, 1])
+conv_1 的最大最小值为(tensor(1., device='cuda:1', grad_fn=<MaxBackward1>), tensor(1., device='cuda:1', grad_fn=<MinBackward1>))
+conv的大小为ftorch.Size([128, 64, 1, 1])
+in_mask 的大小为ftorch.Size([8, 64, 64, 64])
+sum_I 的值: 64
+sum_mask 的最大最小值: 64.0, 64.0
+conv_1的大小为ftorch.Size([128, 64, 1, 1])

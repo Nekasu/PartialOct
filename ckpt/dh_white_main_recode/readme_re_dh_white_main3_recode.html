@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>re-dh-white-main实验记录与分析</title>
+    <link rel="stylesheet" href="https://raw.githack.com/Nekasu/ObsidianVault/main/Template/styles.css">
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+    <div class="container">
+        re-dh-white-main 是一个使用 "具有敦煌风格的图像" 进行风格迁移训练的 Partial_AesFA 实验(以下简称"本实验或该实验或该项目"). 该实验修改了 <a href="../dunhuang_white_main/readme_dunhuang_white_main.html">dunhuang_white_main</a> 中的训练总轮次 (从 16,0000 增加到 16,0000 \(\times\) 5), 以验证两个猜想：
+        <ol>
+            <li>猜想1: dunhuang_white_main 实验中训练轮次太少, 导致了生成的风格化图像效果不佳.</li>
+            <li>猜想2: dunhuang_white_main 实验中陷入的局部最优, 导致了生成的风格化图像效果不佳.</li>
+        </ol>
+        这两个猜想分别对应<a href="../dunhuang_white_main/readme_dunhuang_white_main.html">dunhuang_white_main 实验记录</a> 中最终提及的 "导致 Partial_AesFA 实验结果不佳" 的 原因1 与原因3.
+        <h1>训练信息</h1>
+        <ul>
+            <li>该实验与其父实验<a href="../dunhuang_white_main/readme_dunhuang_white_main.html">dunhuang_white_main </a>使用相同的训练集. 训练用数据集信息如下：
+                <ul>
+                    <li>content_dir = '/mnt/sda/Dataset/Detection/COCO/train2017' </li>
+                    <li>style_dir = '/mnt/sda/Dataset/style_image/dunhuang_style/crop_256/main_white/origin' </li>
+                    <li>mask_dir = '/mnt/sda/Dataset/style_image/dunhuang_style/crop_256/main_white/mask' </li>
+                 </ul>
+            </li>
+            <li>
+                训练数据记录在<a href="./log.txt">这个txt文件</a>中.
+            </li>
+        </ul>
+        <hr>
+        <h1>生成结果</h1>
+        <ul>
+            <li> 本次训练结果为  ./ckpt/re-dh-white-main2/model_iter_250000_epoch_34.pth, 现将该 .pth 文件复制并重命名为 main.pth, 以符合测试文件 test.py 的要求. </li>
+            <li> 
+                测试用数据集信息如下:
+                <ul>
+                    <li> content_dir = '/mnt/sda/zxt/3_code_area/code_develop/PartialConv_AesFA/imgs/contents/full' </li>
+                    <li> style_dir = '/mnt/sda/zxt/3_code_area/code_develop/PartialConv_AesFA/imgs/styles' </li>
+                    <li> mask_dir = '/mnt/sda/zxt/3_code_area/code_develop/PartialConv_AesFA/imgs/masks' + '/' + mod </li>
+                </ul>
+            </li>
+        </ul>
+        &ensp;&ensp; 使用本次训练成果生成的 <span class="color-huohuo-green">主体图像</span> 存储于 ./output/re-dh-white-main2/256/main 中, 可在对应文件夹下找到 .html 文件进行查看<br>
+        &ensp;&ensp; 使用本次训练成果生成的 <span class="color-huohuo-green">背景图像</span> 存储于 ./output/re-dh-white-main2/256/back 中, 可在对应文件夹下找到 .html 文件进行查看<br>
+        <hr>
+        <h1>评价</h1>
+        <ol>
+            <li>
+                &ensp;&ensp; 效果很差. 对比<a href="/output/dunhuang_white_main/256/main/result_img_table_main.html">dunhuang_main 的主体生成结果</a>, 也即上一次实验的结果, 具有更差的效果. 为了进一步判断是否是训练权重的问题, 将准备使用不同iteration的数据进行推理测试.<br>
+                &ensp;&ensp; 使用 ckpt/re-dh-white-main2/model_iter_160000_epoch_32.pth 进行测试. 首先删除原来的 main.pth, 并将测试的文件改名为 main.pth.<br>
+                &ensp;&ensp; 2025-02-25_11:16 周二: 使用 160000 次迭代pth文件生成的结果图像已经生成完毕, 结果存储在 ./output/re-dh-main2/256/160000/main中. 对比 ./ckpt/dunhuang_white_main 中相同轮次的结果而言, 具有更差的效果. 说明 re-dh-white-main2 项目的训练成果较差.<br>
+                &ensp;&ensp; 2025-02-25_15:26 周二: 为了横向对比使用相同数据集、相同网络结构训练的不同结果, 决定使用 re-dh-white-main 中的 160000 轮的 .pth 文件进行推理. 现将该 .pth 文件重命名为 main.pth, 并使用 test.py 进行推理, 以进行横向对比. 结果存储在 ./output/re-dh-white-main中, 可以在<a href="/output/re-dh-white-main/256/main/result_img_table_main.html">这个html文件中查看总览.</a><br>
+            </li>
+            <li>对比<a href="/output/dunhuang_white_main/256/main/result_img_table_main.html">dunhuang_main 的主体生成结果</a>、<a href="/output/re-dh-white-main/256/main/result_img_table_main.html">re-dh-main的结果</a>、<a href="/output/re-dh-white-main2/256/main/result_img_table_main.html">re-dh-main2的结果</a>, 发现甚至是第一次训练的结果最好.</li>
+        </ol>
+        <hr>
+        <h1>结论</h1>
+        根据re-dh-white-main与re-dh-white-main2两次实验, 可以做出以下判断: 
+        <ol>
+            <li>造成训练效果差的原因<span class="color-hutao-red">不是由于</span>陷入局部最优, 或训练轮次不够导致的(这两个原因在<a href="/ckpt/dunhuang_white_main/readme_dunhuang_white_main.html">dunhuang_white_main</a>中归类为原因1与原因3).</li>
+            <li>造成训练效果差的原因<span class="color-huohuo-green">是由于</span>部分卷积代码不够完善导致的(这个原因在<a href="/ckpt/dunhuang_white_main/readme_dunhuang_white_main.html">dunhuang_white_main</a>中归类为原因2), 根据 dunhuang_white_main 实验记录中的安排, 将修改代码, 并进行名为 repartial-dh-white-main 的训练.</li>
+        </ol>
+    </div>
+</body>
+</html>
