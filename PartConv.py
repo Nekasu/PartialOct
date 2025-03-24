@@ -28,6 +28,7 @@ class PartialConv2d(nn.Module):
         # print(f"kernel_size is {kernel_size}")
         self.stride = stride
         self.bias: bool = bias
+        self.in_channels = in_channels
         ####################################################
     
     #################### 创建卷积核 ####################
@@ -71,9 +72,10 @@ class PartialConv2d(nn.Module):
         # print(f'in_x 的最大最小值: {in_x.max()}, {in_x.min()}')
         # print(f"origin shape is {in_x.shape}")
         # print(f"origin mask shape: {in_mask.shape}")self.sum_mask
-        print(f"conv_1的大小为f{self.conv_1.weight.shape}")
-        print(f"conv的大小为f{self.conv.weight.shape}")
-        print(f"in_mask 的大小为f{in_mask.shape}")
+        # print(f"conv_1的大小为f{self.conv_1.weight.shape}")
+        # print(f"conv_1 的最大最小值为{self.conv_1.weight.max(),self.conv_1.weight.min()}")
+        # print(f"conv的大小为f{self.conv.weight.shape}")
+        # print(f"in_mask 的大小为f{in_mask.shape}")
         ##################### 参数引入 #####################
         self.in_x = in_x
         # print(f'显示输入数据in_x的最大最小值：{self.in_x.max()}, {self.in_x.min()}')
@@ -105,12 +107,15 @@ class PartialConv2d(nn.Module):
             # print(f"self.conv is {self.conv}")
             # print(f'in_mask shape is {self.in_mask.shape}')
             
-            self.sum_I: int = self.kernel_size * self.kernel_size * 1# sum(I)是一个固定值, 从数值上与卷积核的窗口大小相等
-            print(f'sum_I 的值: {self.sum_I}')
-            print(f'in_mask 的值:f{self.in_mask}')
+            self.sum_I: int = self.kernel_size * self.kernel_size * self.in_channels # sum(I)是一个固定值, 从数值上与卷积核的窗口大小相等
+            # print(f'sum_I 的值: {self.sum_I}')
+            # print(f'in_mask 的值:f{self.in_mask}')
             # print(f'self.in_mask.shape[1] is {self.in_mask.shape[1] } ')
-            self.sum_mask: torch.Tensor = torch.ceil(self.conv_1(self.in_mask)/self.in_mask.shape[1]) # 利用一个其中参数全为1的卷积核与输入掩膜相乘, 算出每个像素的sum(M)
-            print(f"sum_mask is f{self.sum_mask}")
+            self.sum_mask: torch.Tensor = self.conv_1(self.in_mask) # 利用一个其中参数全为1的卷积核与输入掩膜相乘, 算出每个像素的sum(M)
+            self.sum_mask = torch.round(self.sum_mask) # 四舍五入, 以确保 sum_mask 为一个整数
+            self.sum_mask = torch.clamp(self.sum_mask, min=0.0)  # 强制将负值设为0.0
+
+            # print(f"sum_mask is f{self.sum_mask}")
             pos_sum_mask = self.sum_mask[self.sum_mask > 0.0]
             # print(f'sum_mask 的最大最小值: {self.sum_mask.max()}, {self.sum_mask.min()}')
             # print(f'sum_mask 的最大、大于0的最小值: {pos_sum_mask.max()}, {pos_sum_mask.min()}')
@@ -138,7 +143,7 @@ class PartialConv2d(nn.Module):
             # 5. 创建一个偏置, 用于弥补卷积核中没有的偏置项, 即进行 (W^T · (X ⊙ M)) · sum(I)/sum(M) + b
             self.b = nn.Parameter(torch.zeros(list(self.out.shape)))  # 手动创建偏置参数
             self.out = self.out + self.b # 将偏置加入到结果中 # out3 # 返回值1
-        self.conv_1 = self.conv
+        # self.conv_1 = self.conv
         ################################################################################################
         
         ######################################### 掩膜更新过程 #########################################
