@@ -3,6 +3,7 @@ Use model.py->AesFA_test->forward function to generate stylized images.
 '''
 import os
 from unittest import result
+from cv2 import transform
 import torch
 import numpy as np
 import thop
@@ -17,11 +18,30 @@ import generate_results_html
 
 
 def load_img(img_name, img_size, device):
-    img = Image.open(img_name).convert('RGB')
-    img = do_transform(img, img_size).to(device)
-    if len(img.shape) == 3:
-        img = img.unsqueeze(0)  # make batch dimension
-    return img
+    img = Image.open(img_name).convert('RGBA') # 加载图像, 并转换为 RGBA 格式
+    img = do_base_transform(img, img_size).to(device)  # 进行剪切以及 ToTensor操作, 这个操作对掩膜部分与内容/风格部分都是必要的
+    
+    # 从整个图像中提取掩膜图像
+    mask_img = img[3,:,:]
+    mask_img = mask_img.unsqueeze(0)
+    mask_img = mask_img.repeat(3,1,1)
+    if len(mask_img) == 3:
+        mask_img = mask_img.unsqueeze(0)
+
+    # 从整个图像中提取内容/风格图像
+    true_img = img[0:3,:,:]
+    if len(true_img) == 3:
+        true_img = true_img.unsqueeze(0)
+    true_img = do_normalize_transform(true_img) # 进行归一化等操作
+    # print(f'mask_img.shape: {mask_img.shape}, true_img.shape:{true_img.shape}')
+    
+    return true_img, mask_img
+    
+
+    # img = do_transform(img, img_size).to(device)
+    # if len(img.shape) == 3:
+    #     img = img.unsqueeze(0)  # make batch dimension
+    # return img
 
 def im_convert(tensor):
     image = tensor.to("cpu").clone().detach().numpy()
@@ -29,6 +49,16 @@ def im_convert(tensor):
     image = image * np.array((0.229, 0.224, 0.225)) + np.array((0.485, 0.456, 0.406))
     image = image.clip(0, 1)
     return image
+
+def do_base_transform(img, osize):
+    transform = Compose([Resize(size=osize),
+                        CenterCrop(size=osize),
+                            ToTensor()])
+    return transform(img)
+    
+def do_normalize_transform(img):
+    transform = Compose([Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225))])
+    return transform(img)
 
 def do_transform(img, osize):
     transform = Compose([Resize(size=osize),  # Resize to keep aspect ratio
@@ -68,8 +98,7 @@ def save_img(config, cont_name, sty_name, content, style, stylized, freq=False, 
 def main():
     config = Config()
 
-    config.gpu = 1
-    device = torch.device('cuda:'+str(config.gpu) if torch.cuda.is_available() else 'cpu')
+    device = torch.device(config.cuda_device if torch.cuda.is_available() else 'cpu')
     print('Version:', config.file_n)
     print(device)
     
@@ -99,21 +128,21 @@ def main():
         B_path_list = []
         trs_path_list = []
 
-        contents = test_data.images # Load Content Images
-        styles = test_data.style_images    # Load Style Images
-        masks = test_data.mask_images# Load Mask Images
+        contents = test_data.images # Load Content Images 一个列表, 里面存储了内容图像的名称.
+        styles = test_data.style_images    # Load Style Images 一个列表, 里面存储了风格图像的名称.
+        # masks = test_data.mask_images# Load Mask Images
         if config.multi_to_multi:   # one content image, N style image
             tot_imgs = len(contents) * len(styles)
             for idx in range(len(contents)):
                 cont_name = contents[idx]           # path of content image
-                content = load_img(cont_name, config.test_content_size, device)
+                content, content_mask = load_img(cont_name, config.test_content_size, device)
 
                 for i in range(len(styles)):
                     sty_name = styles[i]            # path of style image
-                    style = load_img(sty_name, config.test_style_size, device)
+                    style, mask = load_img(sty_name, config.test_style_size, device) # 想要将掩膜从风格图像中提取出来, 就必须改写 load_img 函数. 具体来说, 应该将 load_img 函数改写成类似于 DataSplit.py -> __getitem__函数 中, 从 sty_img 中分离 mask的形式.
 
-                    mask_name = masks[i]            # path of mask image
-                    mask = load_img(mask_name, config.test_style_size, device)
+                    # mask_name = masks[i]            # path of mask image
+                    # mask = load_img(mask_name, config.test_style_size, device)
                     
                     if freq:
                         stylized, stylized_high, stylized_low, during = model(real_A=content, real_B=style, real_mask=mask, freq=freq) # Use `AesFA_test.forward` to generate styled images
@@ -133,7 +162,7 @@ def main():
                     t_during += during
                     flops, params = thop.profile(model, inputs=(content, style, mask, freq))
                     print("GFLOPS: %.4f, Params: %.4f"% (flops/1e9, params/1e6))
-                    print("Max GPU memory allocated: %.4f GB" % (torch.cuda.max_memory_allocated(device=config.gpu) / 1024. / 1024. / 1024.))
+                    print("Max GPU memory allocated: %.4f GB" % (torch.cuda.max_memory_allocated(device=config.cuda_device) / 1024. / 1024. / 1024.))
 
         else:
             tot_imgs = len(contents)

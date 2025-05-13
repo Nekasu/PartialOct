@@ -1,3 +1,4 @@
+from tkinter import W
 from path import Path
 import glob
 import torch
@@ -35,16 +36,15 @@ class DataSplit(Dataset):
             sty_dir = Path(config.style_dir)
             self.style_images = self.get_data(sty_dir)
             
-            mask_dir = Path(config.mask_dir)
-            self.mask_images = self.get_data(mask_dir)
+            # mask_dir = Path(config.mask_dir)
+            # self.mask_images = self.get_data(mask_dir)
             
-            assert len(self.style_images) == len(self.mask_images)
-            self.style_and_mask = list(zip(self.style_images, self.mask_images))
+            # assert len(self.style_images) == len(self.mask_images)
+            # self.style_and_mask = list(zip(self.style_images, self.mask_images))
             # print(self.style_and_mask)
             
             if len(self.images) < len(self.style_images):
-                self.style_and_mask = random.sample(self.style_and_mask, len(self.images))
-                self.style_images, self.mask_images = zip(*self.style_and_mask)
+                self.style_images = random.sample(self.style_images, len(self.images))
                 # self.style_images = random.sample(self.style_images, len(self.images))
             elif len(self.images) > len(self.style_images):
                 ratio = len(self.images) // len(self.style_images)
@@ -54,17 +54,18 @@ class DataSplit(Dataset):
                 # print(self.style_and_mask)
                 
                 self.style_images = self.style_images * ratio
-                self.mask_images = self.mask_images * ratio
+                self.style_images += random.sample(self.style_images, bias) # 最后还不够的部分使用随机采样补全
+                # self.mask_images = self.mask_images * ratio
                 # print(f"bias is {bias}")
-                if bias > 0 : # 防止内容图像正好是风格图像的整数倍时, 无法进行unzip操作
-                    self.style_and_mask = random.sample(self.style_and_mask, bias)
-                    # print("after unzip---------------------------------")
-                    # print(self.style_and_mask)
+                # if bias > 0 : # 防止内容图像正好是风格图像的整数倍时, 无法进行unzip操作
+                #     self.style_and_mask = random.sample(self.style_and_mask, bias)
+                #     # print("after unzip---------------------------------")
+                #     # print(self.style_and_mask)
                     
-                    self.style_images_bias, self.mask_images_bias = zip(*self.style_and_mask)
+                #     self.style_images_bias, self.mask_images_bias = zip(*self.style_and_mask)
                     
-                    self.style_images += self.style_images_bias
-                    self.mask_images += self.mask_images_bias
+                #     self.style_images += self.style_images_bias
+                #     self.mask_images += self.mask_images_bias
 
             assert len(self.images) == len(self.style_images)
             
@@ -76,14 +77,14 @@ class DataSplit(Dataset):
             sty_dir = Path(config.style_dir)
             self.style_images = self.get_data(sty_dir)[:config.data_num]
             
-            mask_dir = Path(config.mask_dir)
-            self.mask_images = self.get_data(mask_dir)[:config.data_num]
+            # mask_dir = Path(config.mask_dir)
+            # self.mask_images = self.get_data(mask_dir)[:config.data_num]
 
-            assert len(self.style_images) == len(self.mask_images)
+            # assert len(self.style_images) == len(self.mask_images)
         
         print('content dir:', img_dir)
         print('style dir:', sty_dir)
-        print('mask dir:', mask_dir)
+        # print('mask dir:', mask_dir)
             
     def __len__(self):
         return len(self.images)
@@ -97,22 +98,34 @@ class DataSplit(Dataset):
         return images
 
     def __getitem__(self, index):
-        cont_img = self.images[index]
-        cont_img = Image.open(cont_img).convert('RGB')
-        cont_img = self.base_transform(cont_img)
-        cont_img = self.normalize_transform(cont_img)
+        # 如果对图像进行预处理, 请在此处进行
+        # 内容图像与内容掩膜获取
+        cont_img = self.images[index]   # 获取内容图像名称
+        cont_img = Image.open(cont_img).convert('RGBA') # 读取内容图像, 并转换为RGBA格式
+        cont_img = self.base_transform(cont_img)    # 进行裁剪等操作
 
-        sty_img = self.style_images[index]
-        sty_img = Image.open(sty_img).convert('RGB')
-        sty_img = self.base_transform(sty_img)
-        sty_img = self.normalize_transform(sty_img)
+        cont_mask_img = cont_img[3,:,:] # 将alpha通道分离, 当作掩膜
+        cont_mask_img = cont_mask_img.unsqueeze(0)
+        cont_mask_img = cont_mask_img.repeat(3,1,1) # 将内容图像掩膜通道数变为3, 从而与 RGB 图像匹配
+
+        cont_rgb_img = cont_img[0:3,:,:] # 将RGB通道分离, 当作真正的内容图像
+        cont_img = self.normalize_transform(cont_rgb_img)   # 进行归一化等操作
+
+        # 风格图像与风格掩膜获取
+
+        sty_img = self.style_images[index]  # 获取风格图像名称
+        sty_img = Image.open(sty_img).convert('RGBA')   # 读取风格图像, 并转换为RGBA格式 
+        sty_img = self.base_transform(sty_img)  # ToTensor 函数会自动将数据归一化到 0~1 之间, 所以无须手动归一化
+
+        sty_mask_img = sty_img[3,:,:]   # 将 alpha 通道分离出来, 当作掩膜
+        sty_mask_img = sty_mask_img.squeeze(0)  # 扩展第一维度, 为下一行代码做准备
+        sty_mask_img = sty_mask_img.repeat(3,1,1)   # 将掩膜图像的通道数变为3, 以与RGB图像匹配, 最终与 SoftPartialConv 代码匹配
+
+        sty_rgb_img = sty_img[0:3,:,:]  # 将 RGB 通道分离出来, 当作真正的风格图像
+        sty_rgb_img = self.normalize_transform(sty_rgb_img) # 进行归一化处理
         
-        msk_img = self.mask_images[index]
-        msk_img = Image.open(msk_img).convert('RGB')
-        msk_img = self.base_transform(msk_img)
-        # mask不许要归一化操作, 所以没有 normalize_transform操作
 
-        return {'content_img': cont_img, 'style_img': sty_img, 'mask_img': msk_img}
+        return {'content_img': cont_rgb_img, 'content_mask_img': cont_mask_img, 'style_img': sty_rgb_img, 'mask_img': sty_mask_img}
     
 def test_get_data():
     img_dir = '/mnt/sda/Dataset/Detection/WikiArt/wikiart/train'
@@ -195,4 +208,11 @@ def test_phase_test():
     ds = DataSplit(config=config, phase='test')
     
 if __name__ == '__main__':
-    test_phase_test()
+    ds = DataSplit(config=Config, phase='train')
+    c_img = ds[0]['content_img']
+    s_img = ds[0]['style_img']
+    m_img = ds[0]['mask_img']
+    print(c_img.shape, s_img.shape, torch.all(m_img == 1))
+    torch.set_printoptions(threshold=torch.inf)
+    print(m_img)
+    

@@ -35,6 +35,8 @@ class AesFA(nn.Module):
 
         
     def forward(self, data):
+        # data 是一个存放数据的字典, 其中具有三个键值对, 三个键分别为 content_img, style_img, mask_img
+        ############################# 数据预处理: 将 RGB 通道与 alpha 通道分离, RGB 部分正常进入网络, alpha通道 当作掩膜, 归一化后进入网络. ############################# 
         ############################# 数据处理：转到 cuda 上 #############################
         self.real_A = data['content_img'].to(self.device)
         self.real_B = data['style_img'].to(self.device)

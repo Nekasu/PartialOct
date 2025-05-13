@@ -7,7 +7,7 @@ from torch import nn
 import torch.nn.functional as F
 from torch.optim import lr_scheduler
 from blocks import *
-from PartConv import PartialConv2d
+from SoftPartConv import PartialConv2d
 
 def model_save(ckpt_dir, model, optim_E, optim_S, optim_G, epoch, itr=None):
     if not os.path.exists(ckpt_dir):

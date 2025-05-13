@@ -40,7 +40,7 @@ def main():
     config = Config()
     mkoutput_dir(config)
 
-    config.device = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
+    config.device = torch.device(config.cuda_device if torch.cuda.is_available() else "cpu")
     print('cuda:', config.device)
 
     print('Version:', config.file_n)
@@ -107,7 +107,7 @@ def main():
             # print(f'掩膜图像：{data["mask_img"]}')
             tot_itr += 1
             # breakpoint()
-            train_dict = model.train_step(data)
+            train_dict = model.train_step(data) # 核心训练代码
             # breakpoint()
 
             real_A = im_convert(data['content_img'])
