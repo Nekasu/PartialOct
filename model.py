@@ -192,27 +192,23 @@ class AesFA_test(nn.Module):
         self.netS = networks.define_network(net_type='StyleEncoder', config = config)    # Style Encoder
         self.netG = networks.define_network(net_type='Generator', config = config)
         
-        # 用 ParitialAesFA 代替原始网络结构 
-        # self.netE = networks.define_network(net_type='Encoder', config=config)
-        # self.netS = networks.define_network(net_type='Encoder', config=config)
-        # self.netG = networks.define_network(net_type='Generator', config=config)
-
     def forward(self, real_A, real_B, real_mask, freq):
         with torch.no_grad():
             start = time.time() # sign the start time
-            content_A = self.netE.forward_test(x=real_A, cond='content')   # encode content image
-            style_B = self.netS.forward_test(x=real_B, mask=real_mask, cond='style')   # encode style image
-            if freq:    # 若 freq 为 True, 则使用 Genetrator 的 forward 函数作为处理
-                        # if freq is True, then do save the high and low frequency of styled images
-                trs_AtoB, trs_AtoB_high, trs_AtoB_low = self.netG(content_A, style_B)   # Generate Styled Image
-                end = time.time()   # sign the end time
-                during = end - start    # calculate time span for code running
+            
+            # 使用与训练时相同的处理流程
+            content_A, _, _ = self.netE(x=real_A)
+            _, style_B, _ = self.netS(x=real_B, mask=real_mask)
+            
+            if freq:
+                trs_AtoB, trs_AtoB_high, trs_AtoB_low = self.netG(content_A, style_B)
+                end = time.time()
+                during = end - start
                 return trs_AtoB, trs_AtoB_high, trs_AtoB_low, during
-            else:# 若 freq 为 False, 则使用 Genetrator 的 forward_test 函数作为处理(二者的区别在于是否保存风格化图像的高频与低频信息)
-                trs_AtoB = self.netG.forward_test(content_A, style_B)
-                end = time.time()   # sign the end time
-                during = end - start    # calculate time span for code running
-
+            else:
+                trs_AtoB = self.netG(content_A, style_B)[0]  # 只取第一个返回值
+                end = time.time()
+                during = end - start
                 return trs_AtoB, during
     
     def style_blending(self, real_A, real_B_1, real_B_2):

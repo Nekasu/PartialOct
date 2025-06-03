@@ -133,38 +133,15 @@ class StyleEncoder(nn.Module):
         return out, out_sty, enc_feat   # o19, downsampled o19, [o13,o19]
     
     def forward_test(self, x, mask, cond):
-        out, mask = self.conv(in_x=x, in_mask=mask)
+        # 使用与训练时相同的处理逻辑
+        out, out_sty, enc_feat = self.forward(x, mask)
         
-        #################### Encoder中的第一层 ####################
-        out, mask = self.PartialOctConv1_1(x=out, mask=mask)
-        out = self.relu(out)
-        out, mask = self.PartialOctConv1_2(x=out, mask=mask)
-        out = self.relu(out)
-        out, mask = self.PartialOctConv1_3(x=out, mask=mask)
-        out = self.relu(out)
-        
-        #################### Encoder中的第二层 ####################
-        out, mask = self.PartialOctConv2_1(x=out, mask=mask)
-        out = self.relu(out)
-        out, mask = self.PartialOctConv2_2(x=out, mask=mask)
-        out = self.relu(out)
-        out, mask = self.PartialOctConv2_3(x=out, mask=mask)
-        out = self.relu(out)
-
-        #################### Encoder中的第三层 ####################
-        out, mask = self.PartialOctConv3_1(x=out, mask=mask) # o14
-        out = self.relu(out) # o15
-        out, mask = self.PartialOctConv3_2(x=out, mask=mask) # o16
-        out = self.relu(out) # o17
-        out, mask = self.PartialOctConv3_3(x=out, mask=mask) # o18
-        out = self.relu(out) # o19
-
-        if cond == 'style': # 如果为 cond 参数 为 style, 则将 风格图像编码结果分高低频返回.
+        if cond == 'style':
             out_high, out_low = out
             out_sty_h = self.pool_h(out_high)
             out_sty_l = self.pool_l(out_low)
             return out_sty_h, out_sty_l
-        else:   # 否则直接返回
+        else:
             return out
 
 class ContentEncoder(nn.Module):
@@ -257,38 +234,15 @@ class ContentEncoder(nn.Module):
         return out, out_sty, enc_feat # o19, downsampled o19, [o13,o19]
     
     def forward_test(self, x, cond):
-        out = self.conv(x)
+        # 使用与训练时相同的处理逻辑
+        out, out_sty, enc_feat = self.forward(x)
         
-        #################### ContentEncoder中的第一层 ####################
-        out = self.OctConv1_1(out)
-        out = self.relu(out)
-        out = self.OctConv1_2(out)
-        out = self.relu(out)
-        out = self.OctConv1_3(out)
-        out = self.relu(out)
-        
-        #################### ContentEncoder中的第二层 ####################
-        out = self.OctConv2_1(out)   
-        out = self.relu(out)
-        out = self.OctConv2_2(out)
-        out = self.relu(out)
-        out = self.OctConv2_3(out)
-        out = self.relu(out)
-        
-        #################### ContentEncoder中的第三层 ####################
-        out = self.OctConv3_1(out)
-        out = self.relu(out)
-        out = self.OctConv3_2(out)
-        out = self.relu(out)
-        out = self.OctConv3_3(out)
-        out = self.relu(out)    # o19
-
-        if cond == 'style': # 如果为 cond 参数 为 style, 则将 风格图像编码结果分高低频返回.
+        if cond == 'style':
             out_high, out_low = out
             out_sty_h = self.pool_h(out_high)
             out_sty_l = self.pool_l(out_low)
             return out_sty_h, out_sty_l
-        else:   #　否则直接返回
+        else:
             return out
 
 class Decoder(nn.Module):
