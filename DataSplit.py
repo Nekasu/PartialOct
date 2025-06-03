@@ -22,7 +22,7 @@ class DataSplit(Dataset):
                                 RandomCrop(size=(config.crop_size, config.crop_size)),
                                 ToTensor(),
                                 ])
-        self.normalize_transform = Compose([Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225))])
+        self.normalize_transform = Compose([Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
 
         if phase == 'train':
             print('train mode')
@@ -109,7 +109,7 @@ class DataSplit(Dataset):
         cont_mask_img = cont_mask_img.repeat(3,1,1) # 将内容图像掩膜通道数变为3, 从而与 RGB 图像匹配
 
         cont_rgb_img = cont_img[0:3,:,:] # 将RGB通道分离, 当作真正的内容图像
-        cont_img = self.normalize_transform(cont_rgb_img)   # 进行归一化等操作
+        cont_rgb_img = self.normalize_transform(cont_rgb_img)   # 进行归一化等操作
 
         # 风格图像与风格掩膜获取
 
@@ -212,7 +212,10 @@ if __name__ == '__main__':
     c_img = ds[0]['content_img']
     s_img = ds[0]['style_img']
     m_img = ds[0]['mask_img']
-    print(c_img.shape, s_img.shape, torch.all(m_img == 1))
+    print(c_img.shape, s_img.shape, m_img.shape)
+    print(torch.all(c_img == 1),torch.all(s_img == 1),torch.all(m_img == 1))
     torch.set_printoptions(threshold=torch.inf)
-    print(m_img)
+    # print(f'c_img: {c_img}')
+    # print(f's_img: {s_img}')
+    print(f'm_img: {m_img}')
     

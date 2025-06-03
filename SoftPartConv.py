@@ -86,10 +86,8 @@ class PartialConv2d(nn.Module):
         # print(self.in_mask)
         ######################################### 部分卷积过程 #########################################
         # 1. 计算输入特征与掩膜的逐元素相乘 (X ⊙ M)
-        # print(torch.all(self.self.in_mask == 1).item())
-        # print(f'输入的mask, 最大最小值：{in_mask.max()}, {in_mask.min()}')
-        # print(f'处理后的mask, 最大最小值：{self.in_mask.max()}, {self.in_mask.min()}')
-        # print(f'处理后的mask, 最大、与大于0的最小值：{pos_mask.max()}, {pos_mask.min()}')
+        # 确保掩膜值在0~1之间
+        self.in_mask = torch.clamp(self.in_mask, min=0.0, max=1.0)
         self.calc_x = self.in_x * self.in_mask
         # print(f'显示第一步calc_x的最大最小值：{self.calc_x.max()}, {self.calc_x.min()}')
         
@@ -111,7 +109,8 @@ class PartialConv2d(nn.Module):
             # print(f'in_mask 的值:f{self.in_mask}')
             # print(f'self.in_mask.shape[1] is {self.in_mask.shape[1] } ')
             self.sum_mask: torch.Tensor = self.conv_1(self.in_mask) # 利用一个其中参数全为1的卷积核与输入掩膜相乘, 算出每个像素的sum(M)
-            self.sum_mask = torch.clamp(self.sum_mask, min=0.0)  # 强制将负值设为0.0
+            # 确保sum_mask非负
+            self.sum_mask = torch.clamp(self.sum_mask, min=1e-8)  # 使用一个小的正数作为下限，避免除零
 
             # print(f"sum_mask is f{self.sum_mask}")
             # print(f'sum_mask 的最大最小值: {self.sum_mask.max()}, {self.sum_mask.min()}')
@@ -121,14 +120,14 @@ class PartialConv2d(nn.Module):
             # print(f'sum_mask.shape is {self.sum_mask.shape}')
             # print(f'self.out.shape: {self.out.shape}, self.sum_mask.shape: {self.sum_mask.shape}')
             if (self.out.shape == self.sum_mask.shape):
-                self.ratio: torch.Tensor = torch.where(
-                    self.sum_mask<=0, 
-                    torch.tensor(0.0, device=self.sum_mask.device), 
-                    self.sum_I/self.sum_mask
-                )
-                # print(f'after:{self.ratio}')
+                # 计算ratio
+                self.ratio: torch.Tensor = self.sum_I / self.sum_mask
+                # 限制ratio的范围：[0, sum_I]
+                # sum_I作为上限有明确的物理意义：表示窗口内仅有最小量的有效信息
+                self.ratio = torch.clamp(self.ratio, min=0.0, max=float(self.sum_I))
             else:
-                print("error!")
+                print("Error: Shape mismatch between output and mask!")
+                return None
 
             # print(f'ratio.shape is {self.ratio.shape}')
         # print(f'ratio 的最大最小值：{self.ratio.max()}, {self.ratio.min()}')
@@ -146,9 +145,9 @@ class PartialConv2d(nn.Module):
         
         ######################################### 掩膜更新过程 #########################################
         self.updated_mask: torch.Tensor = torch.where(
-            (self.sum_mask != 0),
-            (self.sum_mask.clone().detach() / (self.kernel_size * self.kernel_size * self.in_channels)).float(),
-            self.sum_mask
+            (self.sum_mask > 1e-8),
+            torch.clamp(self.sum_mask / (self.kernel_size * self.kernel_size * self.in_channels), min=0.0, max=1.0),
+            torch.zeros_like(self.sum_mask)
         ) # tensor != 0：生成一个与原张量形状相同的布尔张量，标记出哪些元素不是0。torch.tensor(1)：如果条件为真（即元素不为0），则将其设置为 \frac{1}{K^2} \cdot \sum M。tensor：如果条件为假（即元素为0），则保持原样。# 返回值2
         # print(self.updated_mask)
 
@@ -161,6 +160,8 @@ class PartialConv2d(nn.Module):
         # print(f'显示返回值out的最大最小值：{self.out.max()}, {self.out.min()}')
         # ------------------------------------------------------ 第二步到最终输出中, out值扩大了3~4个数量级, 这是恐怖的, 需要排查原因.
         # print(f'------------------------------------------')
+        # 7. 确保输出值在合理范围内
+        self.out = torch.clamp(self.out, min=-1.0, max=1.0)  # 假设我们期望输出在[-1,1]范围内
         return self.out, self.updated_mask
         
 if __name__ == '__main__':
