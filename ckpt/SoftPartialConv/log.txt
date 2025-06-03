@@ -1,5 +1,5 @@
 /mnt/sda/zxt/3_code_area/code_develop/PartialConv_AesFA/log/SoftPartialConvlog.txt
-cuda: cuda:0
+cuda: cuda:1
 Version: SoftPartialConv
 train mode
 content dir: /mnt/sda/Datasets/Detection/COCO/train2017

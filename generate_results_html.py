@@ -7,15 +7,15 @@ from Config import Config
 def generate_html(A_list, B_list, trs_list, file_type='main'):
     config = Config()
     table_list = []
-    print(config.mask_dir.split('/')[7:])
-    mask_dir = path.join('../../../../', *config.mask_dir.split('/')[7:])
-    print(mask_dir)
+    print(config.style_dir.split('/')[7:])
+    style_dir = path.join('../../../../', *config.style_dir.split('/')[7:])
+    print(style_dir)
     for i, pth in enumerate(A_list):
         A_path = './' + A_list[i].split('/')[-1]
 
         mask_name = B_list[i].split('/')[-1].split('_')[2] + '_mask_' + '_'.join(B_list[i].split('/')[-1].split('_')[4:])
         # print(mask_name)
-        mask_path = path.join(mask_dir, mask_name)
+        mask_path = path.join(style_dir, mask_name)
         print(mask_path)
 
         B_path = './' + B_list[i].split('/')[-1]

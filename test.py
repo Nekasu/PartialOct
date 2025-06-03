@@ -4,6 +4,7 @@ Use model.py->AesFA_test->forward function to generate stylized images.
 import os
 from unittest import result
 from cv2 import transform
+import path
 import torch
 import numpy as np
 import thop
@@ -110,7 +111,7 @@ def main():
         print("Test: ", test_data.__len__(), "images: ", len(data_loader_test), "x", test_bs, "(batch size) =", test_data.__len__())
 
         ## Model load
-        ckpt = config.ckpt_dir + '/main.pth'    # ckpt files path&name is from Config.py
+        ckpt = os.path.join(config.ckpt_dir, config.ckpt_name)    # ckpt files path&name is from Config.py
         print("checkpoint: ", ckpt)
         model = AesFA_test(config)
         model = test_model_load(checkpoint=ckpt, model=model)
