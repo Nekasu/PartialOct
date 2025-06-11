@@ -102,7 +102,7 @@ class DataSplit(Dataset):
         # 内容图像与内容掩膜获取
         cont_img = self.images[index]   # 获取内容图像名称
         cont_img = Image.open(cont_img).convert('RGBA') # 读取内容图像, 并转换为RGBA格式
-        cont_img = self.base_transform(cont_img)    # 进行裁剪等操作
+        cont_img = self.base_transform(cont_img)    # 对内容图像进行基础操作, 进行裁剪等操作
 
         cont_mask_img = cont_img[3,:,:] # 将alpha通道分离, 当作掩膜
         cont_mask_img = cont_mask_img.unsqueeze(0)
@@ -111,7 +111,7 @@ class DataSplit(Dataset):
         cont_rgb_img = cont_img[0:3,:,:] # 将RGB通道分离, 当作真正的内容图像
         cont_rgb_img = self.normalize_transform(cont_rgb_img)   # 进行归一化等操作
 
-        # 风格图像与风格掩膜获取
+        # 风格图像与风格掩膜获取, 与对内容图像的处理完全一样.
 
         sty_img = self.style_images[index]  # 获取风格图像名称
         sty_img = Image.open(sty_img).convert('RGBA')   # 读取风格图像, 并转换为RGBA格式 

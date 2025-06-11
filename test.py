@@ -47,7 +47,8 @@ def load_img(img_name, img_size, device):
 def im_convert(tensor):
     image = tensor.to("cpu").clone().detach().numpy()
     image = image.transpose(0, 2, 3, 1)
-    image = image * np.array((0.229, 0.224, 0.225)) + np.array((0.485, 0.456, 0.406))
+    # image = image * np.array((0.229, 0.224, 0.225)) + np.array((0.485, 0.456, 0.406))
+    image = image * 0.5 + 0.5    # 修改为与输入归一化参数对应的值
     image = image.clip(0, 1)
     return image
 
@@ -58,7 +59,8 @@ def do_base_transform(img, osize):
     return transform(img)
     
 def do_normalize_transform(img):
-    transform = Compose([Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225))])
+    # transform = Compose([Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225))])
+    transform = Compose([Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
     return transform(img)
 
 def do_transform(img, osize):
@@ -76,11 +78,16 @@ def save_img(config, cont_name, sty_name, content, style, stylized, freq=False, 
     A_image = Image.fromarray((real_A[0] * 255.0).astype(np.uint8))
     B_image = Image.fromarray((real_B[0] * 255.0).astype(np.uint8))
     trs_image = Image.fromarray((trs_AtoB[0] * 255.0).astype(np.uint8))
-    A_path = '{}/{:s}_content_{:s}.jpg'.format(config.img_dir, cont_name.stem, sty_name.stem)
+
+    A_path = f"{config.img_dir}/{cont_name.stem}_content_{sty_name.stem}.png"
+    B_path = f"{config.img_dir}/{cont_name.stem}_style_{sty_name.stem}.png"
+    trs_path = f"{config.img_dir}/{cont_name.stem}_stylized_{sty_name.stem}.png"
+
+    # A_path = '{}/{:s}_content_{:s}.jpg'.format(config.img_dir, cont_name.stem, sty_name.stem)
     A_image.save(A_path)
-    B_path = '{}/{:s}_style_{:s}.jpg'.format(config.img_dir, cont_name.stem, sty_name.stem)
+    # B_path = '{}/{:s}_style_{:s}.jpg'.format(config.img_dir, cont_name.stem, sty_name.stem)
     B_image.save(B_path)
-    trs_path ='{}/{:s}_stylized_{:s}.jpg'.format(config.img_dir, cont_name.stem, sty_name.stem) 
+    # trs_path ='{}/{:s}_stylized_{:s}.jpg'.format(config.img_dir, cont_name.stem, sty_name.stem) 
     trs_image.save(trs_path)
     
     if freq:
