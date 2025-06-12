@@ -27,15 +27,18 @@ class Config:
         content_dir = '/mnt/sdb/zxt/3_code_area/code_develop/PartialConv_AesFA/input/contents/alpha'
         # style_dir = '/mnt/sdb/zxt/3_code_area/code_develop/PartialConv_AesFA/input/styles/dunhuang/alpha'  # 敦煌
         style_dir = '/mnt/sdb/zxt/3_code_area/code_develop/PartialConv_AesFA/input/styles/wikiart/alpha'    # wikiart
+        style_dir = '/mnt/sdb/zxt/3_code_area/code_develop/PartialConv_AesFA/input/styles/wikiart/alpha'    # wikiart
+
 
         # mask_dir = '/mnt/sda/zxt/3_code_area/code_develop/PartialConv_AesFA/imgs/masks' + '/' + mod
         # style_dir = '/mnt/sda/zxt/3_code_area/code_develop/PartialConv_AesFA/imgs/styles/origin'
         # mask_dir = '/mnt/sda/zxt/3_code_area/code_develop/PartialConv_AesFA/imgs/styles/mask'
 
-        img_dir = './output/'+file_n + '/' + str(test_content_size)+  '/' + mod 
-        ckpt_iter = 160000
-        ckpt_epoch = 22
+        ckpt_iter = 80000
+        ckpt_epoch = 11
         ckpt_name = 'model_iter_' + str(ckpt_iter) + '_epoch_' + str(ckpt_epoch) + '.pth'
+         
+        img_dir = './output/'+file_n + '/' + ckpt_name.split('.')[0] + '/' + str(test_content_size)+  '/'
 
     elif phase == 'style_blending':
         blend_load_size = 256

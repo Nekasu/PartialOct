@@ -1,11 +1,7 @@
 '''
 Use model.py->AesFA_test->forward function to generate stylized images.
 '''
-from ast import Tuple
 import os
-from unittest import result
-from cv2 import transform
-import path
 import torch
 import numpy as np
 import thop
@@ -103,8 +99,10 @@ def do_normalize_transform(img):
 #     return transform(img)
 
 def save_img(config, cont_name, sty_name, content, style, stylized, content_mask=None, style_mask=None, freq=False, high=None, low=None):
-    real_A = im_convert(content)
-    real_B = im_convert(style)
+    # real_A = im_convert(content)
+    real_A = im_convert_alpha(content, content_mask)
+    # real_B = im_convert(style)
+    real_B = im_convert_alpha(style, style_mask)
     trs_AtoB_full = im_convert(stylized)    # 保留完整风格化图像
     trs_AtoB = im_convert_alpha(stylized, content_mask) # 将风格化图像使用内容图像掩膜裁剪
     # trs_AtoB = im_convert(stylized)
@@ -202,7 +200,7 @@ def main():
                             real_B=style,
                             real_mask=style_mask,
                             freq=freq)  # Use `AesFA_test.forward` to generate styled images
-                        A_path, B_path, trs_full_path, trs_path = save_img(config, cont_name, sty_name, content, style, stylized, content_mask=content_mask)
+                        A_path, B_path, trs_full_path, trs_path = save_img(config, cont_name, sty_name, content, style, stylized, content_mask=content_mask, style_mask=style_mask)
                         A_path_list.append(A_path)
                         B_path_list.append(B_path)
                         trs_path_list.append(trs_path)
