@@ -4,7 +4,7 @@
 from os import path
 from Config import Config
 # 创建HTML文件并插入表格和图像
-def generate_html(A_list, B_list, trs_list, file_type='main'):
+def generate_html(A_list, B_list, trs_full_list, trs_list, file_type='main'):
     config = Config()
     table_list = []
     print(config.style_dir.split('/')[7:])
@@ -19,10 +19,10 @@ def generate_html(A_list, B_list, trs_list, file_type='main'):
         print(mask_path)
 
         B_path = './' + B_list[i].split('/')[-1]
-
+        trs_full_path = './' + trs_full_list[i].split('/')[-1]
         trs_path = './' + trs_list[i].split('/')[-1]
 
-        table_list.append(f'<tr> <td>{i+1}</td><td><img src="{A_path}" alt="内容图像{i}"></td> <td><img src="{B_path}" alt="风格图像{i}"></td> <td><img src="{mask_path}" alt="掩膜图像{i}"></td><td><img src="{trs_path}" alt="生成图像{i}"></td> </tr>')
+        table_list.append(f'<tr> <td>{i+1}</td><td><img src="{A_path}" alt="内容图像{i}"></td> <td><img src="{B_path}" alt="风格图像{i}"></td> <td><img src="{trs_full_path}" alt="生成完整图像{i}"></td><td><img src="{trs_path}" alt="生成图像(with alpha){i}"></td> </tr>')
     html_content_start = """
     <!DOCTYPE html>
     <html lang="zh-CN">

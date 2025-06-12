@@ -1,6 +1,7 @@
 '''
 Use model.py->AesFA_test->forward function to generate stylized images.
 '''
+from ast import Tuple
 import os
 from unittest import result
 from cv2 import transform
@@ -36,6 +37,8 @@ def load_img(img_name, img_size, device):
     true_img = do_normalize_transform(true_img) # 进行归一化等操作
     # print(f'mask_img.shape: {mask_img.shape}, true_img.shape:{true_img.shape}')
     
+    # print(type(true_img), type(mask_img))
+    # print((true_img.shape),(mask_img.shape))
     return true_img, mask_img
     
 
@@ -44,13 +47,42 @@ def load_img(img_name, img_size, device):
     #     img = img.unsqueeze(0)  # make batch dimension
     # return img
 
-def im_convert(tensor):
-    image = tensor.to("cpu").clone().detach().numpy()
+def im_convert(image):
+    image = image.to("cpu").clone().detach().numpy()
     image = image.transpose(0, 2, 3, 1)
     # image = image * np.array((0.229, 0.224, 0.225)) + np.array((0.485, 0.456, 0.406))
     image = image * 0.5 + 0.5    # 修改为与输入归一化参数对应的值
     image = image.clip(0, 1)
     return image
+
+def im_convert_alpha(stylized: torch.Tensor, mask: torch.Tensor):
+    '''
+    一个专门对png图像优化的im_convert方法. 由于在读取图像时没有对alpha通道进行归一化处理, 所以在此刻也不需要进行“反归一化”的处理. 故将alpha通道与RGB通道分开处理分开.
+    '''
+    stylized = stylized * 0.5 + 0.5
+    mask_sliced = mask[:,0:1,:,:] # 经测试发现, mask的三个通道中的内容完全一致
+    
+    stylized_with_alpha = torch.cat([stylized, mask_sliced], dim=1)
+    stylized_with_alpha = stylized_with_alpha.to("cpu").clone().detach().numpy()
+    stylized_with_alpha = stylized_with_alpha.transpose(0,2,3,1)
+    stylized_with_alpha = stylized_with_alpha.clip(0,1)
+
+    return stylized_with_alpha
+    # stylized_with_alpha = torch.cat([stylized, mask_sliced], dim=1)
+
+    # true_image = image[:,0:3,:,:] # 分离RGB通道
+    # mask_image = image[:,-1:,:] # 分离alpha通道, 并保持通道数一致
+    # print(true_image.shape)
+    # print(mask_image.shape)
+
+    # true_image =  true_image * 0.5 + 0.5    # 处理RGB通道, 修改为与输入归一化参数对应的值
+    # image = torch.cat([true_image, mask_image], dim=1) # 拼接RGB与alpha通道
+
+    # image = image.to("cpu").clone().detach().numpy()
+    # image = image.transpose(0, 2, 3, 1)
+    # image = image.clip(0, 1)
+    # print(image.shape)
+    # return image
 
 def do_base_transform(img, osize):
     transform = Compose([Resize(size=osize),
@@ -63,24 +95,28 @@ def do_normalize_transform(img):
     transform = Compose([Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
     return transform(img)
 
-def do_transform(img, osize):
-    transform = Compose([Resize(size=osize),  # Resize to keep aspect ratio
-                        CenterCrop(size=osize),
-                        ToTensor(),
-                        Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225))])
-    return transform(img)
+# def do_transform(img, osize):
+#     transform = Compose([Resize(size=osize),  # Resize to keep aspect ratio
+#                         CenterCrop(size=osize),
+#                         ToTensor(),
+#                         Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225))])
+#     return transform(img)
 
-def save_img(config, cont_name, sty_name, content, style, stylized, freq=False, high=None, low=None):
+def save_img(config, cont_name, sty_name, content, style, stylized, content_mask=None, style_mask=None, freq=False, high=None, low=None):
     real_A = im_convert(content)
     real_B = im_convert(style)
-    trs_AtoB = im_convert(stylized)
+    trs_AtoB_full = im_convert(stylized)    # 保留完整风格化图像
+    trs_AtoB = im_convert_alpha(stylized, content_mask) # 将风格化图像使用内容图像掩膜裁剪
+    # trs_AtoB = im_convert(stylized)
     
     A_image = Image.fromarray((real_A[0] * 255.0).astype(np.uint8))
     B_image = Image.fromarray((real_B[0] * 255.0).astype(np.uint8))
+    trs_image_full = Image.fromarray((trs_AtoB_full[0] * 255.0).astype(np.uint8))
     trs_image = Image.fromarray((trs_AtoB[0] * 255.0).astype(np.uint8))
 
     A_path = f"{config.img_dir}/{cont_name.stem}_content_{sty_name.stem}.png"
     B_path = f"{config.img_dir}/{cont_name.stem}_style_{sty_name.stem}.png"
+    trs_full_path = f"{config.img_dir}/{cont_name.stem}_fullstylized_{sty_name.stem}.jpg"
     trs_path = f"{config.img_dir}/{cont_name.stem}_stylized_{sty_name.stem}.png"
 
     # A_path = '{}/{:s}_content_{:s}.jpg'.format(config.img_dir, cont_name.stem, sty_name.stem)
@@ -88,6 +124,7 @@ def save_img(config, cont_name, sty_name, content, style, stylized, freq=False, 
     # B_path = '{}/{:s}_style_{:s}.jpg'.format(config.img_dir, cont_name.stem, sty_name.stem)
     B_image.save(B_path)
     # trs_path ='{}/{:s}_stylized_{:s}.jpg'.format(config.img_dir, cont_name.stem, sty_name.stem) 
+    trs_image_full.save(trs_full_path)
     trs_image.save(trs_path)
     
     if freq:
@@ -100,7 +137,7 @@ def save_img(config, cont_name, sty_name, content, style, stylized, freq=False, 
         trsh_image.save('{}/{:s}_stylizing_high_{:s}.jpg'.format(config.img_dir, cont_name.stem, sty_name.stem))
         trsl_image.save('{}/{:s}_stylizing_low_{:s}.jpg'.format(config.img_dir, cont_name.stem, sty_name.stem))
     
-    return A_path, B_path, trs_path
+    return A_path, B_path, trs_full_path, trs_path  # 返回值: 内容图像路径、风格图像路径、风格化图像路径、添加α通道的风格化图像的路径
 
         
 def main():
@@ -135,6 +172,7 @@ def main():
         A_path_list = []
         B_path_list = []
         trs_path_list = []
+        trs_full_path_list = []
 
         contents = test_data.images # Load Content Images 一个列表, 里面存储了内容图像的名称.
         styles = test_data.style_images    # Load Style Images 一个列表, 里面存储了风格图像的名称.
@@ -147,28 +185,33 @@ def main():
 
                 for i in range(len(styles)):
                     sty_name = styles[i]            # path of style image
-                    style, mask = load_img(sty_name, config.test_style_size, device) # 想要将掩膜从风格图像中提取出来, 就必须改写 load_img 函数. 具体来说, 应该将 load_img 函数改写成类似于 DataSplit.py -> __getitem__函数 中, 从 sty_img 中分离 mask的形式.
+                    style, style_mask = load_img(sty_name, config.test_style_size, device) # 想要将掩膜从风格图像中提取出来, 就必须改写 load_img 函数. 具体来说, 应该将 load_img 函数改写成类似于 DataSplit.py -> __getitem__函数 中, 从 sty_img 中分离 mask的形式.
 
                     # mask_name = masks[i]            # path of mask image
                     # mask = load_img(mask_name, config.test_style_size, device)
                     
                     if freq:
-                        stylized, stylized_high, stylized_low, during = model(real_A=content, real_B=style, real_mask=mask, freq=freq) # Use `AesFA_test.forward` to generate styled images
+                        stylized, stylized_high, stylized_low, during = model(real_A=content, real_B=style, real_mask=style_mask, freq=freq) # Use `AesFA_test.forward` to generate styled images
                         A_path, B_path, trs_path = save_img(config, cont_name, sty_name, content, style, stylized, freq, stylized_high, stylized_low)
                         A_path_list.append(A_path)
                         B_path_list.append(B_path)
                         trs_path_list.append(trs_path)
                     else:
-                        stylized, during = model(real_A=content, real_B=style, real_mask=mask, freq=freq)  # Use `AesFA_test.forward` to generate styled images
-                        A_path, B_path, trs_path = save_img(config, cont_name, sty_name, content, style, stylized)
+                        stylized, during = model(
+                            real_A=content,
+                            real_B=style,
+                            real_mask=style_mask,
+                            freq=freq)  # Use `AesFA_test.forward` to generate styled images
+                        A_path, B_path, trs_full_path, trs_path = save_img(config, cont_name, sty_name, content, style, stylized, content_mask=content_mask)
                         A_path_list.append(A_path)
                         B_path_list.append(B_path)
                         trs_path_list.append(trs_path)
+                        trs_full_path_list.append(trs_full_path)
 
                     count += 1
                     print(count, idx+1, i+1, during)
                     t_during += during
-                    flops, params = thop.profile(model, inputs=(content, style, mask, freq))
+                    flops, params = thop.profile(model, inputs=(content, style, style_mask, freq))
                     print("GFLOPS: %.4f, Params: %.4f"% (flops/1e9, params/1e6))
                     print("Max GPU memory allocated: %.4f GB" % (torch.cuda.max_memory_allocated(device=config.cuda_device) / 1024. / 1024. / 1024.))
 
@@ -200,7 +243,34 @@ def main():
         t_during = float(t_during / (len(contents) * len(styles)))
         print("[AesFA] Content size:", config.test_content_size, "Style size:", config.test_style_size,
               " Total images:", tot_imgs, "Avg Testing time:", t_during)
-        generate_results_html.generate_html(A_path_list, B_path_list, trs_path_list, file_type=config.mod)
+        generate_results_html.generate_html(A_path_list, B_path_list, trs_full_path_list,trs_path_list, file_type=config.mod)
             
 if __name__ == '__main__':
     main()
+
+    # #### 数据读入
+    # style_name = '/mnt/sda/Datasets/style_image/AlphaStyle/alpha_WikiArt_AllInOne2/Color_Field_Painting_anne-truitt_knight-s-heritage-1963.png'
+    # content_name = '/mnt/sdb/zxt/3_code_area/code_develop/PartialConv_AesFA/input/contents/alpha/transparent_c1_main.png'
+    # content, content_mask = load_img(img_name=content_name, img_size=256, device='cuda:1')
+    # style, style_mask = load_img(img_name=style_name, img_size=256, device='cuda:1')
+    
+    # #### 参数设定
+    # freq = False                # whether save high, low frequency images or not
+    # config = Config()
+    # ckpt = os.path.join(config.ckpt_dir, config.ckpt_name)    # ckpt files path&name is from Config.py
+    # device = torch.device(config.cuda_device if torch.cuda.is_available() else 'cpu')
+
+    # #### 模型导入
+    # model = AesFA_test(config)
+    # model = test_model_load(checkpoint=ckpt, model=model)
+    # model.to(device)
+    
+    # #### 模型调用
+    # stylized, during = model(
+    #     real_A=content,
+    #     real_B=style,
+    #     real_mask=style_mask,
+    #     freq=freq)  # Use `AesFA_test.forward` to generate styled images
+    # print(type(stylized))
+    # print(f'stylized shape: {stylized.shape}')
+    

@@ -25,8 +25,8 @@ class Config:
 
         mod = 'main' # main 表示迁移风格图像, back表示迁移背景图像, 当该值为main时, 将使用主体图像进行风格迁移；当该值为 back 时, 将使用背景图像进行风格迁移. 同时, 该值还用于创建保存图像的文件名.
         content_dir = '/mnt/sdb/zxt/3_code_area/code_develop/PartialConv_AesFA/input/contents/alpha'
-        style_dir = '/mnt/sdb/zxt/3_code_area/code_develop/PartialConv_AesFA/input/styles/dunhuang/alpha'  # 敦煌
-        # style_dir = '/mnt/sdb/zxt/3_code_area/code_develop/PartialConv_AesFA/input/styles/wikiart/alpha'    # wikiart
+        # style_dir = '/mnt/sdb/zxt/3_code_area/code_develop/PartialConv_AesFA/input/styles/dunhuang/alpha'  # 敦煌
+        style_dir = '/mnt/sdb/zxt/3_code_area/code_develop/PartialConv_AesFA/input/styles/wikiart/alpha'    # wikiart
 
         # mask_dir = '/mnt/sda/zxt/3_code_area/code_develop/PartialConv_AesFA/imgs/masks' + '/' + mod
         # style_dir = '/mnt/sda/zxt/3_code_area/code_develop/PartialConv_AesFA/imgs/styles/origin'
