@@ -4,10 +4,10 @@
 from os import path
 from Config import Config
 # 创建HTML文件并插入表格和图像
-def generate_html(A_list, B_list, trs_full_list, trs_list, file_type='main'):
+def generate_html(A_list, B_list, trs_full_list, trs_list):
     config = Config()
     table_list = []
-    print(config.style_dir.split('/')[7:])
+    # print(config.style_dir.split('/')[7:])
     style_dir = path.join('../../../../', *config.style_dir.split('/')[7:])
     print(style_dir)
     for i, pth in enumerate(A_list):
@@ -23,25 +23,25 @@ def generate_html(A_list, B_list, trs_full_list, trs_list, file_type='main'):
         trs_path = './' + trs_list[i].split('/')[-1]
 
         table_list.append(f'<tr> <td>{i+1}</td><td><img src="{A_path}" alt="内容图像{i}"></td> <td><img src="{B_path}" alt="风格图像{i}"></td> <td><img src="{trs_full_path}" alt="生成完整图像{i}"></td><td><img src="{trs_path}" alt="生成图像(with alpha){i}"></td> </tr>')
-    html_content_start = """
+    html_content_start = f"""
     <!DOCTYPE html>
     <html lang="zh-CN">
     <head>
         <meta charset="UTF-8">
-        <title>图像表格</title>
+        <title>{config.ckpt_name.split('.')[0]}</title>
         <style>
-            table {
+            table {{
                 width: 100%;
                 border-collapse: collapse;
-            }
-            td {
+            }}
+            td {{
                 border: 1px solid black;
                 text-align: center;
-            }
-            img {
+            }}
+            img {{
                 width: 100px; /* 可以根据需要调整图像宽度 */
                 height: auto;
-            }
+            }}
         </style>
     </head>
     <body>
@@ -62,7 +62,7 @@ def generate_html(A_list, B_list, trs_full_list, trs_list, file_type='main'):
 
     # 将HTML内容写入文件
     file_dir = path.join(*A_list[0].split('/')[:-1])
-    file_name = "result_img_table_" + file_type + '.html'
+    file_name = 'result_img_table.html'
     file_path = path.join(file_dir, file_name)
     print(file_path)
     with open(file_path, "w", encoding="utf-8") as file:

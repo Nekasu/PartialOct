@@ -241,7 +241,7 @@ def main():
         t_during = float(t_during / (len(contents) * len(styles)))
         print("[AesFA] Content size:", config.test_content_size, "Style size:", config.test_style_size,
               " Total images:", tot_imgs, "Avg Testing time:", t_during)
-        generate_results_html.generate_html(A_path_list, B_path_list, trs_full_path_list,trs_path_list, file_type=config.mod)
+        generate_results_html.generate_html(A_path_list, B_path_list, trs_full_path_list,trs_path_list)
             
 if __name__ == '__main__':
     main()

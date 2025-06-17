@@ -8,7 +8,7 @@ class Config:
     content_dir = '/mnt/sda/Datasets/Detection/COCO/train2017'
     # style_dir = '/mnt/sda/Dataset/style_image/dunhuang_style/crop_256/main_white/origin'
     # mask_dir = '/mnt/sda/Dataset/style_image/dunhuang_style/crop_256/main_white/mask'
-    style_dir = '/mnt/sda/Datasets/style_image/AlphaStyle/alpha_WikiArt_AllInOne2'
+    style_dir = '/mnt/sda/Datasets/style_image/AlphaStyle/alpha_WikiArt_AllInOne2/train_alpha'
     # mask_dir = '/mnt/sda/Dataset/style_image/dunhuang_style/crop_256/main_white/mask'
     cuda_device = 'cuda:1'
     
@@ -34,11 +34,11 @@ class Config:
         # style_dir = '/mnt/sda/zxt/3_code_area/code_develop/PartialConv_AesFA/imgs/styles/origin'
         # mask_dir = '/mnt/sda/zxt/3_code_area/code_develop/PartialConv_AesFA/imgs/styles/mask'
 
-        ckpt_iter = 80000
-        ckpt_epoch = 11
+        ckpt_iter = 160000
+        ckpt_epoch = 22
         ckpt_name = 'model_iter_' + str(ckpt_iter) + '_epoch_' + str(ckpt_epoch) + '.pth'
          
-        img_dir = './output/'+file_n + '/' + ckpt_name.split('.')[0] + '/' + str(test_content_size)+  '/'
+        img_dir = './output/'+file_n + '/' + ckpt_name.split('.')[0] + '_' + str(test_content_size)+  '/'
 
     elif phase == 'style_blending':
         blend_load_size = 256
@@ -54,7 +54,7 @@ class Config:
     ## basic parameters
     n_iter = 160000
     batch_size = 8
-    lr = 0.0001
+    lr = 0.00001
     lr_policy = 'step'
     lr_decay_iters = 50
     beta1 = 0.0
