@@ -1,6 +1,9 @@
+'''
+该文件专用于 test.py, 创建者为 zxt. 从此以后, Config.py 将专门用于 train.py. 方便使用.
+'''
 class Config:
-    phase = 'train'         # You must change the phase into train/test/style_blending
-    # phase = 'test'         # You must change the phase into train/test/style_blending
+    # phase = 'train'         # You must change the phase into train/test/style_blending
+    phase = 'test'         # You must change the phase into train/test/style_blending
     train_continue = 'off'  # on / off
 
     data_num = 60000        # Maximum # of training data
@@ -12,7 +15,7 @@ class Config:
     # mask_dir = '/mnt/sda/Dataset/style_image/dunhuang_style/crop_256/main_white/mask'
     cuda_device = 'cuda:1'
     
-    file_n = 'SoftPartialConv_limited-800000_iter' # 新训练时, 此处需要修改. 测试时, 也需要修改此处
+    file_n = 'SoftPartialConv_limited' # 新训练时, 此处需要修改. 测试时, 也需要修改此处
     log_file_path = '/mnt/sda/zxt/3_code_area/code_develop/PartialConv_AesFA/log/' + file_n + 'log.txt'
     log_dir = './log/' + file_n
     ckpt_dir = './ckpt/' + file_n

@@ -55,6 +55,8 @@ def main():
         pin_memory=False,
         sampler=train_sampler
     )
+    with open('./Config.py', 'r') as f:
+        print(f.read())
     print("Train: ", train_data.__len__(), "images: ", len(data_loader_train), "x", config.batch_size,"(batch size) =", train_data.__len__())
 
     ########## load model ##########
