@@ -22,6 +22,24 @@ class Config:
     img_dir = './Generated_images/' + file_n
     
     if phase == 'test':
+        iter_epoch_dict = {
+            10000:2,
+            20000:3,
+            30000:4,
+            40000:6,
+            50000:7,
+            60000:8,
+            70000:10,
+            80000:11,
+            90000:12,
+            100000:14,
+            110000:15,
+            120000:16,
+            130000:18,
+            140000:19,
+            150000:20,
+            160000:22,
+        }
         multi_to_multi = True
         test_content_size = 256
         test_style_size = 256
@@ -38,7 +56,8 @@ class Config:
         # mask_dir = '/mnt/sda/zxt/3_code_area/code_develop/PartialConv_AesFA/imgs/styles/mask'
 
         ckpt_iter = 160000
-        ckpt_epoch = 22
+        ckpt_epoch = iter_epoch_dict[ckpt_iter] 
+        print(ckpt_epoch)
         ckpt_name = 'model_iter_' + str(ckpt_iter) + '_epoch_' + str(ckpt_epoch) + '.pth'
          
         img_dir = './output/'+file_n + '/' + ckpt_name.split('.')[0] + '_' + str(test_content_size)+  '/'

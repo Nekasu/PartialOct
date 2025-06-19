@@ -8,7 +8,7 @@ import thop
 from PIL import Image
 from torchvision.transforms import ToTensor, Compose, Resize, CenterCrop, Normalize, RandomCrop
 
-from Config import Config
+from Config_test import Config
 from DataSplit import DataSplit
 from model import AesFA_test
 from blocks import test_model_load
