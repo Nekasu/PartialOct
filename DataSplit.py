@@ -125,7 +125,7 @@ class DataSplit(Dataset):
         sty_rgb_img = self.normalize_transform(sty_rgb_img) # 进行归一化处理
         
 
-        return {'content_img': cont_rgb_img, 'content_mask_img': cont_mask_img, 'style_img': sty_rgb_img, 'mask_img': sty_mask_img}
+        return {'content_img': cont_rgb_img, 'content_mask_img': cont_mask_img, 'style_img': sty_rgb_img, 'style_mask_img': sty_mask_img}
     
 def test_get_data():
     img_dir = '/mnt/sda/Dataset/Detection/WikiArt/wikiart/train'

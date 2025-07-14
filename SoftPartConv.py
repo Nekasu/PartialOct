@@ -182,6 +182,7 @@ if __name__ == '__main__':
     out_x, out_mask = pc3(out_x, out_mask)
     print(f'-------------------------pc4------------------------')
     out_x, out_mask = pc4(out_x, out_mask)
+    print(f'out_mask shape: {out_mask.shape}')
     # print(f'mask is {out_mask}')
     # print(f'in_x is {in_x}')
     # print(f'out_x is {out_x}')

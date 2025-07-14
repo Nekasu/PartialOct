@@ -398,22 +398,60 @@ class EFDM_loss(nn.Module):
         super(EFDM_loss, self).__init__()
         self.mse_loss = nn.MSELoss() # 一个类, 用于计算均方误差.
     
-    def efdm_single(self, style, trans):
-        B, C, W, H = style.size(0), style.size(1), style.size(2), style.size(3)
+    # def efdm_single(self, style, style_mask, trans, trans_mask):
+    #     B, C, W, H = style.size(0), style.size(1), style.size(2), style.size(3)
         
-        value_style, index_style = torch.sort(style.view(B, C, -1)) # torch.view(B,C,-1)的作用是将 style 从 (B,C,W,H) 变为 (B,C,W*H)的多个一维向量
-        value_trans, index_trans = torch.sort(trans.view(B, C, -1))
-        inverse_index = index_trans.argsort(-1)
+    #     value_style, index_style = torch.sort(style.view(B, C, -1)) # torch.view(B,C,-1)的作用是将 style 从 (B,C,W,H) 变为 (B,C,W*H)的多个一维向量
+    #     value_trans, index_trans = torch.sort(trans.view(B, C, -1))
+    #     inverse_index = index_trans.argsort(-1)
         
-        return self.mse_loss(trans.view(B, C,-1), value_style.gather(-1, inverse_index))
+    #     return self.mse_loss(trans.view(B, C,-1), value_style.gather(-1, inverse_index))
 
-    def forward(self, style_E, style_S, translate_E, translate_S, neg_idx):
+    def efdm_single(self, style, style_mask, trans, trans_mask):
+        """
+        style:       (B, C, H, W)
+        style_mask:  (B, C, H, W)
+        trans:       (B, C, H, W)
+        trans_mask:  (B, C, H, W)
+        """
+        B, C, H, W = style.shape
+
+        # 展平为 (B, C, H*W)
+        style_flat = style.view(B, C, -1)
+        trans_flat = trans.view(B, C, -1)
+        style_mask_flat = style_mask.view(B, C, -1)
+        trans_mask_flat = trans_mask.view(B, C, -1)
+
+        # 根据掩膜提取有效像素
+        style_valid = style_flat[style_mask_flat.bool()].view(B, C, -1)
+        trans_valid = trans_flat[trans_mask_flat.bool()].view(B, C, -1)
+
+        # 排序
+        sorted_style, _ = torch.sort(style_valid, dim=-1)
+        sorted_trans, _ = torch.sort(trans_valid, dim=-1)
+
+        Ns = sorted_style.shape[-1]
+        Nt = sorted_trans.shape[-1]
+
+        # 若长度不一致, 插值 style 为 trans 的长度（也可以反过来）
+        if Ns != Nt:
+            sorted_style = torch.nn.functional.interpolate(
+                sorted_style.unsqueeze(1),  # (B, 1, C, Ns)
+                size=Nt,
+                mode='linear',
+                align_corners=True
+            ).squeeze(1)  # (B, C, Nt)
+
+        # 最终使用 MSE 计算精确排序后分布的距离
+        return self.mse_loss(sorted_style, sorted_trans)
+
+    def forward(self, style_E, style_E_mask, style_S, style_S_mask, translate_E, translate_E_mask, translate_S, translate_S_mask, neg_idx):
         '''
         从调用该函数的地方来看, 这四个输入分别是:
-        style_E: 是 风格编码器 编码 风格图像 后的 第三个输出, 即风格编码器中的 [o13, o19]
-        style_S: 是 content_B_feat 加上 风格编码器 编码 风格图像后的第二个输出, 即 [o13,o19, downsampled_o19]
-        translate_E: 是 内容编码器 编码 风格化图像 后的 第三个输出, 即 风格化图像的 [o13, o19]
-        translate_S: 是 风格编码器 编码 风格化图像 后的 第三个输出, 即风格化图像的 [o13, o19]
+        style_E: 是 风格编码器 编码 风格图像(使用风格图像掩膜) 后的 第三个输出, 即风格编码器中的 [o13, o19]
+        style_S: 是 content_B_feat 加上 风格编码器 编码 风格图像(使用风格图像掩膜) 后的第二个输出, 即 [o13,o19, downsampled_o19]
+        translate_E: 是 内容编码器 编码 风格化图像(使用内容图像掩膜) 后的 第三个输出, 即 风格化图像的 [o13, o19]
+        translate_S: 是 风格编码器 编码 风格化图像(使用内容图像掩膜) 后的 第三个输出, 即风格化图像的 [o13, o19]
         '''
         loss = 0.
         batch = style_E[0][0].shape[0]
@@ -423,22 +461,22 @@ class EFDM_loss(nn.Module):
         
             # Positive loss
             for i in range(len(style_E)): # len(style_E)为2, i=0,1
-                poss_loss += self.efdm_single(style_E[i][0][b].unsqueeze(0), translate_E[i][0][b].unsqueeze(0)) + \
-                            self.efdm_single(style_E[i][1][b].unsqueeze(0), translate_E[i][1][b].unsqueeze(0)) 
+                poss_loss += self.efdm_single(style_E[i][0][b].unsqueeze(0),style_E_mask[i][0][b].unsqueeze(0), translate_E[i][0][b].unsqueeze(0),translate_E_mask[i][0][b].unsqueeze(0)) + \
+                            self.efdm_single(style_E[i][1][b].unsqueeze(0),style_E_mask[i][1][b].unsqueeze(0), translate_E[i][1][b].unsqueeze(0),translate_E_mask[i][1][b].unsqueeze(0)) 
                             # sytle_E[0] 为 o13, style_E[0][0] 为 o13 的高频部分,  style_E[0][1] 为 o13 的低频部分. style_E[0][0][b] 为 o13 高频部分的第b个特征图
                             # sytle_E[1] 为 o19, style_E[1][0] 为 o19 的高频部分,  style_E[1][1] 为 o19 的低频部分. style_E[1][0][b] 为 o19 高频部分的第b个特征图
             for i in range(len(style_S)): # len(style_S)为3, i=0,1,2
-                poss_loss += self.efdm_single(style_S[i][0][b].unsqueeze(0), translate_S[i][0][b].unsqueeze(0)) + \
-                            self.efdm_single(style_S[i][1][b].unsqueeze(0), translate_S[i][1][b].unsqueeze(0))
+                poss_loss += self.efdm_single(style_S[i][0][b].unsqueeze(0),style_S_mask[i][0][b].unsqueeze(0), translate_S[i][0][b].unsqueeze(0),translate_S_mask[i][0][b].unsqueeze(0)) + \
+                            self.efdm_single(style_S[i][1][b].unsqueeze(0),style_S_mask[i][1][b].unsqueeze(0), translate_S[i][1][b].unsqueeze(0),translate_S_mask[i][1][b].unsqueeze(0))
                 
             # Negative loss
             for nb in neg_idx[b]:
                 for i in range(len(style_E)):
-                    neg_loss += self.efdm_single(style_E[i][0][nb].unsqueeze(0), translate_E[i][0][b].unsqueeze(0)) + \
-                            self.efdm_single(style_E[i][1][nb].unsqueeze(0), translate_E[i][1][b].unsqueeze(0))
+                    neg_loss += self.efdm_single(style_E[i][0][nb].unsqueeze(0), style_E[i][0][nb].unsqueeze(0), translate_E[i][0][b].unsqueeze(0), translate_E_mask[i][0][b].unsqueeze(0)) + \
+                            self.efdm_single(style_E[i][1][nb].unsqueeze(0), style_E_mask[i][1][nb].unsqueeze(0), translate_E[i][1][b].unsqueeze(0), translate_E_mask[i][1][b].unsqueeze(0))
                 for i in range(len(style_S)):
-                    neg_loss += self.efdm_single(style_S[i][0][nb].unsqueeze(0), translate_S[i][0][b].unsqueeze(0)) + \
-                            self.efdm_single(style_S[i][1][nb].unsqueeze(0), translate_S[i][1][b].unsqueeze(0))
+                    neg_loss += self.efdm_single(style_S[i][0][nb].unsqueeze(0), style_S_mask[i][0][nb].unsqueeze(0), translate_S[i][0][b].unsqueeze(0), translate_S_mask[i][0][b].unsqueeze(0)) + \
+                            self.efdm_single(style_S[i][1][nb].unsqueeze(0), style_S_mask[i][1][nb].unsqueeze(0), translate_S[i][1][b].unsqueeze(0), translate_S_mask[i][1][b].unsqueeze(0))
 
             loss += poss_loss / neg_loss
 
