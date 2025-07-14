@@ -57,7 +57,7 @@ class StyleEncoder(nn.Module):
         self.PartialOctConv2_2 = PartialOctConv(in_channels=2*nf, out_channels=4*nf, kernel_size=1, alpha_in=alpha_in, alpha_out=alpha_out, type="normal")
         self.PartialOctConv2_3 = PartialOctConv(in_channels=4*nf, out_channels=4*nf, kernel_size=3, stride=1, padding=1, alpha_in=alpha_in, alpha_out=alpha_out, type="normal")
 
-        self.PartialOctConv3_1 = PartialOctConv(in_channels=4*nf, out_channels=4*nf, kernel_size=3, stride=1, padding=1, groups=128, alpha_in=alpha_in, alpha_out=alpha_out, type="normal")
+        self.PartialOctConv3_1 = PartialOctConv(in_channels=4*nf, out_channels=4*nf, kernel_size=3, stride=2, padding=1, groups=128, alpha_in=alpha_in, alpha_out=alpha_out, type="normal")
         self.PartialOctConv3_2 = PartialOctConv(in_channels=4*nf, out_channels=8*nf, kernel_size=1, alpha_in=alpha_in, alpha_out=alpha_out, type="normal")
         self.PartialOctConv3_3 = PartialOctConv(in_channels=8*nf, out_channels=8*nf, kernel_size=3, stride=1, padding=1, alpha_in=alpha_in, alpha_out=alpha_out, type="normal")
 
@@ -78,23 +78,23 @@ class StyleEncoder(nn.Module):
         #################### Encoder中的第一层 ####################
         # print(f'PartialOctConv1_1')
         out, mask = self.PartialOctConv1_1(x=out, mask=mask) # o2
-        print(f'len(o2): {len(out)}, o2[0].shape: {out[0].shape}, o2[1].shape:{out[1].shape}')
+        # print(f'len(o2): {len(out)}, o2[0].shape: {out[0].shape}, o2[1].shape:{out[1].shape}')
         out = self.relu(out) # o3
-        print(f'len(o3): {len(out)}, o3[0].shape: {out[0].shape}, o3[1].shape:{out[1].shape}')
+        # print(f'len(o3): {len(out)}, o3[0].shape: {out[0].shape}, o3[1].shape:{out[1].shape}')
         # print(f'PartialOctConv1_2')
         out, mask = self.PartialOctConv1_2(x=out, mask=mask) # o4
-        print(f'len(o4): {len(out)}, o4[0].shape: {out[0].shape}, o4[1].shape:{out[1].shape}')
+        # print(f'len(o4): {len(out)}, o4[0].shape: {out[0].shape}, o4[1].shape:{out[1].shape}')
         # print(mask[0].max(),mask[0].min())
         # print(mask[1].max(),mask[1].min())
         out = self.relu(out) # o5
-        print(f'len(o5): {len(out)}, o5[0].shape: {out[0].shape}, o5[1].shape:{out[1].shape}')
+        # print(f'len(o5): {len(out)}, o5[0].shape: {out[0].shape}, o5[1].shape:{out[1].shape}')
         # print(f'PartialOctConv1_3')
         # print(mask[0].max(),mask[0].min())
         # print(mask[1].max(),mask[1].min())
         out, mask = self.PartialOctConv1_3(x=out, mask=mask) # o6
-        print(f'len(o6): {len(out)}, o6[0].shape: {out[0].shape}, o6[1].shape:{out[1].shape}')
+        # print(f'len(o6): {len(out)}, o6[0].shape: {out[0].shape}, o6[1].shape:{out[1].shape}')
         out = self.relu(out) # o7
-        print(f'len(o7): {len(out)}, o7[0].shape: {out[0].shape}, o7[1].shape:{out[1].shape}')
+        # print(f'len(o7): {len(out)}, o7[0].shape: {out[0].shape}, o7[1].shape:{out[1].shape}')
         # print(f'In StyleEncoder 第一层,  数据最大、最小值为{out[0].max(), out[0].min()}')
         # print(f'out7[0] shape: {out[0].shape}, out7[1] shape: {out[1].shape}')
         ############################################################
@@ -102,15 +102,15 @@ class StyleEncoder(nn.Module):
         #################### Encoder中的第二层 ####################
         # print(f'PartialOctConv2_1')
         out, mask = self.PartialOctConv2_1(x=out, mask=mask) # o8
-        print(f'len(o8): {len(out)}, o8[0].shape: {out[0].shape}, o8[1].shape:{out[1].shape}')
+        # print(f'len(o8): {len(out)}, o8[0].shape: {out[0].shape}, o8[1].shape:{out[1].shape}')
         out = self.relu(out) # o9
         # print(f'PartialOctConv2_2')
         out, mask = self.PartialOctConv2_2(x=out, mask=mask) # o10
-        print(f'len(o10): {len(out)}, o10[0].shape: {out[0].shape}, o10[1].shape:{out[1].shape}')
+        # print(f'len(o10): {len(out)}, o10[0].shape: {out[0].shape}, o10[1].shape:{out[1].shape}')
         out = self.relu(out) # o11
         # print(f'PartialOctConv2_3')
         out, mask = self.PartialOctConv2_3(x=out, mask=mask) # o12
-        print(f'len(o12): {len(out)}, o12[0].shape: {out[0].shape}, o12[1].shape:{out[1].shape}')
+        # print(f'len(o12): {len(out)}, o12[0].shape: {out[0].shape}, o12[1].shape:{out[1].shape}')
         out = self.relu(out) # o13
         # print(f'测试风格编码器的o13是否为nan:{torch.isnan(out[0]).any()},{torch.isnan(out[1]).any()}')
         enc_feat.append(out)
@@ -122,15 +122,15 @@ class StyleEncoder(nn.Module):
         #################### Encoder中的第三层 ####################
         # print(f'PartialOctConv3_1')
         out, mask = self.PartialOctConv3_1(x=out, mask=mask) # o14
-        print(f'len(o14): {len(out)}, o14[0].shape: {out[0].shape}, o14[1].shape:{out[1].shape}')
+        # print(f'len(o14): {len(out)}, o14[0].shape: {out[0].shape}, o14[1].shape:{out[1].shape}')
         out = self.relu(out) # o15
         # print(f'PartialOctConv3_2')
         out, mask = self.PartialOctConv3_2(x=out, mask=mask) # o16
-        print(f'len(o16): {len(out)}, o16[0].shape: {out[0].shape}, o16[1].shape:{out[1].shape}')
+        # print(f'len(o16): {len(out)}, o16[0].shape: {out[0].shape}, o16[1].shape:{out[1].shape}')
         out = self.relu(out) # o17
         # print(f'PartialOctConv3_3')
         out, mask = self.PartialOctConv3_3(x=out, mask=mask) # o18
-        print(f'len(o17): {len(out)}, o17[0].shape: {out[0].shape}, o17[1].shape:{out[1].shape}')
+        # print(f'len(o17): {len(out)}, o17[0].shape: {out[0].shape}, o17[1].shape:{out[1].shape}')
         out = self.relu(out) # o19
         # print(f'In StyleEncoder 第三层,  数据最大、最小值为{out[0].max(), out[0].min()}')
         # print(f'测试风格编码器的o19是否为nan:{torch.isnan(out[0]).any()},{torch.isnan(out[1]).any()}')

@@ -84,10 +84,9 @@ class AesFA(nn.Module):
         # print("内容编码器编码风格化图像")
         print(self.trs_AtoB.shape)
         print(self.real_content_mask.shape)
-        upsample = nn.Upsample(scale_factor=2)
-        _, _, self.content_trs_AtoB_feat, self.content_trs_mask_list, _= self.netE(self.trs_AtoB, mask=upsample(self.real_content_mask)) # 编码风格化图像, 就要使用内容图像的掩膜
+        _, _, self.content_trs_AtoB_feat, self.content_trs_mask_list, _= self.netE(self.trs_AtoB, mask=self.real_content_mask) # 编码风格化图像, 就要使用内容图像的掩膜
         # print("风格编码器编码风格化图像)
-        _, self.trs_AtoB_style, self.style_trs_AtoB_feat, self.style_trs_mask_list, _= self.netS(x=self.trs_AtoB, mask=upsample(self.real_content_mask)) # 编码风格化图像, 就要使用内容图像的掩膜
+        _, self.trs_AtoB_style, self.style_trs_AtoB_feat, self.style_trs_mask_list, _= self.netS(x=self.trs_AtoB, mask=self.real_content_mask) # 编码风格化图像, 就要使用内容图像的掩膜
         self.style_trs_AtoB_feat.append(self.trs_AtoB_style)
        ##################################################################################
 
