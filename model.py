@@ -73,6 +73,10 @@ class AesFA(nn.Module):
        ##################################################################################
         
         ######################### 使用解码器 ###################################
+        print(f'content_A[0].shape:{ self.content_A[0].shape}')
+        print(f'content_A[1].shape:{ self.content_A[1].shape}')
+        print(f'style_B[0].shape:{ self.style_B[0].shape}')
+        print(f'style_B[1].shape:{ self.style_B[1].shape}')
         self.trs_AtoB, self.trs_AtoB_high, self.trs_AtoB_low = self.netG(self.content_A, self.style_B)
        ##################################################################################
 
