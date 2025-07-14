@@ -68,7 +68,7 @@ class Config:
 
     # preprocess parameters
     load_size = 512
-    crop_size = 512
+    crop_size = 256
 
     # model parameters
     input_nc = 3         # of input image channel
@@ -97,3 +97,5 @@ class Config:
 Train:  60000 images:  15000 x 4 (batch size) = 60000
 # of parameter: 22470831
 parameters of networks: {'netE': 6645888, 'netS': 6645888, 'netG': 5673315, 'vgg_loss': 3505740}
+torch.Size([4, 3, 512, 512])
+torch.Size([4, 3, 256, 256])

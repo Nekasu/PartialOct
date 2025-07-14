@@ -62,7 +62,7 @@ class Config:
 
     # preprocess parameters
     load_size = 512
-    crop_size = 512
+    crop_size = 256
 
     # model parameters
     input_nc = 3         # of input image channel
