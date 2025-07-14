@@ -2,21 +2,19 @@
 该 .py 文件为 ./test.py 文件的辅助文件, 用于将内容图像、风格图像、掩膜图像、风格化图像整合到一个 .html 文件中.
 """
 from os import path
-from Config import Config
 # 创建HTML文件并插入表格和图像
-def generate_html(A_list, B_list, trs_full_list, trs_list):
-    config = Config()
+def generate_html(A_list, B_list, trs_full_list, trs_list, config):
     table_list = []
     # print(config.style_dir.split('/')[7:])
     style_dir = path.join('../../../../', *config.style_dir.split('/')[7:])
-    print(style_dir)
+    # print(style_dir)
     for i, pth in enumerate(A_list):
         A_path = './' + A_list[i].split('/')[-1]
 
         mask_name = B_list[i].split('/')[-1].split('_')[2] + '_mask_' + '_'.join(B_list[i].split('/')[-1].split('_')[4:])
         # print(mask_name)
         mask_path = path.join(style_dir, mask_name)
-        print(mask_path)
+        # print(mask_path)
 
         B_path = './' + B_list[i].split('/')[-1]
         trs_full_path = './' + trs_full_list[i].split('/')[-1]
@@ -28,7 +26,7 @@ def generate_html(A_list, B_list, trs_full_list, trs_list):
     <html lang="zh-CN">
     <head>
         <meta charset="UTF-8">
-        <title>{config.ckpt_name.split('.')[0]}</title>
+        <title>{'_'.join([config.ckpt_name.split('.')[0].split('_')[2], config.ckpt_name.split('.')[0].split('_')[4], str(config.test_style_size)])}</title>
         <style>
             table {{
                 width: 100%;
@@ -64,11 +62,11 @@ def generate_html(A_list, B_list, trs_full_list, trs_list):
     file_dir = path.join(*A_list[0].split('/')[:-1])
     file_name = 'result_img_table.html'
     file_path = path.join(file_dir, file_name)
-    print(file_path)
+    # print(file_path)
     with open(file_path, "w", encoding="utf-8") as file:
         file.write(html_content)
 
-    print(f"文件 '{file_name}' 已创建。")
+    print(f"文件 '{file_path}' 已创建。")
 
 if __name__ == "__main__":
     A_list = ['./output/dunhuang_white_main/256/000000000016_content_cropped_image_1_1.jpg','./output/dunhuang_white_main/256/000000000016_content_cropped_image_2_0.jpg']

@@ -383,6 +383,7 @@ def calc_style_loss(input, target):
     return loss
 
 class EFDM_loss(nn.Module):
+    # 
     def __init__(self):
         super(EFDM_loss, self).__init__()
         self.mse_loss = nn.MSELoss()

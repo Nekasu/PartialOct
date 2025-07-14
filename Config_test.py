@@ -15,7 +15,7 @@ class Config:
     # mask_dir = '/mnt/sda/Dataset/style_image/dunhuang_style/crop_256/main_white/mask'
     cuda_device = 'cuda:1'
     
-    file_n = 'SoftPartialConv_limited' # 新训练时, 此处需要修改. 测试时, 也需要修改此处
+    file_n = 'SoftPartialConv_limited-800000_iter' # 新训练时, 此处需要修改. 测试时, 也需要修改此处
     log_file_path = '/mnt/sda/zxt/3_code_area/code_develop/PartialConv_AesFA/log/' + file_n + 'log.txt'
     log_dir = './log/' + file_n
     ckpt_dir = './ckpt/' + file_n
@@ -55,7 +55,7 @@ class Config:
         # style_dir = '/mnt/sda/zxt/3_code_area/code_develop/PartialConv_AesFA/imgs/styles/origin'
         # mask_dir = '/mnt/sda/zxt/3_code_area/code_develop/PartialConv_AesFA/imgs/styles/mask'
 
-        ckpt_iter = 160000
+        ckpt_iter = 150000
         ckpt_epoch = iter_epoch_dict[ckpt_iter] 
         print(ckpt_epoch)
         ckpt_name = 'model_iter_' + str(ckpt_iter) + '_epoch_' + str(ckpt_epoch) + '.pth'
