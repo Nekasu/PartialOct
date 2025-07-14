@@ -73,7 +73,6 @@ class StyleEncoder(nn.Module):
         # print(f'In StyleEncoder 的输入数据中,  数据最大、最小值为{x[0].max(), x[0].min()}')
         # print(f'conv')
         out, mask = self.conv(in_x=x, in_mask=mask) # o1
-        print(f'len(o1): {len(out)}, o1[0].shape: {out[0].shape}, o1[1].shape:{out[1].shape}')
         # print(f'In StyleEncoder中, 经过conv处理后,  数据最大、最小值为{out[0].max(), out[0].min()}')
         
         #################### Encoder中的第一层 ####################
