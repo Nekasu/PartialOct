@@ -67,6 +67,8 @@ class AesFA(nn.Module):
         ######################### 损失函数计算准备工作：数据准备1 #########################
         self.style_B_feat = self.content_B_feat.copy() # 复制风格图像经过风格编码器后的第三个返回值, 并命名为 style_B_feat, 将用于损失函数计算
         self.style_B_feat.append(self.style_B)  #向 style_B_feat 中添加风格图像经过编码器后的第二个返回值:tuple, 将用于损失函数计算
+
+        self.style_mask_list_appended= self.style_mask_list.copy()
         self.style_mask_list_appended.append(self.style_downsampled_mask19)
        ##################################################################################
         
@@ -76,9 +78,11 @@ class AesFA(nn.Module):
 
         ######################### 损失函数计算准备工作：数据准备2 #########################
         # print("内容编码器编码风格化图像")
+        print(self.trs_AtoB.shape)
+        print(self.real_content_mask.shape)
         self.trs_AtoB_content, _, self.content_trs_AtoB_feat, self.content_trs_mask_list, _= self.netE(self.trs_AtoB, mask=self.real_content_mask) # 编码风格化图像, 就要使用内容图像的掩膜
         # print("风格编码器编码风格化图像)
-        _, self.trs_AtoB_style, self.style_trs_AtoB_feat, self.style_trs_mask_list, _= self.netS(x=self.trs_AtoB, mask=self.real_content) # 编码风格化图像, 就要使用内容图像的掩膜
+        _, self.trs_AtoB_style, self.style_trs_AtoB_feat, self.style_trs_mask_list, _= self.netS(x=self.trs_AtoB, mask=self.real_content_mask) # 编码风格化图像, 就要使用内容图像的掩膜
         self.style_trs_AtoB_feat.append(self.trs_AtoB_style)
        ##################################################################################
 

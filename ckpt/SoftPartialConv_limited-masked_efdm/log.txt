@@ -1,3 +1,9 @@
+/mnt/sda/zxt/3_code_area/code_develop/PartialConv_AesFA/log/SoftPartialConv_limited-masked_efdmlog.txt
+cuda: cuda:0
+Version: SoftPartialConv_limited-masked_efdm
+train mode
+content dir: /mnt/sda/Datasets/Detection/COCO/train2017
+style dir: /mnt/sda/Datasets/style_image/AlphaStyle/alpha_WikiArt_AllInOne2/train_alpha
 class Config:
     phase = 'train'         # You must change the phase into train/test/style_blending
     # phase = 'test'         # You must change the phase into train/test/style_blending
@@ -87,3 +93,7 @@ class Config:
     init_gain = 0.02
     no_dropout = 'store_true'
     num_workers = 4
+
+Train:  60000 images:  15000 x 4 (batch size) = 60000
+# of parameter: 22470831
+parameters of networks: {'netE': 6645888, 'netS': 6645888, 'netG': 5673315, 'vgg_loss': 3505740}
