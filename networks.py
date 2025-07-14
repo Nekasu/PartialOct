@@ -73,22 +73,29 @@ class StyleEncoder(nn.Module):
         # print(f'In StyleEncoder 的输入数据中,  数据最大、最小值为{x[0].max(), x[0].min()}')
         # print(f'conv')
         out, mask = self.conv(in_x=x, in_mask=mask) # o1
+        print(f'len(o1): {len(out)}, o1[0].shape: {out[0].shape}, o1[1].shape:{out[1].shape}')
         # print(f'In StyleEncoder中, 经过conv处理后,  数据最大、最小值为{out[0].max(), out[0].min()}')
         
         #################### Encoder中的第一层 ####################
         # print(f'PartialOctConv1_1')
         out, mask = self.PartialOctConv1_1(x=out, mask=mask) # o2
+        print(f'len(o2): {len(out)}, o2[0].shape: {out[0].shape}, o2[1].shape:{out[1].shape}')
         out = self.relu(out) # o3
+        print(f'len(o3): {len(out)}, o3[0].shape: {out[0].shape}, o3[1].shape:{out[1].shape}')
         # print(f'PartialOctConv1_2')
         out, mask = self.PartialOctConv1_2(x=out, mask=mask) # o4
+        print(f'len(o4): {len(out)}, o4[0].shape: {out[0].shape}, o4[1].shape:{out[1].shape}')
         # print(mask[0].max(),mask[0].min())
         # print(mask[1].max(),mask[1].min())
         out = self.relu(out) # o5
+        print(f'len(o5): {len(out)}, o5[0].shape: {out[0].shape}, o5[1].shape:{out[1].shape}')
         # print(f'PartialOctConv1_3')
         # print(mask[0].max(),mask[0].min())
         # print(mask[1].max(),mask[1].min())
         out, mask = self.PartialOctConv1_3(x=out, mask=mask) # o6
+        print(f'len(o6): {len(out)}, o6[0].shape: {out[0].shape}, o6[1].shape:{out[1].shape}')
         out = self.relu(out) # o7
+        print(f'len(o7): {len(out)}, o7[0].shape: {out[0].shape}, o7[1].shape:{out[1].shape}')
         # print(f'In StyleEncoder 第一层,  数据最大、最小值为{out[0].max(), out[0].min()}')
         # print(f'out7[0] shape: {out[0].shape}, out7[1] shape: {out[1].shape}')
         ############################################################
@@ -96,12 +103,15 @@ class StyleEncoder(nn.Module):
         #################### Encoder中的第二层 ####################
         # print(f'PartialOctConv2_1')
         out, mask = self.PartialOctConv2_1(x=out, mask=mask) # o8
+        print(f'len(o8): {len(out)}, o8[0].shape: {out[0].shape}, o8[1].shape:{out[1].shape}')
         out = self.relu(out) # o9
         # print(f'PartialOctConv2_2')
         out, mask = self.PartialOctConv2_2(x=out, mask=mask) # o10
+        print(f'len(o10): {len(out)}, o10[0].shape: {out[0].shape}, o10[1].shape:{out[1].shape}')
         out = self.relu(out) # o11
         # print(f'PartialOctConv2_3')
         out, mask = self.PartialOctConv2_3(x=out, mask=mask) # o12
+        print(f'len(o12): {len(out)}, o12[0].shape: {out[0].shape}, o12[1].shape:{out[1].shape}')
         out = self.relu(out) # o13
         # print(f'测试风格编码器的o13是否为nan:{torch.isnan(out[0]).any()},{torch.isnan(out[1]).any()}')
         enc_feat.append(out)
@@ -113,12 +123,15 @@ class StyleEncoder(nn.Module):
         #################### Encoder中的第三层 ####################
         # print(f'PartialOctConv3_1')
         out, mask = self.PartialOctConv3_1(x=out, mask=mask) # o14
+        print(f'len(o14): {len(out)}, o14[0].shape: {out[0].shape}, o14[1].shape:{out[1].shape}')
         out = self.relu(out) # o15
         # print(f'PartialOctConv3_2')
         out, mask = self.PartialOctConv3_2(x=out, mask=mask) # o16
+        print(f'len(o16): {len(out)}, o16[0].shape: {out[0].shape}, o16[1].shape:{out[1].shape}')
         out = self.relu(out) # o17
         # print(f'PartialOctConv3_3')
         out, mask = self.PartialOctConv3_3(x=out, mask=mask) # o18
+        print(f'len(o17): {len(out)}, o17[0].shape: {out[0].shape}, o17[1].shape:{out[1].shape}')
         out = self.relu(out) # o19
         # print(f'In StyleEncoder 第三层,  数据最大、最小值为{out[0].max(), out[0].min()}')
         # print(f'测试风格编码器的o19是否为nan:{torch.isnan(out[0]).any()},{torch.isnan(out[1]).any()}')
@@ -154,106 +167,106 @@ class StyleEncoder(nn.Module):
         else:
             return out
 
-# class ContentEncoder(nn.Module):
-#     def __init__(self, in_dim, nf=64, style_kernel=[3, 3], alpha_in=0.5, alpha_out=0.5):
-#         '''
-#         在 Encoder 中, 对于内容图像而言, 实际上并不需要分前景与背景, 仅仅区分风格图像的前景与背景即可. 具体来说,
-#             1. 假设现有风格图像的前背景分离结果：背景风格信息与前景风格信息
-#             2. 利用风格图像的背景风格信息与前景风格信息分别对「整个内容图像」进行风格迁移
-#             3. 得到两种不同风格的「完成风格化图像」后, 再根据「原始内容图像」生成掩膜
-#             4. 利用内容图像的掩膜对这两种不同的风格图像处理、拼接, 得到最终的结果.
-#             5. 为了实现以上想法, 需要有如下步骤
-#                 1. 为风格图像特别设立一个 Encoder 类, 命名为 StyleEcoder, 其中使用 PartialOctConv 进行卷积
-#                 2. 将原始的 Encoder 更名为 ContentEncoder, 其中使用普通的 OctConv 进行卷积.
-#                     - 即该类
-#         '''
-#         super(ContentEncoder, self).__init__()
+class ContentEncoder(nn.Module):
+    def __init__(self, in_dim, nf=64, style_kernel=[3, 3], alpha_in=0.5, alpha_out=0.5):
+        '''
+        在 Encoder 中, 对于内容图像而言, 实际上并不需要分前景与背景, 仅仅区分风格图像的前景与背景即可. 具体来说,
+            1. 假设现有风格图像的前背景分离结果：背景风格信息与前景风格信息
+            2. 利用风格图像的背景风格信息与前景风格信息分别对「整个内容图像」进行风格迁移
+            3. 得到两种不同风格的「完成风格化图像」后, 再根据「原始内容图像」生成掩膜
+            4. 利用内容图像的掩膜对这两种不同的风格图像处理、拼接, 得到最终的结果.
+            5. 为了实现以上想法, 需要有如下步骤
+                1. 为风格图像特别设立一个 Encoder 类, 命名为 StyleEcoder, 其中使用 PartialOctConv 进行卷积
+                2. 将原始的 Encoder 更名为 ContentEncoder, 其中使用普通的 OctConv 进行卷积.
+                    - 即该类
+        '''
+        super(ContentEncoder, self).__init__()
         
-#         self.conv = nn.Conv2d(in_channels=in_dim, out_channels=nf, kernel_size=7, stride=1, padding=3)        
+        self.conv = nn.Conv2d(in_channels=in_dim, out_channels=nf, kernel_size=7, stride=1, padding=3)        
         
-#         self.OctConv1_1 = OctConv(in_channels=nf, out_channels=nf, kernel_size=3, stride=2, padding=1, groups=64, alpha_in=alpha_in, alpha_out=alpha_out, type="first")       
-#         self.OctConv1_2 = OctConv(in_channels=nf, out_channels=2*nf, kernel_size=1, alpha_in=alpha_in, alpha_out=alpha_out, type="normal")
-#         self.OctConv1_3 = OctConv(in_channels=2*nf, out_channels=2*nf, kernel_size=3, stride=1, padding=1, alpha_in=alpha_in, alpha_out=alpha_out, type="normal")
+        self.OctConv1_1 = OctConv(in_channels=nf, out_channels=nf, kernel_size=3, stride=2, padding=1, groups=64, alpha_in=alpha_in, alpha_out=alpha_out, type="first")       
+        self.OctConv1_2 = OctConv(in_channels=nf, out_channels=2*nf, kernel_size=1, alpha_in=alpha_in, alpha_out=alpha_out, type="normal")
+        self.OctConv1_3 = OctConv(in_channels=2*nf, out_channels=2*nf, kernel_size=3, stride=1, padding=1, alpha_in=alpha_in, alpha_out=alpha_out, type="normal")
         
-#         # self.OctConv2_1 = OctConv(in_channels=2*nf, out_channels=2*nf, kernel_size=3, stride=1, padding=1, groups=64, alpha_in=alpha_in, alpha_out=alpha_out, type="normal")       
-#         # self.OctConv2_2 = OctConv(in_channels=2*nf, out_channels=2*nf, kernel_size=1, alpha_in=alpha_in, alpha_out=alpha_out, type="normal")
-#         # self.OctConv2_3 = OctConv(in_channels=2*nf, out_channels=2*nf, kernel_size=3, stride=1, padding=1, alpha_in=alpha_in, alpha_out=alpha_out, type="normal")
+        # self.OctConv2_1 = OctConv(in_channels=2*nf, out_channels=2*nf, kernel_size=3, stride=1, padding=1, groups=64, alpha_in=alpha_in, alpha_out=alpha_out, type="normal")       
+        # self.OctConv2_2 = OctConv(in_channels=2*nf, out_channels=2*nf, kernel_size=1, alpha_in=alpha_in, alpha_out=alpha_out, type="normal")
+        # self.OctConv2_3 = OctConv(in_channels=2*nf, out_channels=2*nf, kernel_size=3, stride=1, padding=1, alpha_in=alpha_in, alpha_out=alpha_out, type="normal")
 
-#         # self.OctConv3_1 = OctConv(in_channels=2*nf, out_channels=2*nf, kernel_size=3, stride=2, padding=1, groups=128, alpha_in=alpha_in, alpha_out=alpha_out, type="normal")
-#         # self.OctConv3_2 = OctConv(in_channels=2*nf, out_channels=4*nf, kernel_size=1, alpha_in=alpha_in, alpha_out=alpha_out, type="normal")
-#         # self.OctConv3_3 = OctConv(in_channels=4*nf, out_channels=4*nf, kernel_size=3, stride=1, padding=1, alpha_in=alpha_in, alpha_out=alpha_out, type="normal")
+        # self.OctConv3_1 = OctConv(in_channels=2*nf, out_channels=2*nf, kernel_size=3, stride=2, padding=1, groups=128, alpha_in=alpha_in, alpha_out=alpha_out, type="normal")
+        # self.OctConv3_2 = OctConv(in_channels=2*nf, out_channels=4*nf, kernel_size=1, alpha_in=alpha_in, alpha_out=alpha_out, type="normal")
+        # self.OctConv3_3 = OctConv(in_channels=4*nf, out_channels=4*nf, kernel_size=3, stride=1, padding=1, alpha_in=alpha_in, alpha_out=alpha_out, type="normal")
 
-#         self.OctConv2_1 = OctConv(in_channels=2*nf, out_channels=2*nf, kernel_size=3, stride=2, padding=1, groups=128, alpha_in=alpha_in, alpha_out=alpha_out, type="normal")
-#         self.OctConv2_2 = OctConv(in_channels=2*nf, out_channels=4*nf, kernel_size=1, alpha_in=alpha_in, alpha_out=alpha_out, type="normal")
-#         self.OctConv2_3 = OctConv(in_channels=4*nf, out_channels=4*nf, kernel_size=3, stride=1, padding=1, alpha_in=alpha_in, alpha_out=alpha_out, type="normal")
+        self.OctConv2_1 = OctConv(in_channels=2*nf, out_channels=2*nf, kernel_size=3, stride=2, padding=1, groups=128, alpha_in=alpha_in, alpha_out=alpha_out, type="normal")
+        self.OctConv2_2 = OctConv(in_channels=2*nf, out_channels=4*nf, kernel_size=1, alpha_in=alpha_in, alpha_out=alpha_out, type="normal")
+        self.OctConv2_3 = OctConv(in_channels=4*nf, out_channels=4*nf, kernel_size=3, stride=1, padding=1, alpha_in=alpha_in, alpha_out=alpha_out, type="normal")
 
-#         self.OctConv3_1 = OctConv(in_channels=4*nf, out_channels=4*nf, kernel_size=3, stride=2, padding=1, groups=128, alpha_in=alpha_in, alpha_out=alpha_out, type="normal")
-#         self.OctConv3_2 = OctConv(in_channels=4*nf, out_channels=8*nf, kernel_size=1, alpha_in=alpha_in, alpha_out=alpha_out, type="normal")
-#         self.OctConv3_3 = OctConv(in_channels=8*nf, out_channels=8*nf, kernel_size=3, stride=1, padding=1, alpha_in=alpha_in, alpha_out=alpha_out, type="normal")
+        self.OctConv3_1 = OctConv(in_channels=4*nf, out_channels=4*nf, kernel_size=3, stride=2, padding=1, groups=128, alpha_in=alpha_in, alpha_out=alpha_out, type="normal")
+        self.OctConv3_2 = OctConv(in_channels=4*nf, out_channels=8*nf, kernel_size=1, alpha_in=alpha_in, alpha_out=alpha_out, type="normal")
+        self.OctConv3_3 = OctConv(in_channels=8*nf, out_channels=8*nf, kernel_size=3, stride=1, padding=1, alpha_in=alpha_in, alpha_out=alpha_out, type="normal")
 
-#         self.pool_h = nn.AdaptiveAvgPool2d((style_kernel[0], style_kernel[0]))
-#         self.pool_l = nn.AdaptiveAvgPool2d((style_kernel[1], style_kernel[1]))
+        self.pool_h = nn.AdaptiveAvgPool2d((style_kernel[0], style_kernel[0]))
+        self.pool_l = nn.AdaptiveAvgPool2d((style_kernel[1], style_kernel[1]))
         
-#         self.relu = Oct_conv_lreLU()
+        self.relu = Oct_conv_lreLU()
 
-#     def forward(self, x):   
-#         # print('-------------------------- in contentencoder forward-------------------------- ')
-#         enc_feat = []
-#         # print(f'测试ContentEncoder的输入是否为nan: {torch.isnan(x).any()}')
-#         out = self.conv(x)  #o1
-#         # print(f'测试ContentEncoder，o1：{type(out)}')
+    def forward(self, x):   
+        # print('-------------------------- in contentencoder forward-------------------------- ')
+        enc_feat = []
+        # print(f'测试ContentEncoder的输入是否为nan: {torch.isnan(x).any()}')
+        out = self.conv(x)  #o1
+        # print(f'测试ContentEncoder，o1：{type(out)}')
         
-#         out = self.OctConv1_1(out) #o2
-#         out = self.relu(out)
-#         out = self.OctConv1_2(out)
-#         out = self.relu(out)
-#         out = self.OctConv1_3(out)
-#         out = self.relu(out) # o7
-#         # print(f'out7[0] shape: {out[0].shape}, out7[1] shape: {out[1].shape}')
+        out = self.OctConv1_1(out) #o2
+        out = self.relu(out)
+        out = self.OctConv1_2(out)
+        out = self.relu(out)
+        out = self.OctConv1_3(out)
+        out = self.relu(out) # o7
+        # print(f'out7[0] shape: {out[0].shape}, out7[1] shape: {out[1].shape}')
         
-#         out = self.OctConv2_1(out)   
-#         out = self.relu(out)
-#         out = self.OctConv2_2(out)
-#         out = self.relu(out)
-#         out = self.OctConv2_3(out)
-#         out = self.relu(out)    # o13
-#         enc_feat.append(out)    # [o13]
-#         # print(f'In ContentEncoder 第二层,  数据最大、最小值为{out[0].max(), out[0].min()}')
-#         # print(f'测试内容编码器的o13是否为nan:{torch.isnan(out[0]).any()},{torch.isnan(out[1]).any()}')
-#         # print(f'out13[0] shape: {out[0].shape}, out13[1] shape: {out[1].shape}')
+        out = self.OctConv2_1(out)   
+        out = self.relu(out)
+        out = self.OctConv2_2(out)
+        out = self.relu(out)
+        out = self.OctConv2_3(out)
+        out = self.relu(out)    # o13
+        enc_feat.append(out)    # [o13]
+        # print(f'In ContentEncoder 第二层,  数据最大、最小值为{out[0].max(), out[0].min()}')
+        # print(f'测试内容编码器的o13是否为nan:{torch.isnan(out[0]).any()},{torch.isnan(out[1]).any()}')
+        # print(f'out13[0] shape: {out[0].shape}, out13[1] shape: {out[1].shape}')
         
-#         out = self.OctConv3_1(out)
-#         out = self.relu(out)
-#         # print(f'out15[0] shape: {out[0].shape}, out15[1] shape: {out[1].shape}')
-#         out = self.OctConv3_2(out)
-#         out = self.relu(out)
-#         # print(f'out17[0] shape: {out[0].shape}, out19[1] shape: {out[1].shape}')
-#         out = self.OctConv3_3(out)
-#         out = self.relu(out)    # o19
-#         # print(f'In ContentEncoder 第三层,  数据最大、最小值为{out[0].max(), out[0].min()}')
-#         # print(f'测试内容编码器的o19是否为nan:{torch.isnan(out[0]).any()},{torch.isnan(out[1]).any()}')
-#         # print(f'out19[0] shape: {out[0].shape}, out19[1] shape: {out[1].shape}')
-#         enc_feat.append(out)    # [o13, o19]
+        out = self.OctConv3_1(out)
+        out = self.relu(out)
+        # print(f'out15[0] shape: {out[0].shape}, out15[1] shape: {out[1].shape}')
+        out = self.OctConv3_2(out)
+        out = self.relu(out)
+        # print(f'out17[0] shape: {out[0].shape}, out19[1] shape: {out[1].shape}')
+        out = self.OctConv3_3(out)
+        out = self.relu(out)    # o19
+        # print(f'In ContentEncoder 第三层,  数据最大、最小值为{out[0].max(), out[0].min()}')
+        # print(f'测试内容编码器的o19是否为nan:{torch.isnan(out[0]).any()},{torch.isnan(out[1]).any()}')
+        # print(f'out19[0] shape: {out[0].shape}, out19[1] shape: {out[1].shape}')
+        enc_feat.append(out)    # [o13, o19]
 
-#         out_high, out_low = out
-#         out_sty_h = self.pool_h(out_high)
-#         out_sty_l = self.pool_l(out_low)
-#         out_sty = out_sty_h, out_sty_l # downsampled o19
-#         # print('----------------------------------------------------------------------- ')
+        out_high, out_low = out
+        out_sty_h = self.pool_h(out_high)
+        out_sty_l = self.pool_l(out_low)
+        out_sty = out_sty_h, out_sty_l # downsampled o19
+        # print('----------------------------------------------------------------------- ')
 
-#         return out, out_sty, enc_feat # o19, downsampled o19, [o13,o19]
+        return out, out_sty, enc_feat # o19, downsampled o19, [o13,o19]
     
-#     def forward_test(self, x, cond):
-#         # 使用与训练时相同的处理逻辑
-#         out, out_sty, enc_feat = self.forward(x)
+    def forward_test(self, x, cond):
+        # 使用与训练时相同的处理逻辑
+        out, out_sty, enc_feat = self.forward(x)
         
-#         if cond == 'style':
-#             out_high, out_low = out
-#             out_sty_h = self.pool_h(out_high)
-#             out_sty_l = self.pool_l(out_low)
-#             return out_sty_h, out_sty_l
-#         else:
-#             return out
+        if cond == 'style':
+            out_high, out_low = out
+            out_sty_h = self.pool_h(out_high)
+            out_sty_l = self.pool_l(out_low)
+            return out_sty_h, out_sty_l
+        else:
+            return out
 
 class Decoder(nn.Module):
     def __init__(self, nf=64, out_dim=3, style_channel=512, style_kernel=[3, 3, 3], alpha_in=0.5, alpha_out=0.5, freq_ratio=[1,1], pad_type='reflect'):
