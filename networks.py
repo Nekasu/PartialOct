@@ -424,43 +424,42 @@ class EFDM_loss(nn.Module):
         
     #     return self.mse_loss(trans.view(B, C,-1), value_style.gather(-1, inverse_index))
 
+
     def efdm_single(self, style, style_mask, trans, trans_mask):
-        """
-        style:       (B, C, H, W)
-        style_mask:  (B, C, H, W)
-        trans:       (B, C, H, W)
-        trans_mask:  (B, C, H, W)
-        """
         B, C, H, W = style.shape
+        loss = 0.0
+        eps = 1e-6  # 避免除以0
+        
+        for b in range(B):
+            for c in range(C):
+                s_feat = style[b, c].view(-1)
+                s_mask = style_mask[b, c].view(-1).bool()
+                t_feat = trans[b, c].view(-1)
+                t_mask = trans_mask[b, c].view(-1).bool()
 
-        # 展平为 (B, C, H*W)
-        style_flat = style.view(B, C, -1)
-        trans_flat = trans.view(B, C, -1)
-        style_mask_flat = style_mask.view(B, C, -1)
-        trans_mask_flat = trans_mask.view(B, C, -1)
+                s_valid = s_feat[s_mask]
+                t_valid = t_feat[t_mask]
 
-        # 根据掩膜提取有效像素
-        style_valid = style_flat[style_mask_flat.bool()].view(B, C, -1)
-        trans_valid = trans_flat[trans_mask_flat.bool()].view(B, C, -1)
+                # 如果任一通道中没有有效像素，跳过
+                if s_valid.numel() < 2 or t_valid.numel() < 2:
+                    continue
 
-        # 排序
-        sorted_style, _ = torch.sort(style_valid, dim=-1)
-        sorted_trans, _ = torch.sort(trans_valid, dim=-1)
+                s_sorted, _ = torch.sort(s_valid)
+                t_sorted, _ = torch.sort(t_valid)
 
-        Ns = sorted_style.shape[-1]
-        Nt = sorted_trans.shape[-1]
+                Ns, Nt = s_sorted.shape[0], t_sorted.shape[0]
 
-        # 若长度不一致, 插值 style 为 trans 的长度（也可以反过来）
-        if Ns != Nt:
-            sorted_style = torch.nn.functional.interpolate(
-                sorted_style.unsqueeze(1),  # (B, 1, C, Ns)
-                size=Nt,
-                mode='linear',
-                align_corners=True
-            ).squeeze(1)  # (B, C, Nt)
+                if Ns != Nt:
+                    s_sorted = torch.nn.functional.interpolate(
+                        s_sorted.unsqueeze(0).unsqueeze(0),  # (1, 1, Ns)
+                        size=Nt,
+                        mode='linear',
+                        align_corners=True
+                    ).squeeze(0).squeeze(0)  # -> (Nt,)
 
-        # 最终使用 MSE 计算精确排序后分布的距离
-        return self.mse_loss(sorted_style, sorted_trans)
+                loss += self.mse_loss(s_sorted, t_sorted)
+        
+        return loss / (B * C + eps)
 
     def forward(self, style_E, style_E_mask, style_S, style_S_mask, translate_E, translate_E_mask, translate_S, translate_S_mask, neg_idx):
         '''
@@ -470,6 +469,14 @@ class EFDM_loss(nn.Module):
         translate_E: 是 内容编码器 编码 风格化图像(使用内容图像掩膜) 后的 第三个输出, 即 风格化图像的 [o13, o19]
         translate_S: 是 风格编码器 编码 风格化图像(使用内容图像掩膜) 后的 第三个输出, 即风格化图像的 [o13, o19]
         '''
+        # print(f'len(style_E): {len(style_E)}, style_E[0].shape:{style_E[0].shape}, style_E[1].shape:{style_E[1].shape}')
+        # print(f'len(style_E_mask): {len(style_E_mask)}, style_E_mask[0].shape:{style_E_mask[0].shape}, style_E_mask[1].shape:{style_E_mask[1].shape}')
+        # print(f'len(style_S): {len(style_S)}, style_S[0][0].shape:{style_S[0][0].shape}, style_S[0][1].shape:{style_S[0][1].shape}, style_S[1][0].shape:{style_S[1][0].shape}, style_S[1][1].shape:{style_S[1][1].shape}')
+        # print(f'len(style_S_mask): {len(style_S_mask)}, style_S_mask[0][0].shape:{style_S_mask[0][0].shape}, style_S_mask[0][1].shape:{style_S_mask[0][1].shape}, style_S_mask[1][0].shape:{style_S_mask[1][0].shape}, style_S_mask[1][1].shape:{style_S_mask[1][1].shape}')
+        # print(f'len(translate_E): {len(translate_E)}, translate_E[0].shape:{translate_E[0].shape}, translate_E[1].shape:{translate_E[1].shape}')
+        # print(f'len(translate_E_mask): {len(translate_E_mask)}, translate_E_mask[0].shape:{translate_E_mask[0].shape}, translate_E_mask[1].shape:{translate_E_mask[1].shape}')
+        # print(f'len(translate_S): {len(translate_S)}, translate_S[0][0].shape:{translate_S[0][0].shape}, translate_S[0][1].shape:{translate_S[0][1].shape}, translate_S[1][0].shape:{translate_S[1][0].shape}, translate_S[1][1].shape:{translate_S[1][1].shape}')
+        # print(f'len(translate_S_mask): {len(translate_S_mask)}, translate_S_mask[0][0].shape:{translate_S_mask[0][0].shape}, translate_S_mask[0][1].shape:{translate_S_mask[0][1].shape}, translate_S_mask[1][0].shape:{translate_S_mask[1][0].shape}, translate_S_mask[1][1].shape:{translate_S_mask[1][1].shape}')
         loss = 0.
         batch = style_E[0][0].shape[0]
         for b in range(batch):
@@ -482,6 +489,7 @@ class EFDM_loss(nn.Module):
                             self.efdm_single(style_E[i][1][b].unsqueeze(0),style_E_mask[i][1][b].unsqueeze(0), translate_E[i][1][b].unsqueeze(0),translate_E_mask[i][1][b].unsqueeze(0)) 
                             # sytle_E[0] 为 o13, style_E[0][0] 为 o13 的高频部分,  style_E[0][1] 为 o13 的低频部分. style_E[0][0][b] 为 o13 高频部分的第b个特征图
                             # sytle_E[1] 为 o19, style_E[1][0] 为 o19 的高频部分,  style_E[1][1] 为 o19 的低频部分. style_E[1][0][b] 为 o19 高频部分的第b个特征图
+                # print(f'poss_loss: {poss_loss}')
             for i in range(len(style_S)): # len(style_S)为3, i=0,1,2
                 poss_loss += self.efdm_single(style_S[i][0][b].unsqueeze(0),style_S_mask[i][0][b].unsqueeze(0), translate_S[i][0][b].unsqueeze(0),translate_S_mask[i][0][b].unsqueeze(0)) + \
                             self.efdm_single(style_S[i][1][b].unsqueeze(0),style_S_mask[i][1][b].unsqueeze(0), translate_S[i][1][b].unsqueeze(0),translate_S_mask[i][1][b].unsqueeze(0))

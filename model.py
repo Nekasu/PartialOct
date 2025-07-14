@@ -82,12 +82,13 @@ class AesFA(nn.Module):
 
         ######################### 损失函数计算准备工作：数据准备2 #########################
         # print("内容编码器编码风格化图像")
-        print(self.trs_AtoB.shape)
-        print(self.real_content_mask.shape)
+        # print(self.trs_AtoB.shape)
+        # print(self.real_content_mask.shape)
         _, _, self.content_trs_AtoB_feat, self.content_trs_mask_list, _= self.netE(self.trs_AtoB, mask=self.real_content_mask) # 编码风格化图像, 就要使用内容图像的掩膜
         # print("风格编码器编码风格化图像)
-        _, self.trs_AtoB_style, self.style_trs_AtoB_feat, self.style_trs_mask_list, _= self.netS(x=self.trs_AtoB, mask=self.real_content_mask) # 编码风格化图像, 就要使用内容图像的掩膜
+        _, self.trs_AtoB_style, self.style_trs_AtoB_feat, self.style_trs_mask_list, self.style_trs_downsampled_mask= self.netS(x=self.trs_AtoB, mask=self.real_content_mask) # 编码风格化图像, 就要使用内容图像的掩膜
         self.style_trs_AtoB_feat.append(self.trs_AtoB_style)
+        self.style_trs_mask_list.append(self.style_trs_downsampled_mask)
        ##################################################################################
 
         
