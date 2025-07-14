@@ -386,18 +386,25 @@ class EFDM_loss(nn.Module):
     # 
     def __init__(self):
         super(EFDM_loss, self).__init__()
-        self.mse_loss = nn.MSELoss()
+        self.mse_loss = nn.MSELoss() # 一个类, 用于计算均方误差.
     
     def efdm_single(self, style, trans):
         B, C, W, H = style.size(0), style.size(1), style.size(2), style.size(3)
         
-        value_style, index_style = torch.sort(style.view(B, C, -1))
+        value_style, index_style = torch.sort(style.view(B, C, -1)) # torch.view(B,C,-1)的作用是将 style 从 (B,C,W,H) 变为 (B,C,W*H)的多个一维向量
         value_trans, index_trans = torch.sort(trans.view(B, C, -1))
         inverse_index = index_trans.argsort(-1)
         
         return self.mse_loss(trans.view(B, C,-1), value_style.gather(-1, inverse_index))
 
     def forward(self, style_E, style_S, translate_E, translate_S, neg_idx):
+        '''
+        从调用该函数的地方来看, 这四个输入分别是:
+        style_E: 是 风格编码器 编码 风格图像 后的 第三个输出, 即风格编码器中的 [o13, o19]
+        style_S: 是 content_B_feat 加上 风格编码器 编码 风格图像后的第二个输出, 即 [o13,o19, downsampled_o19]
+        translate_E: 是 内容编码器 编码 风格化图像 后的 第三个输出, 即 风格化图像的 [o13, o19]
+        translate_S: 是 风格编码器 编码 风格化图像 后的 第三个输出, 即风格化图像的 [o13, o19]
+        '''
         loss = 0.
         batch = style_E[0][0].shape[0]
         for b in range(batch):
@@ -405,10 +412,12 @@ class EFDM_loss(nn.Module):
             neg_loss = 0.
         
             # Positive loss
-            for i in range(len(style_E)):
+            for i in range(len(style_E)): # len(style_E)为2, i=0,1
                 poss_loss += self.efdm_single(style_E[i][0][b].unsqueeze(0), translate_E[i][0][b].unsqueeze(0)) + \
-                            self.efdm_single(style_E[i][1][b].unsqueeze(0), translate_E[i][1][b].unsqueeze(0))
-            for i in range(len(style_S)):
+                            self.efdm_single(style_E[i][1][b].unsqueeze(0), translate_E[i][1][b].unsqueeze(0)) 
+                            # sytle_E[0] 为 o13, style_E[0][0] 为 o13 的高频部分,  style_E[0][1] 为 o13 的低频部分. style_E[0][0][b] 为 o13 高频部分的第b个特征图
+                            # sytle_E[1] 为 o19, style_E[1][0] 为 o19 的高频部分,  style_E[1][1] 为 o19 的低频部分. style_E[1][0][b] 为 o19 高频部分的第b个特征图
+            for i in range(len(style_S)): # len(style_S)为3, i=0,1,2
                 poss_loss += self.efdm_single(style_S[i][0][b].unsqueeze(0), translate_S[i][0][b].unsqueeze(0)) + \
                             self.efdm_single(style_S[i][1][b].unsqueeze(0), translate_S[i][1][b].unsqueeze(0))
                 

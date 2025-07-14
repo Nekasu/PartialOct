@@ -140,7 +140,12 @@ class AesFA(nn.Module):
         #     #     print(torch.isnan(tsr).any())    
         # print('input5 end')
 
-        self.G_contrast = self.efdm_loss(self.content_B_feat, self.style_B_feat, self.content_trs_AtoB_feat, self.style_trs_AtoB_feat, self.neg_idx) * self.lambda_const_style
+        self.G_contrast = self.efdm_loss(self.content_B_feat, self.style_B_feat, self.content_trs_AtoB_feat, self.style_trs_AtoB_feat, self.neg_idx) * self.lambda_const_style 
+        # content_B_feat 是风格编码器编码风格图像后的第三个输出, 即风格编码器中的 [o13, o19]
+        # style_B_feat 是 content_B_feat 加上风格编码器编码风格图像后的第二个输出, 即 [o13,o19, downsampled_o19]
+        # content_trs_AtoB_feat 是 内容编码器 编码 风格化图像 后的 第三个输出, 即 风格化图像的 [o13, o19]
+        # style_trs_AtoB_feat 是 风格编码器 编码 风格化图像 后的 第三个输出, 即风格化图像的 [o13, o19]
+
         # print(f"损失函数G_contrast 是否为nan: {torch.isnan(self.G_contrast).any()}")
         # print(f"损失函数G_contrast 是否为inf: {torch.isinf(self.G_contrast).any()}")
         # print(f'--------------------------------------------------------------------------')
