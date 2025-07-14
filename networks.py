@@ -296,6 +296,7 @@ class Decoder(nn.Module):
         # print(style[1].shape)
         # print(f'-------------------AdaOctConv1_1')
         out = self.AdaOctConv1_1(content, style) #o1, tuple
+        print(len(out),out[0].shape, out[1].shape)
         # print(f'In Decoder, 经过AdaOctConv1_1后, 数据最大、最小值为{out[0].max(), out[0].min()}')
         # print('o1 start')
         # for i,t in enumerate(out):
@@ -304,6 +305,7 @@ class Decoder(nn.Module):
         out = self.OctConv1_2(out) #o2, tuple
         out = self.up_oct(out) #o3, tuple
         out = self.oct_conv_aftup_1(out) #o4, tuple
+        print(len(out),out[0].shape, out[1].shape)
 
         # print(f'-------------------AdaOctConv2_1')
         out = self.AdaOctConv2_1(out, style) #o5, tuple
@@ -313,6 +315,7 @@ class Decoder(nn.Module):
         out = self.up_oct(out) #o7, tuple
         out = self.oct_conv_aftup_2(out) #o8, tuple
         # print(f'在decoder类中, oct_conv_aftup_2的输出是否为nan？{torch.isnan(out[0]).any()}, {torch.isnan(out[1]).any()}')
+        print(len(out),out[0].shape, out[1].shape)
 
         # print(f'-------------------AdaOctConv3_1')
         out = self.AdaOctConv3_1(out, style) #o9, tuple
@@ -320,11 +323,13 @@ class Decoder(nn.Module):
         out = self.OctConv3_2(out) #o10, tuple
         out = self.up_oct(out) #o11, tuple
         out = self.oct_conv_aftup_3(out) #o12, tuple
+        print(len(out),out[0].shape, out[1].shape)
 
         # print(f'-------------------AdaOctConv4_1')
         out = self.AdaOctConv4_1(out, style) #o13, tuple
         # print(f'In Decoder, 经过AdaOctConv4_1后, 数据最大、最小值为{out[0].max(), out[0].min()}')
         out = self.OctConv4_2(out) #o14, tuple
+        print(len(out),out[0].shape, out[1].shape)
         # print('o14 start')
         # for i,t in enumerate(out):
         #     print(f'out14 nan test, out1[{i}]: {torch.isnan(out[i]).any()} ')
