@@ -54,7 +54,7 @@ class Config:
 
     ## basic parameters
     n_iter = 160000 
-    batch_size = 4
+    batch_size = 1
     lr = 0.0001
     lr_policy = 'step'
     lr_decay_iters = 50
