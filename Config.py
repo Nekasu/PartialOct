@@ -10,10 +10,10 @@ class Config:
     # mask_dir = '/mnt/sda/Dataset/style_image/dunhuang_style/crop_256/main_white/mask'
     style_dir = '/mnt/sda/Datasets/style_image/AlphaStyle/alpha_WikiArt_AllInOne2/train_alpha'
     # mask_dir = '/mnt/sda/Dataset/style_image/dunhuang_style/crop_256/main_white/mask'
-    cuda_device = 'cuda:0'
+    cuda_device = 'cuda:1'
     
     # file_n = 'SoftPartialConv_limited-800000_iter' # 新训练时, 此处需要修改. 测试时, 也需要修改此处
-    file_n = 'SoftPartialConv_limited-masked_efdm' # 新训练时, 此处需要修改. 测试时, 也需要修改此处
+    file_n = 'SoftPartialConv_limited-masked_efdm-batch4' # 新训练时, 此处需要修改. 测试时, 也需要修改此处
     log_file_path = '/mnt/sda/zxt/3_code_area/code_develop/PartialConv_AesFA/log/' + file_n + 'log.txt'
     log_dir = './log/' + file_n
     ckpt_dir = './ckpt/' + file_n
@@ -54,7 +54,7 @@ class Config:
 
     ## basic parameters
     n_iter = 160000 
-    batch_size = 8
+    batch_size = 4
     lr = 0.0001
     lr_policy = 'step'
     lr_decay_iters = 50

@@ -52,7 +52,8 @@ class AesFA(nn.Module):
         #     for tsr in t:
         #         print(torch.isnan(tsr).any())
         # print("风格编码器编码风格图像")
-        _, self.style_B, self.content_B_feat, self.style_mask_list, self.style_downsampled_mask19 = self.netS(x = self.real_style, mask = self.real_style_mask)# use Style Encoder
+        with torch.no_grad():
+            _, self.style_B, self.content_B_feat, self.style_mask_list, self.style_downsampled_mask19 = self.netS(x = self.real_style, mask = self.real_style_mask)# use Style Encoder
         # print('测试StyleEncoder的输出是否为nan：')
         # print('    1:')
         # for i, t in enumerate(self.style_B):
@@ -66,7 +67,7 @@ class AesFA(nn.Module):
             
         ######################### 损失函数计算准备工作：数据准备1 #########################
         self.style_B_feat = self.content_B_feat.copy() # 复制风格图像经过风格编码器后的第三个返回值, 并命名为 style_B_feat, 将用于损失函数计算
-        self.style_B_feat.append(self.style_B)  #向 style_B_feat 中添加风格图像经过编码器后的第二个返回值:tuple, 将用于损失函数计算
+        self.style_B_feat.append((self.style_B[0].detach().clone(), self.style_B[1].detach().clone()))  #向 style_B_feat 中添加风格图像经过编码器后的第二个返回值:tuple, 将用于损失函数计算
 
         self.style_mask_list_appended= self.style_mask_list.copy()
         self.style_mask_list_appended.append(self.style_downsampled_mask19)
@@ -84,9 +85,10 @@ class AesFA(nn.Module):
         # print("内容编码器编码风格化图像")
         # print(self.trs_AtoB.shape)
         # print(self.real_content_mask.shape)
-        _, _, self.content_trs_AtoB_feat, self.content_trs_mask_list, _= self.netE(self.trs_AtoB, mask=self.real_content_mask) # 编码风格化图像, 就要使用内容图像的掩膜
-        # print("风格编码器编码风格化图像)
-        _, self.trs_AtoB_style, self.style_trs_AtoB_feat, self.style_trs_mask_list, self.style_trs_downsampled_mask= self.netS(x=self.trs_AtoB, mask=self.real_content_mask) # 编码风格化图像, 就要使用内容图像的掩膜
+        with torch.no_grad():
+            _, _, self.content_trs_AtoB_feat, self.content_trs_mask_list, _= self.netE(self.trs_AtoB, mask=self.real_content_mask) # 编码风格化图像, 就要使用内容图像的掩膜
+            # print("风格编码器编码风格化图像)
+            _, self.trs_AtoB_style, self.style_trs_AtoB_feat, self.style_trs_mask_list, self.style_trs_downsampled_mask= self.netS(x=self.trs_AtoB, mask=self.real_content_mask) # 编码风格化图像, 就要使用内容图像的掩膜
         self.style_trs_AtoB_feat.append(self.trs_AtoB_style)
         self.style_trs_mask_list.append(self.style_trs_downsampled_mask)
        ##################################################################################
@@ -173,6 +175,8 @@ class AesFA(nn.Module):
 
         
     def train_step(self, data):
+        print(torch.cuda.memory_allocated() / 1024**2, 'MB allocated')
+        print(torch.cuda.memory_reserved() / 1024**2, 'MB reserved')
         self.set_requires_grad([self.netE, self.netS, self.netG], True)
 
         self.forward(data)
@@ -195,6 +199,11 @@ class AesFA(nn.Module):
         train_dict['fake_AtoB'] = self.trs_AtoB
         train_dict['fake_AtoB_high'] = self.trs_AtoB_high
         train_dict['fake_AtoB_low'] = self.trs_AtoB_low
+
+        del self.content_A, self.style_B, self.content_B_feat
+        del self.trs_AtoB, self.trs_AtoB_high, self.trs_AtoB_low
+        del self.content_trs_AtoB_feat, self.style_trs_AtoB_feat
+        torch.cuda.empty_cache()  # 清理缓存
         
         return train_dict
     
