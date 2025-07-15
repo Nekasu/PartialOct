@@ -73,10 +73,10 @@ class AesFA(nn.Module):
        ##################################################################################
         
         ######################### 使用解码器 ###################################
-        print(f'content_A[0].shape:{ self.content_A[0].shape}')
-        print(f'content_A[1].shape:{ self.content_A[1].shape}')
-        print(f'style_B[0].shape:{ self.style_B[0].shape}')
-        print(f'style_B[1].shape:{ self.style_B[1].shape}')
+        # print(f'content_A[0].shape:{ self.content_A[0].shape}')
+        # print(f'content_A[1].shape:{ self.content_A[1].shape}')
+        # print(f'style_B[0].shape:{ self.style_B[0].shape}')
+        # print(f'style_B[1].shape:{ self.style_B[1].shape}')
         self.trs_AtoB, self.trs_AtoB_high, self.trs_AtoB_low = self.netG(self.content_A, self.style_B)
        ##################################################################################
 
@@ -103,9 +103,9 @@ class AesFA(nn.Module):
         # print(f"输入数据1 self.real_content 是否为 inf : {torch.isinf(self.real_content).any()}")
         # print(f"输入数据2 self.real_style 是否为 inf : {torch.isinf(self.real_style).any()}")
         # print(f"输入数据3 self.trs_AtoB 是否为 inf : {torch.isinf(self.trs_AtoB).any()}")
-        print(f'self.real_content shape: {self.real_content.shape}')
-        print(f'self.real_style shape: {self.real_style.shape}')
-        print(f'self.trs_AtoB shape: {self.trs_AtoB.shape}')
+        # print(f'self.real_content shape: {self.real_content.shape}')
+        # print(f'self.real_style shape: {self.real_style.shape}')
+        # print(f'self.trs_AtoB shape: {self.trs_AtoB.shape}')
         self.G_percept, self.neg_idx = self.vgg_loss.perceptual_loss(self.real_content, self.real_style, self.trs_AtoB)
         # print(f"损失函数G_percept 是否为nan: {torch.isnan(self.G_percept).any()}")
         # print(f"损失函数G_percept 是否为inf: {torch.isinf(self.G_percept).any()}")
