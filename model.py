@@ -224,13 +224,15 @@ class AesFA_test(nn.Module):
         self.netS = networks.define_network(net_type='StyleEncoder', config = config)    # Style Encoder
         self.netG = networks.define_network(net_type='Generator', config = config)
         
-    def forward(self, real_content, real_style, real_mask, freq):
+    def forward(self, real_content, real_content_mask, real_style, real_style_mask, freq):
         with torch.no_grad():
             start = time.time() # sign the start time
             
             # 使用与训练时相同的处理流程
-            content_A, _, _ = self.netE(x=real_content)
-            _, style_B, _ = self.netS(x=real_style, mask=real_mask)
+            # 使用内容编码器编码内容图像
+            content_A, _, _, _, _ = self.netE(x=real_content, mask=real_content_mask)
+            # 使用风格编码器编码风格图像
+            _, style_B, _, _, _ = self.netS(x=real_style, mask=real_style_mask)
             
             if freq:
                 trs_AtoB, trs_AtoB_high, trs_AtoB_low = self.netG(content_A, style_B)

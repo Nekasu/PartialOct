@@ -179,26 +179,27 @@ def main():
             tot_imgs = len(contents) * len(styles)
             for idx in range(len(contents)):
                 cont_name = contents[idx]           # path of content image
-                content, content_mask = load_img(cont_name, config.test_content_size, device)
-
+                content, content_mask = load_img(cont_name, config.test_content_size, device) # 读入内容图像与内容掩膜
+                
                 for i in range(len(styles)):
                     sty_name = styles[i]            # path of style image
-                    style, style_mask = load_img(sty_name, config.test_style_size, device) # 想要将掩膜从风格图像中提取出来, 就必须改写 load_img 函数. 具体来说, 应该将 load_img 函数改写成类似于 DataSplit.py -> __getitem__函数 中, 从 sty_img 中分离 mask的形式.
+                    style, style_mask = load_img(sty_name, config.test_style_size, device) # 读入风格图像与风格掩膜
 
                     # mask_name = masks[i]            # path of mask image
                     # mask = load_img(mask_name, config.test_style_size, device)
                     
                     if freq:
-                        stylized, stylized_high, stylized_low, during = model(real_A=content, real_B=style, real_mask=style_mask, freq=freq) # Use `AesFA_test.forward` to generate styled images
+                        stylized, stylized_high, stylized_low, during = model(real_content=content, real_content_mask=content_mask, real_style=style, real_style_mask=style_mask, freq=freq) # Use `AesFA_test.forward` to generate styled images
                         A_path, B_path, trs_path = save_img(config, cont_name, sty_name, content, style, stylized, freq, stylized_high, stylized_low)
                         A_path_list.append(A_path)
                         B_path_list.append(B_path)
                         trs_path_list.append(trs_path)
                     else:
                         stylized, during = model(
-                            real_A=content,
-                            real_B=style,
-                            real_mask=style_mask,
+                            real_content=content,
+                            real_content_mask=content_mask,
+                            real_style=style,
+                            real_style_mask=style_mask,
                             freq=freq)  # Use `AesFA_test.forward` to generate styled images
                         A_path, B_path, trs_full_path, trs_path = save_img(config, cont_name, sty_name, content, style, stylized, content_mask=content_mask, style_mask=style_mask)
                         A_path_list.append(A_path)
@@ -209,7 +210,7 @@ def main():
                     count += 1
                     print(count, idx+1, i+1, during)
                     t_during += during
-                    flops, params = thop.profile(model, inputs=(content, style, style_mask, freq))
+                    flops, params = thop.profile(model, inputs=(content, content_mask, style, style_mask, freq))
                     print("GFLOPS: %.4f, Params: %.4f"% (flops/1e9, params/1e6))
                     print("Max GPU memory allocated: %.4f GB" % (torch.cuda.max_memory_allocated(device=config.cuda_device) / 1024. / 1024. / 1024.))
 

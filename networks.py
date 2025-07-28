@@ -1,8 +1,7 @@
 import torch
 from torch import nn
 import torch.nn.functional as F
-
-from blocks import *
+from blocks import * 
 from SoftPartConv import PartialConv2d
 
 from Config import Config
